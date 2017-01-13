@@ -19,9 +19,12 @@ package com.android.contacts.activities;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,31 +39,30 @@ import android.widget.Toast;
 
 import com.android.contacts.AppCompatContactsActivity;
 import com.android.contacts.R;
-import com.android.contacts.common.activity.RequestPermissionsActivity;
-import com.android.contacts.common.list.ContactEntryListFragment;
-import com.android.contacts.common.list.DirectoryListLoader;
-import com.android.contacts.common.list.OnPhoneNumberPickerActionListener;
-import com.android.contacts.common.list.PhoneNumberPickerFragment;
-import com.android.contacts.common.logging.ListEvent;
-import com.android.contacts.common.util.ImplicitIntentsUtil;
-import com.android.contacts.common.util.ViewUtil;
 import com.android.contacts.editor.EditorIntents;
+import com.android.contacts.list.ContactEntryListFragment;
 import com.android.contacts.list.ContactPickerFragment;
 import com.android.contacts.list.ContactsIntentResolver;
 import com.android.contacts.list.ContactsRequest;
+import com.android.contacts.list.DirectoryListLoader;
 import com.android.contacts.list.EmailAddressPickerFragment;
 import com.android.contacts.list.GroupMemberPickerFragment;
 import com.android.contacts.list.JoinContactListFragment;
 import com.android.contacts.list.LegacyPhoneNumberPickerFragment;
-import com.android.contacts.list.MultiSelectEmailAddressesListFragment;
-import com.android.contacts.list.MultiSelectPhoneNumbersListFragment;
 import com.android.contacts.list.MultiSelectContactsListFragment;
 import com.android.contacts.list.MultiSelectContactsListFragment.OnCheckBoxListActionListener;
+import com.android.contacts.list.MultiSelectEmailAddressesListFragment;
+import com.android.contacts.list.MultiSelectPhoneNumbersListFragment;
 import com.android.contacts.list.OnContactPickerActionListener;
 import com.android.contacts.list.OnEmailAddressPickerActionListener;
+import com.android.contacts.list.OnPhoneNumberPickerActionListener;
 import com.android.contacts.list.OnPostalAddressPickerActionListener;
+import com.android.contacts.list.PhoneNumberPickerFragment;
 import com.android.contacts.list.PostalAddressPickerFragment;
 import com.android.contacts.list.UiIntentActions;
+import com.android.contacts.logging.ListEvent;
+import com.android.contacts.util.ImplicitIntentsUtil;
+import com.android.contacts.util.ViewUtil;
 
 import java.util.ArrayList;
 
@@ -170,18 +172,17 @@ public class ContactSelectionActivity extends AppCompatContactsActivity implemen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // Go back to previous screen, intending "cancel"
-                setResult(RESULT_CANCELED);
-                onBackPressed();
-                return true;
-            case R.id.menu_search:
-                mIsSearchMode = !mIsSearchMode;
-                configureSearchMode();
-                return true;
+        final int id = item.getItemId();
+        if (id == android.R.id.home) {// Go back to previous screen, intending "cancel"
+            setResult(RESULT_CANCELED);
+            onBackPressed();
+        } else if (id == R.id.menu_search) {
+            mIsSearchMode = !mIsSearchMode;
+            configureSearchMode();
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
@@ -235,11 +236,11 @@ public class ContactSelectionActivity extends AppCompatContactsActivity implemen
                 break;
             }
             case ContactsRequest.ACTION_CREATE_SHORTCUT_CALL: {
-                titleResId = R.string.callShortcutActivityTitle;
+                titleResId = R.string.shortcutActivityTitle;
                 break;
             }
             case ContactsRequest.ACTION_CREATE_SHORTCUT_SMS: {
-                titleResId = R.string.messageShortcutActivityTitle;
+                titleResId = R.string.shortcutActivityTitle;
                 break;
             }
             case ContactsRequest.ACTION_PICK_POSTAL: {
@@ -629,11 +630,9 @@ public class ContactSelectionActivity extends AppCompatContactsActivity implemen
 
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
-        switch (view.getId()) {
-            case R.id.search_view: {
-                if (hasFocus) {
-                    mActionBarAdapter.setFocusOnSearchView();
-                }
+        if (view.getId() == R.id.search_view) {
+            if (hasFocus) {
+                mActionBarAdapter.setFocusOnSearchView();
             }
         }
     }
@@ -652,11 +651,8 @@ public class ContactSelectionActivity extends AppCompatContactsActivity implemen
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.floating_action_button: {
-                startCreateNewContactActivity();
-                break;
-            }
+        if (view.getId() == R.id.floating_action_button) {
+            startCreateNewContactActivity();
         }
     }
 
@@ -690,6 +686,12 @@ public class ContactSelectionActivity extends AppCompatContactsActivity implemen
 
         final MenuItem searchItem = menu.findItem(R.id.menu_search);
         searchItem.setVisible(!mIsSearchMode && mIsSearchSupported);
+
+        final Drawable searchIcon = searchItem.getIcon();
+        if (searchIcon != null) {
+            searchIcon.mutate().setColorFilter(ContextCompat.getColor(this,
+                    R.color.actionbar_icon_color), PorterDuff.Mode.SRC_ATOP);
+        }
         return true;
     }
 

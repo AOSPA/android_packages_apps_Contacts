@@ -16,19 +16,18 @@ import android.widget.Toast;
 import com.android.contacts.AppCompatContactsActivity;
 import com.android.contacts.ContactSaveService;
 import com.android.contacts.R;
-import com.android.contacts.common.activity.RequestPermissionsActivity;
-import com.android.contacts.common.logging.EditorEvent;
-import com.android.contacts.common.logging.Logger;
-import com.android.contacts.common.model.AccountTypeManager;
-import com.android.contacts.common.util.ImplicitIntentsUtil;
-import com.android.contacts.common.util.MaterialColorMapUtils.MaterialPalette;
 import com.android.contacts.editor.ContactEditorFragment;
 import com.android.contacts.editor.EditorIntents;
 import com.android.contacts.editor.PickRawContactDialogFragment;
 import com.android.contacts.editor.PickRawContactLoader;
 import com.android.contacts.editor.PickRawContactLoader.RawContactsMetadata;
 import com.android.contacts.editor.SplitContactConfirmationDialogFragment;
+import com.android.contacts.logging.EditorEvent;
+import com.android.contacts.logging.Logger;
+import com.android.contacts.model.AccountTypeManager;
 import com.android.contacts.quickcontact.QuickContactActivity;
+import com.android.contacts.util.ImplicitIntentsUtil;
+import com.android.contacts.util.MaterialColorMapUtils.MaterialPalette;
 import com.android.contactsbind.FeedbackHelper;
 
 /**
@@ -41,6 +40,7 @@ public class ContactEditorSpringBoardActivity extends AppCompatContactsActivity 
 
     private static final String TAG = "EditorSpringBoard";
     private static final String TAG_RAW_CONTACTS_DIALOG = "rawContactsDialog";
+    private static final String KEY_RAW_CONTACTS_METADATA = "rawContactsMetadata";
     private static final int LOADER_RAW_CONTACTS = 1;
 
     public static final String EXTRA_SHOW_READ_ONLY = "showReadOnly";
@@ -268,6 +268,18 @@ public class ContactEditorSpringBoardActivity extends AppCompatContactsActivity 
     @Override
     public void onSplitContactCanceled() {
         finish();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_RAW_CONTACTS_METADATA, mResult);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mResult = savedInstanceState.getParcelable(KEY_RAW_CONTACTS_METADATA);
     }
 
     private long[][] getRawContactIds() {

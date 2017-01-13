@@ -31,24 +31,25 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.SearchView.OnCloseListener;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.contacts.ContactsDrawerActivity;
 import com.android.contacts.R;
 import com.android.contacts.activities.ActionBarAdapter.Listener.Action;
-import com.android.contacts.common.compat.CompatUtils;
-import com.android.contacts.common.util.MaterialColorMapUtils;
+import com.android.contacts.activities.PeopleActivity;
+import com.android.contacts.compat.CompatUtils;
 import com.android.contacts.list.ContactsRequest;
+import com.android.contacts.util.MaterialColorMapUtils;
 
 import java.util.ArrayList;
 
@@ -152,7 +153,9 @@ public class ActionBarAdapter implements OnCloseListener {
         mSearchView = (EditText) mSearchContainer.findViewById(R.id.search_view);
         mSearchView.setHint(mActivity.getString(mSearchHintResId));
         mSearchView.addTextChangedListener(new SearchTextWatcher());
-        mSearchContainer.findViewById(R.id.search_back_button).setOnClickListener(
+        final ImageButton searchBackButton = (ImageButton) mSearchContainer
+                .findViewById(R.id.search_back_button);
+        searchBackButton.setOnClickListener(
                 new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,6 +164,7 @@ public class ActionBarAdapter implements OnCloseListener {
                 }
             }
         });
+        searchBackButton.getDrawable().setAutoMirrored(true);
 
         mClearSearchView = mSearchContainer.findViewById(R.id.search_close_button);
         mClearSearchView.setOnClickListener(
@@ -331,7 +335,7 @@ public class ActionBarAdapter implements OnCloseListener {
             newFlags |= ActionBar.DISPLAY_SHOW_TITLE;
             mToolbar.setContentInsetsRelative(mMaxToolbarContentInsetStart,
                     mToolbar.getContentInsetEnd());
-            mToolbar.setNavigationIcon(R.drawable.ic_menu_hamburger);
+            mToolbar.setNavigationIcon(R.drawable.quantum_ic_menu_vd_theme_24);
         } else {
             mToolbar.setNavigationIcon(null);
         }
@@ -435,7 +439,7 @@ public class ActionBarAdapter implements OnCloseListener {
     /**
      * Find overflow menu ImageView by its content description and update its color.
      */
-    private void updateOverflowButtonColor() {
+    public void updateOverflowButtonColor() {
         final String overflowDescription = mActivity.getResources().getString(
                 R.string.abc_action_menu_overflow_description);
         final ViewGroup decorView = (ViewGroup) mActivity.getWindow().getDecorView();
@@ -448,22 +452,24 @@ public class ActionBarAdapter implements OnCloseListener {
                         final ArrayList<View> outViews = new ArrayList<>();
                         decorView.findViewsWithText(outViews, overflowDescription,
                                 View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
-                        if (outViews.isEmpty()) {
-                            return;
-                        }
-                        final ImageView overflow = (ImageView) outViews.get(0);
-                        overflow.setImageResource(R.drawable.ic_more_vert);
 
-                        // Update the overflow image color.
-                        final int iconColor;
-                        if (mSelectionMode) {
-                            iconColor = mActivity.getResources().getColor(
-                                    R.color.actionbar_color_grey_solid);
-                        } else {
-                            iconColor = mActivity.getResources().getColor(
-                                    R.color.actionbar_text_color);
+                        for (View view : outViews) {
+                            if (!(view instanceof ImageView)) {
+                                continue;
+                            }
+                            final ImageView overflow = (ImageView) view;
+
+                            // Update the overflow image color.
+                            final int iconColor;
+                            if (mSelectionMode) {
+                                iconColor = mActivity.getResources().getColor(
+                                        R.color.actionbar_color_grey_solid);
+                            } else {
+                                iconColor = mActivity.getResources().getColor(
+                                        R.color.actionbar_text_color);
+                            }
+                            overflow.setImageTintList(ColorStateList.valueOf(iconColor));
                         }
-                        overflow.setImageTintList(ColorStateList.valueOf(iconColor));
 
                         // We're done, remove the listener.
                         decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -501,8 +507,8 @@ public class ActionBarAdapter implements OnCloseListener {
             if (shouldAnimate) {
                 runStatusBarAnimation(/* colorTo */
                         MaterialColorMapUtils.getStatusBarColor(mActivity));
-            } else if (mActivity instanceof ContactsDrawerActivity) {
-                ((ContactsDrawerActivity) mActivity).updateStatusBarBackground();
+            } else if (mActivity instanceof PeopleActivity) {
+                ((PeopleActivity) mActivity).updateStatusBarBackground();
             }
         }
     }

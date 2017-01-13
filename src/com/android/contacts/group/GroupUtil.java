@@ -28,12 +28,12 @@ import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Groups;
 import android.text.TextUtils;
 
+import com.android.contacts.ContactsUtils;
 import com.android.contacts.GroupListLoader;
 import com.android.contacts.activities.ContactSelectionActivity;
-import com.android.contacts.common.ContactsUtils;
-import com.android.contacts.common.list.ContactsSectionIndexer;
-import com.android.contacts.common.model.account.GoogleAccountType;
+import com.android.contacts.list.ContactsSectionIndexer;
 import com.android.contacts.list.UiIntentActions;
+import com.android.contacts.model.account.GoogleAccountType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,7 +70,7 @@ public final class GroupUtil {
     }
 
     /** Returns a {@link GroupListItem} read from the given cursor and position. */
-    static GroupListItem getGroupListItem(Cursor cursor, int position) {
+    public static GroupListItem getGroupListItem(Cursor cursor, int position) {
         if (cursor == null || cursor.isClosed() || !cursor.moveToPosition(position)) {
             return null;
         }

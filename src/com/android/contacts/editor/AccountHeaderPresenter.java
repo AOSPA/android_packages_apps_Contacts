@@ -26,11 +26,9 @@ import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.android.contacts.R;
-import com.android.contacts.common.model.AccountTypeManager;
-import com.android.contacts.common.model.account.AccountDisplayInfo;
-import com.android.contacts.common.model.account.AccountDisplayInfoFactory;
-import com.android.contacts.common.model.account.AccountWithDataSet;
-import com.android.contacts.common.util.AccountsListAdapter;
+import com.android.contacts.model.account.AccountInfo;
+import com.android.contacts.model.account.AccountWithDataSet;
+import com.android.contacts.util.AccountsListAdapter;
 import com.android.contacts.util.UiClosables;
 
 import java.util.List;
@@ -56,8 +54,8 @@ public class AccountHeaderPresenter {
     }
 
     private final Context mContext;
-    private AccountDisplayInfoFactory mAccountDisplayInfoFactory;
 
+    private List<AccountInfo> mAccounts;
     private AccountWithDataSet mCurrentAccount;
 
     // Account header
@@ -82,8 +80,6 @@ public class AccountHeaderPresenter {
         mAccountHeaderName = (TextView) container.findViewById(R.id.account_name);
         mAccountHeaderIcon = (ImageView) container.findViewById(R.id.account_type_icon);
         mAccountHeaderExpanderIcon = (ImageView) container.findViewById(R.id.account_expander_icon);
-
-        mAccountDisplayInfoFactory = AccountDisplayInfoFactory.forWritableAccounts(mContext);
     }
 
     public void setObserver(Observer observer) {
@@ -101,8 +97,19 @@ public class AccountHeaderPresenter {
         updateDisplayedAccount();
     }
 
+    public void setAccounts(List<AccountInfo> accounts) {
+        mAccounts = accounts;
+        // If the current account hasn't been set or it has been removed just use the first
+        // account.
+        if (mCurrentAccount == null || !AccountInfo.contains(mAccounts, mCurrentAccount)) {
+            mCurrentAccount = mAccounts.isEmpty() ? null : accounts.get(0).getAccount();
+            mObserver.onChange(this);
+        }
+        updateDisplayedAccount();
+    }
+
     public AccountWithDataSet getCurrentAccount() {
-        return mCurrentAccount;
+        return mCurrentAccount != null ? mCurrentAccount : null;
     }
 
     public void onSaveInstanceState(Bundle outState) {
@@ -120,17 +127,11 @@ public class AccountHeaderPresenter {
     private void updateDisplayedAccount() {
         mAccountHeaderContainer.setVisibility(View.GONE);
         if (mCurrentAccount == null) return;
+        if (mAccounts == null) return;
 
-        final AccountDisplayInfo account =
-                mAccountDisplayInfoFactory.getAccountDisplayInfo(mCurrentAccount);
+        final String accountLabel = getAccountLabel(mCurrentAccount);
 
-        final String accountLabel = getAccountLabel(account);
-
-        // Either the account header or selector should be shown, not both.
-        final List<AccountWithDataSet> accounts =
-                AccountTypeManager.getInstance(mContext).getAccounts(true);
-
-        if (accounts.size() > 1) {
+        if (mAccounts.size() > 1) {
             addAccountSelector(accountLabel);
         } else {
             addAccountHeader(accountLabel);
@@ -150,10 +151,10 @@ public class AccountHeaderPresenter {
             mAccountHeaderType.setText(selectorTitle);
         }
 
+        final AccountInfo accountInfo = AccountInfo.getAccount(mAccounts, mCurrentAccount);
+
         // Set the icon
-        final AccountDisplayInfo displayInfo = mAccountDisplayInfoFactory
-                .getAccountDisplayInfo(mCurrentAccount);
-        mAccountHeaderIcon.setImageDrawable(displayInfo.getIcon());
+        mAccountHeaderIcon.setImageDrawable(accountInfo.getIcon());
 
         // Set the content description
         mAccountHeaderContainer.setContentDescription(
@@ -174,9 +175,7 @@ public class AccountHeaderPresenter {
     private void showPopup() {
         final ListPopupWindow popup = new ListPopupWindow(mContext);
         final AccountsListAdapter adapter =
-                new AccountsListAdapter(mContext,
-                        AccountsListAdapter.AccountListFilter.ACCOUNTS_CONTACT_WRITABLE,
-                        mCurrentAccount);
+                new AccountsListAdapter(mContext, mAccounts, mCurrentAccount);
         popup.setWidth(mAccountHeaderContainer.getWidth());
         popup.setAnchorView(mAccountHeaderContainer);
         popup.setAdapter(adapter);
@@ -212,8 +211,8 @@ public class AccountHeaderPresenter {
         mAccountHeaderContainer.setOnClickListener(listener);
     }
 
-    private String getAccountLabel(AccountDisplayInfo account) {
-        // TODO: if used from editor this would need to be different if editing the user's profile.
-        return account.getNameLabel().toString();
+    private String getAccountLabel(AccountWithDataSet account) {
+        final AccountInfo accountInfo = AccountInfo.getAccount(mAccounts, account);
+        return accountInfo != null ? accountInfo.getNameLabel().toString() : null;
     }
 }

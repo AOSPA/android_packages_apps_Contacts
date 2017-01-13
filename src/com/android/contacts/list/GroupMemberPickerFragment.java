@@ -29,14 +29,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.contacts.R;
 import com.android.contacts.activities.ContactSelectionActivity;
-import com.android.contacts.common.R;
-import com.android.contacts.common.list.ContactListAdapter.ContactQuery;
-import com.android.contacts.common.list.ContactListFilter;
-import com.android.contacts.common.list.ContactsSectionIndexer;
-import com.android.contacts.common.list.DefaultContactListAdapter;
-import com.android.contacts.common.model.account.AccountWithDataSet;
 import com.android.contacts.group.GroupUtil;
+import com.android.contacts.list.ContactListAdapter.ContactQuery;
+import com.android.contacts.model.account.AccountWithDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -304,20 +301,18 @@ public class GroupMemberPickerFragment extends
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                final Activity activity = getActivity();
-                if (activity != null) {
-                    activity.onBackPressed();
-                }
-                return true;
+        final int id = item.getItemId();
+        if (id == android.R.id.home) {
+            final Activity activity = getActivity();
+            if (activity != null) {
+                activity.onBackPressed();
             }
-            case R.id.menu_select: {
-                if (mListener != null) {
-                    mListener.onSelectGroupMembers();
-                }
-                return true;
+            return true;
+        } else if (id == R.id.menu_select) {
+            if (mListener != null) {
+                mListener.onSelectGroupMembers();
             }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

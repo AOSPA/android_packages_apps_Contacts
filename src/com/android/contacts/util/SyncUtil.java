@@ -22,7 +22,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.ContactsContract;
 
-import com.android.contacts.common.model.account.GoogleAccountType;
+import com.android.contacts.model.AccountTypeManager;
+import com.android.contacts.model.account.AccountWithDataSet;
+import com.android.contacts.model.account.GoogleAccountType;
 
 import java.util.List;
 
@@ -48,6 +50,19 @@ public final class SyncUtil {
     }
 
     /**
+     * Returns true {@link ContentResolver#isSyncPending(Account, String)} or
+     * {@link ContentResolver#isSyncActive(Account, String)} is true for any account in accounts
+     */
+    public static final boolean isAnySyncing(List<AccountWithDataSet> accounts) {
+        for (AccountWithDataSet accountWithDataSet : accounts) {
+            if (isSyncStatusPendingOrActive(accountWithDataSet.getAccountOrNull())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns true if the given Google account is not syncable.
      */
     public static final boolean isUnsyncableGoogleAccount(Account account) {
@@ -55,6 +70,10 @@ public final class SyncUtil {
             return false;
         }
         return ContentResolver.getIsSyncable(account, ContactsContract.AUTHORITY) <= 0;
+    }
+
+    public static final boolean hasSyncableAccount(AccountTypeManager accountTypeManager) {
+        return !accountTypeManager.getWritableGoogleAccounts().isEmpty();
     }
 
     public static boolean isAlertVisible(Context context, Account account, int reason) {

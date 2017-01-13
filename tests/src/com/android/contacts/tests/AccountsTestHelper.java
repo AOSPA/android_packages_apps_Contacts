@@ -15,6 +15,9 @@
  */
 package com.android.contacts.tests;
 
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
@@ -25,10 +28,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.test.InstrumentationRegistry;
 
-import com.android.contacts.common.model.account.AccountWithDataSet;
+import com.android.contacts.model.account.AccountWithDataSet;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings("MissingPermission")
 public class AccountsTestHelper {
@@ -40,7 +44,7 @@ public class AccountsTestHelper {
     private final AccountManager mAccountManager;
     private final ContentResolver mResolver;
 
-    private Account mTestAccount;
+    private List<Account> mAddedAccounts;
 
     public AccountsTestHelper() {
         // Use context instead of target context because the test package has the permissions needed
@@ -52,10 +56,25 @@ public class AccountsTestHelper {
         mContext = context;
         mAccountManager = AccountManager.get(mContext);
         mResolver = mContext.getContentResolver();
+        mAddedAccounts = new ArrayList<>();
+    }
+
+    public void addTestAccount(AccountWithDataSet account) {
+        Account newAccount = new Account(account.name, account.type);
+        assertTrue(mAccountManager.addAccountExplicitly(newAccount, null, null));
+        mAddedAccounts.add(newAccount);
     }
 
     public AccountWithDataSet addTestAccount() {
         return addTestAccount(generateAccountName());
+    }
+
+    public AccountWithDataSet addTestAccount(@NonNull String name) {
+        // remember the most recent one. If the caller wants to add multiple accounts they will
+        // have to keep track of them themselves.
+        final AccountWithDataSet account = new AccountWithDataSet(name, TEST_ACCOUNT_TYPE, null);
+        addTestAccount(account);
+        return account;
     }
 
     public String generateAccountName(String prefix) {
@@ -66,43 +85,55 @@ public class AccountsTestHelper {
         return generateAccountName("test");
     }
 
-    public AccountWithDataSet addTestAccount(@NonNull String name) {
-        // remember the most recent one. If the caller wants to add multiple accounts they will
-        // have to keep track of them themselves.
-        mTestAccount = new Account(name, TEST_ACCOUNT_TYPE);
-        assertTrue(mAccountManager.addAccountExplicitly(mTestAccount, null, null));
-        return convertTestAccount();
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public void removeTestAccount(AccountWithDataSet account) {
         final Account remove = account.getAccountOrNull();
         mAccountManager.removeAccountExplicitly(remove);
+        mAddedAccounts.remove(remove);
     }
 
-    public void removeContactsForAccount() {
-        // Not sure if this is necessary or if contacts are automatically cleaned up when the
-        // account is removed.
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    public void removeTestAccount(String accountName) {
+        removeTestAccount(new AccountWithDataSet(accountName, TEST_ACCOUNT_TYPE, null));
+    }
+
+    public boolean hasTestAccount(String name) {
+        final List<Account> accounts = Arrays.asList(
+                mAccountManager.getAccountsByType(TEST_ACCOUNT_TYPE));
+        return accounts.contains(new Account(name, TEST_ACCOUNT_TYPE));
+    }
+
+    public void removeContactsForAccount(AccountWithDataSet account) {
         mResolver.delete(RawContacts.CONTENT_URI,
                 RawContacts.ACCOUNT_NAME + "=? AND " + RawContacts.ACCOUNT_TYPE + "=?",
-                new String[] { mTestAccount.name, mTestAccount.type });
+                new String[] { account.name, account.type });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public void cleanup() {
-        assertNotNull(mTestAccount);
-
         // Note that we don't need to cleanup up the contact data associated with the account.
         // CP2 will eventually do that automatically so as long as we're using unique account
         // names we should be safe. Note that cleanup is not done synchronously when the account
         // is removed so if multiple tests are using the same account name then the data should
         // be manually deleted after each test run.
 
-        mAccountManager.removeAccountExplicitly(mTestAccount);
-        mTestAccount = null;
+        for (Account account : mAddedAccounts) {
+            mAccountManager.removeAccountExplicitly(account);
+        }
+        mAddedAccounts.clear();
     }
 
-    private AccountWithDataSet convertTestAccount() {
-        return new AccountWithDataSet(mTestAccount.name, mTestAccount.type, null);
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    public static void removeAccountsWithPrefix(Context context, String prefix) {
+        final AccountManager accountManager =
+                (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+        final Account[] accounts = accountManager.getAccountsByType(TEST_ACCOUNT_TYPE);
+        for (Account account : accounts) {
+            if (account.name.startsWith(prefix)) {
+                accountManager.removeAccountExplicitly(account);
+            }
+        }
+
+
     }
 }

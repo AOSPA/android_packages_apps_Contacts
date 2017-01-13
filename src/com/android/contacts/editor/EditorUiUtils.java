@@ -16,6 +16,11 @@
 
 package com.android.contacts.editor;
 
+import static android.provider.ContactsContract.CommonDataKinds.GroupMembership;
+import static android.provider.ContactsContract.CommonDataKinds.StructuredName;
+
+import static com.android.contacts.util.MaterialColorMapUtils.getDefaultPrimaryAndSecondaryColors;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -35,28 +40,27 @@ import android.provider.ContactsContract.CommonDataKinds.Relation;
 import android.provider.ContactsContract.CommonDataKinds.SipAddress;
 import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.CommonDataKinds.Website;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.android.contacts.ContactPhotoManager;
+import com.android.contacts.ContactPhotoManager.DefaultImageProvider;
+import com.android.contacts.ContactPhotoManager.DefaultImageRequest;
+import com.android.contacts.ContactsUtils;
 import com.android.contacts.R;
-import com.android.contacts.common.ContactPhotoManager;
-import com.android.contacts.common.ContactPhotoManager.DefaultImageProvider;
-import com.android.contacts.common.ContactPhotoManager.DefaultImageRequest;
-import com.android.contacts.common.ContactsUtils;
-import com.android.contacts.common.model.ValuesDelta;
-import com.android.contacts.common.model.dataitem.DataKind;
-import com.android.contacts.common.util.MaterialColorMapUtils.MaterialPalette;
-import com.android.contacts.common.model.account.AccountDisplayInfo;
+import com.android.contacts.model.ValuesDelta;
+import com.android.contacts.model.account.AccountDisplayInfo;
+import com.android.contacts.model.account.AccountInfo;
+import com.android.contacts.model.dataitem.DataKind;
 import com.android.contacts.util.ContactPhotoUtils;
+import com.android.contacts.util.MaterialColorMapUtils.MaterialPalette;
 import com.android.contacts.widget.QuickContactImageView;
+
 import com.google.common.collect.Maps;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-
-import static android.provider.ContactsContract.CommonDataKinds.GroupMembership;
-import static android.provider.ContactsContract.CommonDataKinds.StructuredName;
-import static com.android.contacts.common.util.MaterialColorMapUtils.getDefaultPrimaryAndSecondaryColors;
 
 /**
  * Utility methods for creating contact editor.
@@ -110,12 +114,12 @@ public class EditorUiUtils {
 
 
     public static String getAccountHeaderLabelForMyProfile(Context context,
-            AccountDisplayInfo displayableAccount) {
-        if (displayableAccount.isDeviceAccount()) {
+            AccountInfo accountInfo) {
+        if (accountInfo.isDeviceAccount()) {
             return context.getString(R.string.local_profile_title);
         } else {
             return context.getString(R.string.external_profile_title,
-                    displayableAccount.getTypeLabel());
+                    accountInfo.getTypeLabel());
         }
     }
 
@@ -155,32 +159,44 @@ public class EditorUiUtils {
     public static Drawable getMimeTypeDrawable(Context context, String mimeType) {
         switch (mimeType) {
             case StructuredName.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_person_black_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_person_vd_theme_24, null);
             case StructuredPostal.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_place_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_place_vd_theme_24, null);
             case SipAddress.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_dialer_sip_black_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_dialer_sip_vd_theme_24, null);
             case Phone.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_phone_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_phone_vd_theme_24, null);
             case Im.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_message_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_message_vd_theme_24, null);
             case Event.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_event_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_event_vd_theme_24, null);
             case Email.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_email_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_email_vd_theme_24, null);
             case Website.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_public_black_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_public_vd_theme_24, null);
             case Photo.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_camera_alt_black_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_camera_alt_vd_theme_24, null);
             case GroupMembership.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_menu_label);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_label_vd_theme_24, null);
             case Organization.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_business_black_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_business_vd_theme_24, null);
             case Note.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(R.drawable.ic_insert_comment_black_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_insert_comment_vd_theme_24, null);
             case Relation.CONTENT_ITEM_TYPE:
-                return context.getResources().getDrawable(
-                        R.drawable.ic_circles_extended_black_24dp);
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_circles_ext_vd_theme_24, null);
             default:
                 return null;
         }

@@ -12,7 +12,7 @@ support_library_root_dir := prebuilts/sdk/current/support
 endif
 
 src_dirs := src src-bind $(phone_common_dir)/src
-res_dirs := res res-aosp res-icons $(phone_common_dir)/res
+res_dirs := res $(phone_common_dir)/res
 asset_dirs := assets
 
 LOCAL_SRC_FILES := $(call all-java-files-under, $(src_dirs))
@@ -22,9 +22,6 @@ LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, $(res_dirs)) \
     $(support_library_root_dir)/v7/cardview/res \
     $(support_library_root_dir)/v7/recyclerview/res
 LOCAL_ASSET_DIR := $(addprefix $(LOCAL_PATH)/, $(asset_dirs))
-
-LOCAL_FULL_MANIFEST_FILE := $(LOCAL_PATH)/AndroidManifest.xml
-LOCAL_FULL_LIBS_MANIFEST_FILES := $(LOCAL_PATH)/AndroidManifest_common.xml
 
 LOCAL_AAPT_FLAGS := \
     --auto-add-overlay \

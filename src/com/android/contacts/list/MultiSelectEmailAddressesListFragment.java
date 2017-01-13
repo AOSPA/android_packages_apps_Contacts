@@ -26,8 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.contacts.R;
-import com.android.contacts.common.logging.ListEvent;
 import com.android.contacts.group.GroupUtil;
+import com.android.contacts.logging.ListEvent;
 
 import java.util.List;
 import java.util.TreeSet;
@@ -77,18 +77,16 @@ public class MultiSelectEmailAddressesListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.menu_send: {
-                final String scheme = getActivity().getIntent().getStringExtra(
-                        UiIntentActions.SELECTION_SEND_SCHEME);
-                final String title= getActivity().getIntent().getStringExtra(
-                        UiIntentActions.SELECTION_SEND_TITLE);
-                final List<String> items = GroupUtil.getSendToDataForIds(
-                        getActivity(), getAdapter().getSelectedContactIdsArray(), scheme);
-                final String list = TextUtils.join(",", items);
-                GroupUtil.startSendToSelectionActivity(this, list, scheme, title);
-                return true;
-            }
+        if (item.getItemId() == R.id.menu_send) {
+            final String scheme = getActivity().getIntent().getStringExtra(
+                    UiIntentActions.SELECTION_SEND_SCHEME);
+            final String title = getActivity().getIntent().getStringExtra(
+                    UiIntentActions.SELECTION_SEND_TITLE);
+            final List<String> items = GroupUtil.getSendToDataForIds(
+                    getActivity(), getAdapter().getSelectedContactIdsArray(), scheme);
+            final String list = TextUtils.join(",", items);
+            GroupUtil.startSendToSelectionActivity(this, list, scheme, title);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -137,6 +135,6 @@ public class MultiSelectEmailAddressesListFragment
 
     @Override
     protected View inflateView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(com.android.contacts.common.R.layout.contact_list_content, null);
+        return inflater.inflate(com.android.contacts.R.layout.contact_list_content, null);
     }
 }

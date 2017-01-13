@@ -47,13 +47,11 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.android.contacts.common.ContactPhotoManager;
-import com.android.contacts.common.Experiments;
-import com.android.contacts.common.activity.RequestPermissionsActivity;
-import com.android.contacts.common.compat.CompatUtils;
-import com.android.contacts.common.util.BitmapUtil;
-import com.android.contacts.common.util.ImplicitIntentsUtil;
-import com.android.contacts.common.util.PermissionsUtil;
+import com.android.contacts.activities.RequestPermissionsActivity;
+import com.android.contacts.compat.CompatUtils;
+import com.android.contacts.util.BitmapUtil;
+import com.android.contacts.util.ImplicitIntentsUtil;
+import com.android.contacts.util.PermissionsUtil;
 import com.android.contactsbind.experiments.Flags;
 
 import java.io.IOException;
@@ -86,6 +84,13 @@ public class DynamicShortcuts {
     private static final int SHORT_LABEL_MAX_LENGTH = 12;
     private static final int LONG_LABEL_MAX_LENGTH = 30;
     private static final int MAX_SHORTCUTS = 3;
+
+    private static final String EXTRA_SHORTCUT_TYPE = "extraShortcutType";
+
+    // Because pinned shortcuts persist across app upgrades these values should not be changed
+    // though new ones may be added
+    private static final int SHORTCUT_TYPE_UNKNOWN = 0;
+    private static final int SHORTCUT_TYPE_CONTACT_URI = 1;
 
     // The spec specifies that it should be 44dp @ xxxhdpi
     // Note that ShortcutManager.getIconMaxWidth and ShortcutManager.getMaxHeight return different
@@ -156,10 +161,16 @@ public class DynamicShortcuts {
         final List<String> enable = new ArrayList<>();
 
         for (ShortcutInfo shortcut : mShortcutManager.getPinnedShortcuts()) {
-
             final PersistableBundle extras = shortcut.getExtras();
+
+            if (!shortcut.isDynamic() || extras == null ||
+                    extras.getInt(EXTRA_SHORTCUT_TYPE, SHORTCUT_TYPE_UNKNOWN) !=
+                            SHORTCUT_TYPE_CONTACT_URI) {
+                continue;
+            }
+
             // The contact ID may have changed but that's OK because it is just an optimization
-            final long contactId = extras == null ? 0 : extras.getLong(Contacts._ID);
+            final long contactId = extras.getLong(Contacts._ID);
 
             final ShortcutInfo update = createShortcutForUri(
                     Contacts.getLookupUri(contactId, shortcut.getId()));
@@ -256,6 +267,7 @@ public class DynamicShortcuts {
         }
         final PersistableBundle extras = new PersistableBundle();
         extras.putLong(Contacts._ID, id);
+        extras.putInt(EXTRA_SHORTCUT_TYPE, SHORTCUT_TYPE_CONTACT_URI);
 
         final ShortcutInfo.Builder builder = new ShortcutInfo.Builder(mContext, lookupKey)
                 .setIntent(ImplicitIntentsUtil.getIntentForQuickContactLauncherShortcut(mContext,
@@ -416,7 +428,8 @@ public class DynamicShortcuts {
             final Flags flags = Flags.getInstance();
             Log.d(TAG, "DyanmicShortcuts.initialize\nVERSION >= N_MR1? " +
                     (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) +
-                    "\nisJobScheduled? " + isJobScheduled(context) +
+                    "\nisJobScheduled? " +
+                    (CompatUtils.isLauncherShortcutCompatible() && isJobScheduled(context)) +
                     "\nminDelay=" +
                     flags.getInteger(Experiments.DYNAMIC_MIN_CONTENT_CHANGE_UPDATE_DELAY_MILLIS) +
                     "\nmaxDelay=" +

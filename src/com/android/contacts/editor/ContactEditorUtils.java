@@ -23,19 +23,14 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 
-import com.android.contacts.common.model.AccountTypeManager;
-import com.android.contacts.common.model.account.AccountType;
-import com.android.contacts.common.model.account.AccountWithDataSet;
-import com.android.contacts.common.preference.ContactsPreferences;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Sets;
+import com.android.contacts.model.account.AccountWithDataSet;
+import com.android.contacts.preference.ContactsPreferences;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Utility methods for the "account changed" notification in the new contact creation flow.
@@ -44,16 +39,9 @@ public class ContactEditorUtils {
     private static final String TAG = "ContactEditorUtils";
 
     private final ContactsPreferences mContactsPrefs;
-    private final AccountTypeManager mAccountTypes;
 
     private ContactEditorUtils(Context context) {
-        this(context, AccountTypeManager.getInstance(context));
-    }
-
-    @VisibleForTesting
-    ContactEditorUtils(Context context, AccountTypeManager accountTypes) {
         mContactsPrefs = new ContactsPreferences(context);
-        mAccountTypes = accountTypes;
     }
 
     public static ContactEditorUtils create(Context context) {
@@ -92,10 +80,6 @@ public class ContactEditorUtils {
         mContactsPrefs.clearDefaultAccount();
     }
 
-    private List<AccountWithDataSet> getWritableAccounts() {
-        return mAccountTypes.getAccounts(true);
-    }
-
     /**
      * Saves the default account, which can later be obtained with {@link #getOnlyOrDefaultAccount}.
      *
@@ -119,8 +103,8 @@ public class ContactEditorUtils {
      *
      * Also note that the returned account may have been removed already.
      */
-    public AccountWithDataSet getOnlyOrDefaultAccount() {
-        final List<AccountWithDataSet> currentWritableAccounts = getWritableAccounts();
+    public AccountWithDataSet getOnlyOrDefaultAccount(
+            List<AccountWithDataSet> currentWritableAccounts) {
         if (currentWritableAccounts.size() == 1) {
             return currentWritableAccounts.get(0);
         }
@@ -128,15 +112,14 @@ public class ContactEditorUtils {
         return mContactsPrefs.getDefaultAccount();
     }
 
-    public boolean shouldShowAccountChangedNotification() {
-        return mContactsPrefs.shouldShowAccountChangedNotification(getWritableAccounts());
+    public boolean shouldShowAccountChangedNotification(List<AccountWithDataSet> writableAccounts) {
+        return mContactsPrefs.shouldShowAccountChangedNotification(writableAccounts);
     }
 
     /**
      * Sets the only non-device account to be default if it is not already.
      */
-    public void maybeUpdateDefaultAccount() {
-        final List<AccountWithDataSet> currentWritableAccounts = getWritableAccounts();
+    public void maybeUpdateDefaultAccount(List<AccountWithDataSet> currentWritableAccounts) {
         if (currentWritableAccounts.size() == 1) {
             final AccountWithDataSet onlyAccount = currentWritableAccounts.get(0);
             if (!onlyAccount.isNullAccount()
@@ -146,46 +129,20 @@ public class ContactEditorUtils {
         }
     }
 
-    @VisibleForTesting
-    String[] getWritableAccountTypeStrings() {
-        final Set<String> types = Sets.newHashSet();
-        for (AccountType type : mAccountTypes.getAccountTypes(true)) {
-            types.add(type.accountType);
-        }
-        return types.toArray(new String[types.size()]);
-    }
-
     /**
-     * Create an {@link Intent} to start "add new account" setup wizard.  Selectable account
-     * types will be limited to ones that supports editing contacts.
+     * Parses a result from {@link AccountManager#newChooseAccountIntent(Account, List, String[],
+     *     String, String, String[], Bundle)} and returns the created {@link Account}, or null if
+     * the user has canceled the wizard.
      *
-     * Use {@link Activity#startActivityForResult} or
-     * {@link android.app.Fragment#startActivityForResult} to start the wizard, and
-     * {@link Activity#onActivityResult} or {@link android.app.Fragment#onActivityResult} to
-     * get the result.
-     */
-    public Intent createAddWritableAccountIntent() {
-        return AccountManager.newChooseAccountIntent(
-                null, // selectedAccount
-                new ArrayList<Account>(), // allowableAccounts
-                getWritableAccountTypeStrings(), // allowableAccountTypes
-                false, // alwaysPromptForAccount
-                null, // descriptionOverrideText
-                null, // addAccountAuthTokenType
-                null, // addAccountRequiredFeatures
-                null // addAccountOptions
-                );
-    }
-
-    /**
-     * Parses a result from {@link #createAddWritableAccountIntent} and returns the created
-     * {@link Account}, or null if the user has canceled the wizard.  Pass the {@code resultCode}
-     * and {@code data} parameters passed to {@link Activity#onActivityResult} or
-     * {@link android.app.Fragment#onActivityResult}.
+     * <p>Pass the {@code resultCode} and {@code data} parameters passed to
+     * {@link Activity#onActivityResult} or {@link android.app.Fragment#onActivityResult}.
+     * </p>
      *
+     * <p>
      * Note although the return type is {@link AccountWithDataSet}, return values from this method
      * will never have {@link AccountWithDataSet#dataSet} set, as there's no way to create an
      * extension package account from setup wizard.
+     * </p>
      */
     public AccountWithDataSet getCreatedAccount(int resultCode, Intent resultData) {
         // Javadoc doesn't say anything about resultCode but that the data intent will be non null

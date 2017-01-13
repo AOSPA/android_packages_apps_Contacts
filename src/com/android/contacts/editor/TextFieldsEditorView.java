@@ -39,14 +39,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.android.contacts.ContactsUtils;
 import com.android.contacts.R;
-import com.android.contacts.common.ContactsUtils;
-import com.android.contacts.common.compat.PhoneNumberUtilsCompat;
-import com.android.contacts.common.model.RawContactDelta;
-import com.android.contacts.common.model.ValuesDelta;
-import com.android.contacts.common.model.account.AccountType.EditField;
-import com.android.contacts.common.model.dataitem.DataKind;
-import com.android.contacts.common.util.PhoneNumberFormatter;
+import com.android.contacts.compat.PhoneNumberUtilsCompat;
+import com.android.contacts.model.RawContactDelta;
+import com.android.contacts.model.ValuesDelta;
+import com.android.contacts.model.account.AccountType.EditField;
+import com.android.contacts.model.dataitem.DataKind;
+import com.android.contacts.util.PhoneNumberFormatter;
 
 /**
  * Simple editor that handles labels and any {@link EditField} defined for the
@@ -182,8 +182,8 @@ public class TextFieldsEditorView extends LabeledEditorView {
      */
     private void setupExpansionView(boolean shouldExist, boolean collapsed) {
         final Drawable expandIcon = getContext().getDrawable(collapsed
-                ? R.drawable.ic_menu_expand_minimized_24dp
-                : R.drawable.ic_menu_expand_maximized_24dp);
+                ? R.drawable.quantum_ic_expand_more_vd_theme_24
+                : R.drawable.quantum_ic_expand_less_vd_theme_24);
         mExpansionView.setImageDrawable(expandIcon);
         mExpansionView.setContentDescription(collapsed ? mExpandButtonDescription
                 : mCollapseButtonDescription);

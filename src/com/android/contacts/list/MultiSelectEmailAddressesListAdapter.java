@@ -23,17 +23,13 @@ import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.provider.ContactsContract.CommonDataKinds.Email;
-
-import com.android.contacts.common.ContactPhotoManager;
-import com.android.contacts.common.list.ContactListItemView;
-import com.android.contacts.common.list.MultiSelectEntryContactListAdapter;
-import com.android.contacts.common.preference.ContactsPreferences;
 import com.android.contacts.group.GroupUtil;
+import com.android.contacts.preference.ContactsPreferences;
 
 /** Email addresses multi-select cursor adapter. */
 public class MultiSelectEmailAddressesListAdapter extends MultiSelectEntryContactListAdapter {

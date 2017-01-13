@@ -23,24 +23,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.QuickContact;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toolbar;
 
+import com.android.contacts.AppCompatContactsActivity;
 import com.android.contacts.ContactSaveService;
-import com.android.contacts.ContactsActivity;
 import com.android.contacts.DynamicShortcuts;
 import com.android.contacts.R;
-import com.android.contacts.common.activity.RequestPermissionsActivity;
-import com.android.contacts.common.model.RawContactDeltaList;
-import com.android.contacts.common.util.ImplicitIntentsUtil;
 import com.android.contacts.detail.PhotoSelectionHandler;
 import com.android.contacts.editor.ContactEditorFragment;
 import com.android.contacts.editor.EditorIntents;
 import com.android.contacts.editor.PhotoSourceDialogFragment;
 import com.android.contacts.interactions.ContactDeletionInteraction;
+import com.android.contacts.model.RawContactDeltaList;
 import com.android.contacts.util.DialogManager;
+import com.android.contacts.util.ImplicitIntentsUtil;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ import java.util.ArrayList;
 /**
  * Contact editor with only the most important fields displayed initially.
  */
-public class ContactEditorActivity extends ContactsActivity implements
+public class ContactEditorActivity extends AppCompatContactsActivity implements
         PhotoSourceDialogFragment.Listener,
         DialogManager.DialogShowingViewActivity {
     private static final String TAG = "ContactEditorActivity";
@@ -61,13 +60,13 @@ public class ContactEditorActivity extends ContactsActivity implements
     public static final int RESULT_CODE_EDITED = 4;
 
     /**
-     * The contact will be saved to the device local account when this is set for an insert. This
+     * The contact will be saved to this account when this is set for an insert. This
      * is necessary because {@link android.accounts.Account} cannot be created with null values
      * for the name and type and an Account is needed for
      * {@link android.provider.ContactsContract.Intents.Insert#EXTRA_ACCOUNT}
      */
-    public static final String EXTRA_SAVE_TO_DEVICE_FLAG =
-            "com.android.contacts.SAVE_TO_DEVICE_FLAG";
+    public static final String EXTRA_ACCOUNT_WITH_DATA_SET =
+            "com.android.contacts.ACCOUNT_WITH_DATA_SET";
 
     private static final String TAG_EDITOR_FRAGMENT = "editor_fragment";
 
@@ -347,6 +346,7 @@ public class ContactEditorActivity extends ContactsActivity implements
 
         setContentView(R.layout.contact_editor_activity);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         if (Intent.ACTION_EDIT.equals(action)) {
             mActionBarTitleResId = R.string.contact_editor_title_existing_contact;
         } else {
@@ -355,7 +355,6 @@ public class ContactEditorActivity extends ContactsActivity implements
         mToolbar.setTitle(mActionBarTitleResId);
         // Set activity title for Talkback
         setTitle(mActionBarTitleResId);
-        setActionBar(mToolbar);
 
         if (savedState == null) {
             // Create the editor and photo selection fragments
@@ -469,7 +468,12 @@ public class ContactEditorActivity extends ContactsActivity implements
      */
     public void changePhoto(int photoMode) {
         mPhotoMode = photoMode;
-        PhotoSourceDialogFragment.show(this, mPhotoMode);
+        // This method is called from an onClick handler in the PhotoEditorView. It's possible for
+        // onClick methods to run after onSaveInstanceState is called for the activity, so check
+        // if it's safe to commit transactions before trying.
+        if (isSafeToCommitTransactions()) {
+            PhotoSourceDialogFragment.show(this, mPhotoMode);
+        }
     }
 
     public Toolbar getToolbar() {

@@ -16,21 +16,22 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.android.contacts.ContactPhotoManager;
 import com.android.contacts.R;
 import com.android.contacts.activities.ContactSelectionActivity;
-import com.android.contacts.common.ContactPhotoManager;
-import com.android.contacts.common.logging.EditorEvent;
-import com.android.contacts.common.logging.Logger;
-import com.android.contacts.common.model.AccountTypeManager;
-import com.android.contacts.common.model.account.AccountDisplayInfo;
-import com.android.contacts.common.model.account.AccountDisplayInfoFactory;
-import com.android.contacts.common.model.account.AccountType;
-import com.android.contacts.common.model.account.AccountWithDataSet;
-import com.android.contacts.common.model.account.GoogleAccountType;
-import com.android.contacts.common.preference.ContactsPreferences;
 import com.android.contacts.editor.PickRawContactLoader.RawContact;
 import com.android.contacts.editor.PickRawContactLoader.RawContactsMetadata;
 import com.android.contacts.list.UiIntentActions;
+import com.android.contacts.logging.EditorEvent;
+import com.android.contacts.logging.Logger;
+import com.android.contacts.model.AccountTypeManager;
+import com.android.contacts.model.account.AccountDisplayInfo;
+import com.android.contacts.model.account.AccountDisplayInfoFactory;
+import com.android.contacts.model.account.AccountInfo;
+import com.android.contacts.model.account.AccountType;
+import com.android.contacts.model.account.AccountWithDataSet;
+import com.android.contacts.model.account.GoogleAccountType;
+import com.android.contacts.preference.ContactsPreferences;
 
 /**
  * Should only be started from an activity that implements {@link PickRawContactListener}.
@@ -52,7 +53,6 @@ public class PickRawContactDialogFragment extends DialogFragment {
         private final LayoutInflater mInflater;
         private final Context mContext;
         private final RawContactsMetadata mRawContactsMetadata;
-        private final AccountDisplayInfoFactory mAccountDisplayInfoFactory;
         private final AccountTypeManager mAccountTypeManager;
         private final ContactsPreferences mPreferences;
 
@@ -60,7 +60,6 @@ public class PickRawContactDialogFragment extends DialogFragment {
                 RawContactsMetadata rawContactsMetadata) {
             mContext = context;
             mInflater = LayoutInflater.from(context);
-            mAccountDisplayInfoFactory = AccountDisplayInfoFactory.forWritableAccounts(context);
             mAccountTypeManager = AccountTypeManager.getInstance(context);
             mPreferences = new ContactsPreferences(context);
             mRawContactsMetadata = rawContactsMetadata;
@@ -114,12 +113,12 @@ public class PickRawContactDialogFragment extends DialogFragment {
 
             // Use the same string as editor if it's an editable user profile raw contact.
             if (mRawContactsMetadata.isUserProfile && account.areContactsWritable()) {
-                final AccountDisplayInfo displayInfo =
-                        mAccountDisplayInfoFactory.getAccountDisplayInfo(
+                final AccountInfo accountInfo =
+                        AccountTypeManager.getInstance(getContext()).getAccountInfoForAccount(
                                 new AccountWithDataSet(rawContact.accountName,
                                         rawContact.accountType, rawContact.accountDataSet));
                 accountDisplayLabel = EditorUiUtils.getAccountHeaderLabelForMyProfile(mContext,
-                        displayInfo);
+                        accountInfo);
             } else if (GoogleAccountType.ACCOUNT_TYPE.equals(rawContact.accountType)
                     && account.dataSet == null) {
                 // Focus Google accounts have the account name shown
@@ -181,30 +180,33 @@ public class PickRawContactDialogFragment extends DialogFragment {
         mAdapter = new RawContactAccountListAdapter(getContext(), metadata);
         if (metadata.showReadOnly) {
             builder.setTitle(R.string.contact_editor_pick_linked_contact_dialog_title);
-            builder.setPositiveButton(R.string.contact_editor_add_linked_contact,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mShouldFinishActivity = false;
-                            final Intent intent = new Intent(getActivity(),
-                                    ContactSelectionActivity.class);
-                            intent.setAction(UiIntentActions.PICK_JOIN_CONTACT_ACTION);
-                            intent.putExtra(UiIntentActions.TARGET_CONTACT_ID_EXTRA_KEY,
-                                    metadata.contactId);
-                            getActivity().startActivityForResult(intent, REQUEST_CODE_JOIN);
-                        }
-                    });
-            builder.setNegativeButton(R.string.contact_editor_unlink_contacts,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mShouldFinishActivity = false;
-                            final SplitContactConfirmationDialogFragment splitDialog = new
-                                    SplitContactConfirmationDialogFragment();
-                            splitDialog.show(getActivity().getFragmentManager(),
-                                    SplitContactConfirmationDialogFragment.TAG);
-                        }
-                    });
+            // Only provide link editing options for non-user profile contacts.
+            if (!metadata.isUserProfile) {
+                builder.setPositiveButton(R.string.contact_editor_add_linked_contact,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mShouldFinishActivity = false;
+                                final Intent intent = new Intent(getActivity(),
+                                        ContactSelectionActivity.class);
+                                intent.setAction(UiIntentActions.PICK_JOIN_CONTACT_ACTION);
+                                intent.putExtra(UiIntentActions.TARGET_CONTACT_ID_EXTRA_KEY,
+                                        metadata.contactId);
+                                getActivity().startActivityForResult(intent, REQUEST_CODE_JOIN);
+                            }
+                        });
+                builder.setNegativeButton(R.string.contact_editor_unlink_contacts,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mShouldFinishActivity = false;
+                                final SplitContactConfirmationDialogFragment splitDialog = new
+                                        SplitContactConfirmationDialogFragment();
+                                splitDialog.show(getActivity().getFragmentManager(),
+                                        SplitContactConfirmationDialogFragment.TAG);
+                            }
+                        });
+            }
         } else {
             builder.setTitle(R.string.contact_editor_pick_raw_contact_to_edit_dialog_title);
         }

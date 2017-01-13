@@ -13,8 +13,8 @@ import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.Profile;
 import android.provider.ContactsContract.RawContacts;
 
-import com.android.contacts.common.model.AccountTypeManager;
-import com.android.contacts.common.model.account.AccountType;
+import com.android.contacts.model.AccountTypeManager;
+import com.android.contacts.model.account.AccountType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,6 +96,11 @@ public class PickRawContactLoader extends
                 new String[] {Long.toString(result.contactId)}, null);
 
         if (rawContactCursor == null) {
+            return null;
+        }
+
+        if (rawContactCursor.getCount() < 1) {
+            rawContactCursor.close();
             return null;
         }
 

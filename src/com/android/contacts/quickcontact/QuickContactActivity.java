@@ -74,6 +74,7 @@ import android.provider.ContactsContract.RawContacts;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.graphics.Palette;
 import android.telecom.PhoneAccount;
 import android.telecom.TelecomManager;
@@ -96,60 +97,24 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.android.contacts.CallUtil;
+import com.android.contacts.ClipboardUtils;
+import com.android.contacts.Collapser;
 import com.android.contacts.ContactSaveService;
 import com.android.contacts.ContactsActivity;
+import com.android.contacts.ContactsUtils;
 import com.android.contacts.DynamicShortcuts;
 import com.android.contacts.NfcHandler;
 import com.android.contacts.R;
 import com.android.contacts.activities.ContactEditorActivity;
 import com.android.contacts.activities.ContactSelectionActivity;
-import com.android.contacts.common.CallUtil;
-import com.android.contacts.common.ClipboardUtils;
-import com.android.contacts.common.Collapser;
-import com.android.contacts.common.ContactsUtils;
-import com.android.contacts.common.activity.RequestDesiredPermissionsActivity;
-import com.android.contacts.common.activity.RequestPermissionsActivity;
-import com.android.contacts.common.compat.CompatUtils;
-import com.android.contacts.common.compat.EventCompat;
-import com.android.contacts.common.compat.MultiWindowCompat;
-import com.android.contacts.common.dialog.CallSubjectDialog;
-import com.android.contacts.common.interactions.TouchPointManager;
-import com.android.contacts.common.lettertiles.LetterTileDrawable;
-import com.android.contacts.common.list.ShortcutIntentBuilder;
-import com.android.contacts.common.list.ShortcutIntentBuilder.OnShortcutIntentCreatedListener;
-import com.android.contacts.common.logging.Logger;
-import com.android.contacts.common.logging.QuickContactEvent.ActionType;
-import com.android.contacts.common.logging.QuickContactEvent.CardType;
-import com.android.contacts.common.logging.QuickContactEvent.ContactType;
-import com.android.contacts.common.logging.ScreenEvent.ScreenType;
-import com.android.contacts.common.model.AccountTypeManager;
-import com.android.contacts.common.model.Contact;
-import com.android.contacts.common.model.ContactLoader;
-import com.android.contacts.common.model.RawContact;
-import com.android.contacts.common.model.account.AccountType;
-import com.android.contacts.common.model.dataitem.CustomDataItem;
-import com.android.contacts.common.model.dataitem.DataItem;
-import com.android.contacts.common.model.dataitem.DataKind;
-import com.android.contacts.common.model.dataitem.EmailDataItem;
-import com.android.contacts.common.model.dataitem.EventDataItem;
-import com.android.contacts.common.model.dataitem.ImDataItem;
-import com.android.contacts.common.model.dataitem.NicknameDataItem;
-import com.android.contacts.common.model.dataitem.NoteDataItem;
-import com.android.contacts.common.model.dataitem.OrganizationDataItem;
-import com.android.contacts.common.model.dataitem.PhoneDataItem;
-import com.android.contacts.common.model.dataitem.RelationDataItem;
-import com.android.contacts.common.model.dataitem.SipAddressDataItem;
-import com.android.contacts.common.model.dataitem.StructuredNameDataItem;
-import com.android.contacts.common.model.dataitem.StructuredPostalDataItem;
-import com.android.contacts.common.model.dataitem.WebsiteDataItem;
-import com.android.contacts.common.util.DateUtils;
-import com.android.contacts.common.util.ImplicitIntentsUtil;
-import com.android.contacts.common.util.MaterialColorMapUtils;
-import com.android.contacts.common.util.MaterialColorMapUtils.MaterialPalette;
-import com.android.contacts.common.util.PermissionsUtil;
-import com.android.contacts.common.util.UriUtils;
-import com.android.contacts.common.util.ViewUtil;
+import com.android.contacts.activities.RequestDesiredPermissionsActivity;
+import com.android.contacts.activities.RequestPermissionsActivity;
+import com.android.contacts.compat.CompatUtils;
+import com.android.contacts.compat.EventCompat;
+import com.android.contacts.compat.MultiWindowCompat;
 import com.android.contacts.detail.ContactDisplayUtils;
+import com.android.contacts.dialog.CallSubjectDialog;
 import com.android.contacts.editor.ContactEditorFragment;
 import com.android.contacts.editor.EditorIntents;
 import com.android.contacts.editor.EditorUiUtils;
@@ -158,17 +123,53 @@ import com.android.contacts.interactions.CallLogInteractionsLoader;
 import com.android.contacts.interactions.ContactDeletionInteraction;
 import com.android.contacts.interactions.ContactInteraction;
 import com.android.contacts.interactions.SmsInteractionsLoader;
+import com.android.contacts.interactions.TouchPointManager;
+import com.android.contacts.lettertiles.LetterTileDrawable;
+import com.android.contacts.list.ShortcutIntentBuilder;
+import com.android.contacts.list.ShortcutIntentBuilder.OnShortcutIntentCreatedListener;
 import com.android.contacts.list.UiIntentActions;
+import com.android.contacts.logging.Logger;
+import com.android.contacts.logging.QuickContactEvent.ActionType;
+import com.android.contacts.logging.QuickContactEvent.CardType;
+import com.android.contacts.logging.QuickContactEvent.ContactType;
+import com.android.contacts.logging.ScreenEvent.ScreenType;
+import com.android.contacts.model.AccountTypeManager;
+import com.android.contacts.model.Contact;
+import com.android.contacts.model.ContactLoader;
+import com.android.contacts.model.RawContact;
+import com.android.contacts.model.account.AccountType;
+import com.android.contacts.model.dataitem.CustomDataItem;
+import com.android.contacts.model.dataitem.DataItem;
+import com.android.contacts.model.dataitem.DataKind;
+import com.android.contacts.model.dataitem.EmailDataItem;
+import com.android.contacts.model.dataitem.EventDataItem;
+import com.android.contacts.model.dataitem.ImDataItem;
+import com.android.contacts.model.dataitem.NicknameDataItem;
+import com.android.contacts.model.dataitem.NoteDataItem;
+import com.android.contacts.model.dataitem.OrganizationDataItem;
+import com.android.contacts.model.dataitem.PhoneDataItem;
+import com.android.contacts.model.dataitem.RelationDataItem;
+import com.android.contacts.model.dataitem.SipAddressDataItem;
+import com.android.contacts.model.dataitem.StructuredNameDataItem;
+import com.android.contacts.model.dataitem.StructuredPostalDataItem;
+import com.android.contacts.model.dataitem.WebsiteDataItem;
 import com.android.contacts.quickcontact.ExpandingEntryCardView.Entry;
 import com.android.contacts.quickcontact.ExpandingEntryCardView.EntryContextMenuInfo;
 import com.android.contacts.quickcontact.ExpandingEntryCardView.EntryTag;
 import com.android.contacts.quickcontact.ExpandingEntryCardView.ExpandingEntryCardViewListener;
 import com.android.contacts.quickcontact.WebAddress.ParseException;
+import com.android.contacts.util.DateUtils;
 import com.android.contacts.util.ImageViewDrawableSetter;
+import com.android.contacts.util.ImplicitIntentsUtil;
+import com.android.contacts.util.MaterialColorMapUtils;
+import com.android.contacts.util.MaterialColorMapUtils.MaterialPalette;
+import com.android.contacts.util.PermissionsUtil;
 import com.android.contacts.util.PhoneCapabilityTester;
 import com.android.contacts.util.SchedulingUtils;
 import com.android.contacts.util.SharedPreferenceUtil;
 import com.android.contacts.util.StructuredPostalUtils;
+import com.android.contacts.util.UriUtils;
+import com.android.contacts.util.ViewUtil;
 import com.android.contacts.widget.MultiShrinkScroller;
 import com.android.contacts.widget.MultiShrinkScroller.MultiShrinkScrollerListener;
 import com.android.contacts.widget.QuickContactImageView;
@@ -1374,8 +1375,8 @@ public class QuickContactActivity extends ContactsActivity {
      * When contact is a SIM contact, only shows "Add phone number".
      */
     private void initializeNoContactDetailCard(boolean areAllRawContactsSimAccounts) {
-        final Drawable phoneIcon = getResources().getDrawable(
-                R.drawable.ic_phone_24dp).mutate();
+        final Drawable phoneIcon = ResourcesCompat.getDrawable(getResources(),
+                R.drawable.quantum_ic_phone_vd_theme_24, null).mutate();
         final Entry phonePromptEntry = new Entry(CARD_ENTRY_ID_EDIT_CONTACT,
                 phoneIcon, getString(R.string.quickcontact_add_phone_number),
                 /* subHeader = */ null, /* subHeaderIcon = */ null, /* text = */ null,
@@ -1388,15 +1389,15 @@ public class QuickContactActivity extends ContactsActivity {
                 /* thirdContentDescription = */ null,
                 /* thirdAction = */ Entry.ACTION_NONE,
                 /* thirdExtras = */ null,
-                R.drawable.ic_phone_24dp);
+                R.drawable.quantum_ic_phone_vd_theme_24);
 
         final List<List<Entry>> promptEntries = new ArrayList<>();
         promptEntries.add(new ArrayList<Entry>(1));
         promptEntries.get(0).add(phonePromptEntry);
 
         if (!areAllRawContactsSimAccounts) {
-            final Drawable emailIcon = getResources().getDrawable(
-                    R.drawable.ic_email_24dp).mutate();
+            final Drawable emailIcon = ResourcesCompat.getDrawable(getResources(),
+                    R.drawable.quantum_ic_email_vd_theme_24, null).mutate();
             final Entry emailPromptEntry = new Entry(CARD_ENTRY_ID_EDIT_CONTACT,
                     emailIcon, getString(R.string.quickcontact_add_email), /* subHeader = */ null,
                     /* subHeaderIcon = */ null,
@@ -1407,7 +1408,7 @@ public class QuickContactActivity extends ContactsActivity {
                     /* EntryContextMenuInfo = */ null, /* thirdIcon = */ null,
                     /* thirdIntent = */ null, /* thirdContentDescription = */ null,
                     /* thirdAction = */ Entry.ACTION_NONE, /* thirdExtras = */ null,
-                    R.drawable.ic_email_24dp);
+                    R.drawable.quantum_ic_email_vd_theme_24);
 
             promptEntries.add(new ArrayList<Entry>(1));
             promptEntries.get(1).add(emailPromptEntry);
@@ -1723,10 +1724,10 @@ public class QuickContactActivity extends ContactsActivity {
                     }
                 }
                 primaryContentDescription.append(header);
-                phoneContentDescription = com.android.contacts.common.util.ContactDisplayUtils
+                phoneContentDescription = com.android.contacts.util.ContactDisplayUtils
                         .getTelephoneTtsSpannable(primaryContentDescription.toString(), header);
-                icon = res.getDrawable(R.drawable.ic_phone_24dp);
-                iconResourceId = R.drawable.ic_phone_24dp;
+                iconResourceId = R.drawable.quantum_ic_phone_vd_theme_24;
+                icon = res.getDrawable(iconResourceId);
                 if (PhoneCapabilityTester.isPhone(context)) {
                     intent = CallUtil.getCallIntent(phone.getNumber());
                     intent.putExtra(EXTRA_ACTION_TYPE, ActionType.CALL);
@@ -1735,9 +1736,9 @@ public class QuickContactActivity extends ContactsActivity {
                         Uri.fromParts(ContactsUtils.SCHEME_SMSTO, phone.getNumber(), null));
                 alternateIntent.putExtra(EXTRA_ACTION_TYPE, ActionType.SMS);
 
-                alternateIcon = res.getDrawable(R.drawable.ic_message_24dp_mirrored);
+                alternateIcon = res.getDrawable(R.drawable.quantum_ic_message_vd_theme_24);
                 alternateContentDescription.append(res.getString(R.string.sms_custom, header));
-                smsContentDescription = com.android.contacts.common.util.ContactDisplayUtils
+                smsContentDescription = com.android.contacts.util.ContactDisplayUtils
                         .getTelephoneTtsSpannable(alternateContentDescription.toString(), header);
 
                 int videoCapability = CallUtil.getVideoCallingAvailability(context);
@@ -1746,7 +1747,7 @@ public class QuickContactActivity extends ContactsActivity {
                 boolean isVideoEnabled = (videoCapability & CallUtil.VIDEO_CALLING_ENABLED) != 0;
 
                 if (CallUtil.isCallWithSubjectSupported(context)) {
-                    thirdIcon = res.getDrawable(R.drawable.ic_call_note_white_24dp);
+                    thirdIcon = res.getDrawable(R.drawable.quantum_ic_perm_phone_msg_vd_theme_24);
                     thirdAction = Entry.ACTION_CALL_WITH_SUBJECT;
                     thirdContentDescription =
                             res.getString(R.string.call_with_a_note);
@@ -1773,7 +1774,7 @@ public class QuickContactActivity extends ContactsActivity {
                     boolean isPresent = (carrierPresence & Phone.CARRIER_PRESENCE_VT_CAPABLE) != 0;
 
                     if ((isPresenceEnabled && isPresent) || !isPresenceEnabled) {
-                        thirdIcon = res.getDrawable(R.drawable.ic_videocam);
+                        thirdIcon = res.getDrawable(R.drawable.quantum_ic_videocam_vd_theme_24);
                         thirdAction = Entry.ACTION_INTENT;
                         thirdIntent = CallUtil.getVideoCallIntent(phone.getNumber(),
                                 CALL_ORIGIN_QUICK_CONTACTS_ACTIVITY);
@@ -1801,8 +1802,8 @@ public class QuickContactActivity extends ContactsActivity {
                     primaryContentDescription.append(text).append(" ");
                 }
                 primaryContentDescription.append(header);
-                icon = res.getDrawable(R.drawable.ic_email_24dp);
-                iconResourceId = R.drawable.ic_email_24dp;
+                iconResourceId = R.drawable.quantum_ic_email_vd_theme_24;
+                icon = res.getDrawable(iconResourceId);
             }
         } else if (dataItem instanceof StructuredPostalDataItem) {
             StructuredPostalDataItem postal = (StructuredPostalDataItem) dataItem;
@@ -1824,11 +1825,11 @@ public class QuickContactActivity extends ContactsActivity {
                 alternateIntent =
                         StructuredPostalUtils.getViewPostalAddressDirectionsIntent(postalAddress);
                 alternateIntent.putExtra(EXTRA_ACTION_TYPE, ActionType.DIRECTIONS);
-                alternateIcon = res.getDrawable(R.drawable.ic_directions_24dp);
+                alternateIcon = res.getDrawable(R.drawable.quantum_ic_directions_vd_theme_24);
                 alternateContentDescription.append(res.getString(
                         R.string.content_description_directions)).append(" ").append(header);
-                icon = res.getDrawable(R.drawable.ic_place_24dp);
-                iconResourceId = R.drawable.ic_place_24dp;
+                iconResourceId = R.drawable.quantum_ic_place_vd_theme_24;
+                icon = res.getDrawable(iconResourceId);
             }
         } else if (dataItem instanceof SipAddressDataItem) {
             final SipAddressDataItem sip = (SipAddressDataItem) dataItem;
@@ -1851,8 +1852,8 @@ public class QuickContactActivity extends ContactsActivity {
                     primaryContentDescription.append(text).append(" ");
                 }
                 primaryContentDescription.append(header);
-                icon = res.getDrawable(R.drawable.ic_dialer_sip_black_24dp);
-                iconResourceId = R.drawable.ic_dialer_sip_black_24dp;
+                iconResourceId = R.drawable.quantum_ic_dialer_sip_vd_theme_24;
+                icon = res.getDrawable(iconResourceId);
             }
         } else if (dataItem instanceof StructuredNameDataItem) {
             // If the name is already set and this is not the super primary value then leave the
@@ -1885,8 +1886,9 @@ public class QuickContactActivity extends ContactsActivity {
                     // If a secondDataItem is available, use it to build an entry with
                     // alternate actions
                     if (secondDataItem != null) {
-                        icon = res.getDrawable(R.drawable.ic_hangout_24dp);
-                        alternateIcon = res.getDrawable(R.drawable.ic_hangout_video_24dp);
+                        icon = res.getDrawable(R.drawable.quantum_ic_hangout_vd_theme_24);
+                        alternateIcon = res.getDrawable(
+                                R.drawable.quantum_ic_hangout_video_vd_theme_24);
                         final HangoutsDataItemModel itemModel =
                                 new HangoutsDataItemModel(intent, alternateIntent,
                                         dataItem, secondDataItem, alternateContentDescription,
@@ -1900,9 +1902,9 @@ public class QuickContactActivity extends ContactsActivity {
                         text = itemModel.text;
                     } else {
                         if (HANGOUTS_DATA_5_VIDEO.equals(intent.getDataString())) {
-                            icon = res.getDrawable(R.drawable.ic_hangout_video_24dp);
+                            icon = res.getDrawable(R.drawable.quantum_ic_hangout_video_vd_theme_24);
                         } else {
-                            icon = res.getDrawable(R.drawable.ic_hangout_24dp);
+                            icon = res.getDrawable(R.drawable.quantum_ic_hangout_vd_theme_24);
                         }
                     }
                 } else {
@@ -2318,8 +2320,8 @@ public class QuickContactActivity extends ContactsActivity {
             // Load all contact data. We need loadGroupMetaData=true to determine whether the
             // contact is invisible. If it is, we need to display an "Add to Contacts" MenuItem.
             return new ContactLoader(getApplicationContext(), mLookupUri,
-                    true /*loadGroupMetaData*/, false /*loadInvitableAccountTypes*/,
-                    true /*postViewNotification*/, true /*computeFormattedPhoneNumber*/);
+                    true /*loadGroupMetaData*/, true /*postViewNotification*/,
+                    true /*computeFormattedPhoneNumber*/);
         }
     };
 
@@ -2480,8 +2482,8 @@ public class QuickContactActivity extends ContactsActivity {
                 Trace.endSection();
                 Trace.beginSection("initialize permission explanation card");
 
-                final Drawable historyIcon = VectorDrawableCompat.create(
-                        getResources(), R.drawable.ic_history_24dp, null);
+                final Drawable historyIcon = ResourcesCompat.getDrawable(getResources(),
+                        R.drawable.quantum_ic_history_vd_theme_24, null);
 
                 final Entry permissionExplanationEntry = new Entry(CARD_ENTRY_ID_REQUEST_PERMISSION,
                         historyIcon, getString(R.string.permission_explanation_header),
@@ -2493,7 +2495,7 @@ public class QuickContactActivity extends ContactsActivity {
                         /* isEditable = */ false, /* EntryContextMenuInfo = */ null,
                         /* thirdIcon = */ null, /* thirdIntent = */ null,
                         /* thirdContentDescription = */ null, /* thirdAction = */ Entry.ACTION_NONE,
-                        /* thirdExtras = */ null, R.drawable.ic_history_24dp);
+                        /* thirdExtras = */ null, R.drawable.quantum_ic_history_vd_theme_24);
 
                 final List<List<Entry>> permissionExplanationEntries = new ArrayList<>();
                 permissionExplanationEntries.add(new ArrayList<Entry>());
@@ -2560,6 +2562,7 @@ public class QuickContactActivity extends ContactsActivity {
 
     @Override
     public void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mListener);
         super.onDestroy();
     }
 
@@ -2704,10 +2707,10 @@ public class QuickContactActivity extends ContactsActivity {
             editMenuItem.setVisible(true);
             if (DirectoryContactUtil.isDirectoryContact(mContactData) || InvisibleContactUtil
                     .isInvisibleAndAddable(mContactData, this)) {
-                editMenuItem.setIcon(R.drawable.ic_person_add_tinted_24dp);
+                editMenuItem.setIcon(R.drawable.quantum_ic_person_add_vd_theme_24);
                 editMenuItem.setTitle(R.string.menu_add_contact);
             } else if (isContactEditable()) {
-                editMenuItem.setIcon(R.drawable.ic_create_24dp);
+                editMenuItem.setIcon(R.drawable.quantum_ic_create_vd_theme_24);
                 editMenuItem.setTitle(R.string.menu_editContact);
             } else {
                 editMenuItem.setVisible(false);
@@ -2755,137 +2758,128 @@ public class QuickContactActivity extends ContactsActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_star:
-                // Make sure there is a contact
-                if (mContactData != null) {
-                    // Read the current starred value from the UI instead of using the last
-                    // loaded state. This allows rapid tapping without writing the same
-                    // value several times
-                    final boolean isStarred = item.isChecked();
-                    Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
-                            isStarred ? ActionType.UNSTAR : ActionType.STAR,
+        final int id = item.getItemId();
+        if (id == R.id.menu_star) {// Make sure there is a contact
+            if (mContactData != null) {
+                // Read the current starred value from the UI instead of using the last
+                // loaded state. This allows rapid tapping without writing the same
+                // value several times
+                final boolean isStarred = item.isChecked();
+                Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
+                        isStarred ? ActionType.UNSTAR : ActionType.STAR,
                             /* thirdPartyAction */ null);
-                    toggleStar(item, isStarred);
-                }
-                return true;
-            case R.id.menu_edit:
-                if (DirectoryContactUtil.isDirectoryContact(mContactData)) {
-                    Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
-                            ActionType.ADD, /* thirdPartyAction */ null);
-
-                    // This action is used to launch the contact selector, with the option of
-                    // creating a new contact. Creating a new contact is an INSERT, while selecting
-                    // an exisiting one is an edit. The fields in the edit screen will be
-                    // prepopulated with data.
-
-                    final Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
-                    intent.setType(Contacts.CONTENT_ITEM_TYPE);
-
-                    ArrayList<ContentValues> values = mContactData.getContentValues();
-
-                    // Only pre-fill the name field if the provided display name is an nickname
-                    // or better (e.g. structured name, nickname)
-                    if (mContactData.getDisplayNameSource() >= DisplayNameSources.NICKNAME) {
-                        intent.putExtra(Intents.Insert.NAME, mContactData.getDisplayName());
-                    } else if (mContactData.getDisplayNameSource()
-                            == DisplayNameSources.ORGANIZATION) {
-                        // This is probably an organization. Instead of copying the organization
-                        // name into a name entry, copy it into the organization entry. This
-                        // way we will still consider the contact an organization.
-                        final ContentValues organization = new ContentValues();
-                        organization.put(Organization.COMPANY, mContactData.getDisplayName());
-                        organization.put(Data.MIMETYPE, Organization.CONTENT_ITEM_TYPE);
-                        values.add(organization);
-                    }
-
-                    // Last time used and times used are aggregated values from the usage stat
-                    // table. They need to be removed from data values so the SQL table can insert
-                    // properly
-                    for (ContentValues value : values) {
-                        value.remove(Data.LAST_TIME_USED);
-                        value.remove(Data.TIMES_USED);
-                    }
-                    intent.putExtra(Intents.Insert.DATA, values);
-
-                    // If the contact can only export to the same account, add it to the intent.
-                    // Otherwise the ContactEditorFragment will show a dialog for selecting
-                    // an account.
-                    if (mContactData.getDirectoryExportSupport() ==
-                            Directory.EXPORT_SUPPORT_SAME_ACCOUNT_ONLY) {
-                        intent.putExtra(Intents.Insert.EXTRA_ACCOUNT,
-                                new Account(mContactData.getDirectoryAccountName(),
-                                        mContactData.getDirectoryAccountType()));
-                        intent.putExtra(Intents.Insert.EXTRA_DATA_SET,
-                                mContactData.getRawContacts().get(0).getDataSet());
-                    }
-
-                    // Add this flag to disable the delete menu option on directory contact joins
-                    // with local contacts. The delete option is ambiguous when joining contacts.
-                    intent.putExtra(
-                            ContactEditorFragment.INTENT_EXTRA_DISABLE_DELETE_MENU_OPTION,
-                            true);
-
-                    intent.setPackage(getPackageName());
-                    startActivityForResult(intent, REQUEST_CODE_CONTACT_SELECTION_ACTIVITY);
-                } else if (InvisibleContactUtil.isInvisibleAndAddable(mContactData, this)) {
-                    Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
-                            ActionType.ADD, /* thirdPartyAction */ null);
-                    InvisibleContactUtil.addToDefaultGroup(mContactData, this);
-                } else if (isContactEditable()) {
-                    Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
-                            ActionType.EDIT, /* thirdPartyAction */ null);
-                    editContact();
-                }
-                return true;
-            case R.id.menu_join:
-                return doJoinContactAction();
-            case R.id.menu_linked_contacts:
-                return showRawContactPickerDialog();
-            case R.id.menu_delete:
+                toggleStar(item, isStarred);
+            }
+        } else if (id == R.id.menu_edit) {
+            if (DirectoryContactUtil.isDirectoryContact(mContactData)) {
                 Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
-                        ActionType.REMOVE, /* thirdPartyAction */ null);
-                if (isContactEditable()) {
-                    deleteContact();
+                        ActionType.ADD, /* thirdPartyAction */ null);
+
+                // This action is used to launch the contact selector, with the option of
+                // creating a new contact. Creating a new contact is an INSERT, while selecting
+                // an exisiting one is an edit. The fields in the edit screen will be
+                // prepopulated with data.
+
+                final Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+                intent.setType(Contacts.CONTENT_ITEM_TYPE);
+
+                ArrayList<ContentValues> values = mContactData.getContentValues();
+
+                // Only pre-fill the name field if the provided display name is an nickname
+                // or better (e.g. structured name, nickname)
+                if (mContactData.getDisplayNameSource() >= DisplayNameSources.NICKNAME) {
+                    intent.putExtra(Intents.Insert.NAME, mContactData.getDisplayName());
+                } else if (mContactData.getDisplayNameSource()
+                        == DisplayNameSources.ORGANIZATION) {
+                    // This is probably an organization. Instead of copying the organization
+                    // name into a name entry, copy it into the organization entry. This
+                    // way we will still consider the contact an organization.
+                    final ContentValues organization = new ContentValues();
+                    organization.put(Organization.COMPANY, mContactData.getDisplayName());
+                    organization.put(Data.MIMETYPE, Organization.CONTENT_ITEM_TYPE);
+                    values.add(organization);
                 }
-                return true;
-            case R.id.menu_share:
-                Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
-                        ActionType.SHARE, /* thirdPartyAction */ null);
-                if (isContactShareable()) {
-                    shareContact();
+
+                // Last time used and times used are aggregated values from the usage stat
+                // table. They need to be removed from data values so the SQL table can insert
+                // properly
+                for (ContentValues value : values) {
+                    value.remove(Data.LAST_TIME_USED);
+                    value.remove(Data.TIMES_USED);
                 }
-                return true;
-            case R.id.menu_create_contact_shortcut:
-                Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
-                        ActionType.SHORTCUT, /* thirdPartyAction */ null);
-                if (isShortcutCreatable()) {
-                    createLauncherShortcutWithContact();
+                intent.putExtra(Intents.Insert.DATA, values);
+
+                // If the contact can only export to the same account, add it to the intent.
+                // Otherwise the ContactEditorFragment will show a dialog for selecting
+                // an account.
+                if (mContactData.getDirectoryExportSupport() ==
+                        Directory.EXPORT_SUPPORT_SAME_ACCOUNT_ONLY) {
+                    intent.putExtra(Intents.Insert.EXTRA_ACCOUNT,
+                            new Account(mContactData.getDirectoryAccountName(),
+                                    mContactData.getDirectoryAccountType()));
+                    intent.putExtra(Intents.Insert.EXTRA_DATA_SET,
+                            mContactData.getRawContacts().get(0).getDataSet());
                 }
-                return true;
-            case R.id.menu_set_ringtone:
-                doPickRingtone();
-                return true;
-            case R.id.menu_send_to_voicemail:
-                // Update state and save
-                mSendToVoicemailState = !mSendToVoicemailState;
-                item.setTitle(mSendToVoicemailState
-                        ? R.string.menu_unredirect_calls_to_vm
-                        : R.string.menu_redirect_calls_to_vm);
-                final Intent intent = ContactSaveService.createSetSendToVoicemail(
-                        this, mLookupUri, mSendToVoicemailState);
-                this.startService(intent);
-                return true;
-            case R.id.menu_help:
+
+                // Add this flag to disable the delete menu option on directory contact joins
+                // with local contacts. The delete option is ambiguous when joining contacts.
+                intent.putExtra(
+                        ContactEditorFragment.INTENT_EXTRA_DISABLE_DELETE_MENU_OPTION,
+                        true);
+
+                intent.setPackage(getPackageName());
+                startActivityForResult(intent, REQUEST_CODE_CONTACT_SELECTION_ACTIVITY);
+            } else if (InvisibleContactUtil.isInvisibleAndAddable(mContactData, this)) {
                 Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
-                        ActionType.HELP, /* thirdPartyAction */ null);
-                HelpUtils.launchHelpAndFeedbackForContactScreen(this);
-                return true;
-            default:
+                        ActionType.ADD, /* thirdPartyAction */ null);
+                InvisibleContactUtil.addToDefaultGroup(mContactData, this);
+            } else if (isContactEditable()) {
                 Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
-                        ActionType.UNKNOWN_ACTION, /* thirdPartyAction */ null);
-                return super.onOptionsItemSelected(item);
+                        ActionType.EDIT, /* thirdPartyAction */ null);
+                editContact();
+            }
+        } else if (id == R.id.menu_join) {
+            return doJoinContactAction();
+        } else if (id == R.id.menu_linked_contacts) {
+            return showRawContactPickerDialog();
+        } else if (id == R.id.menu_delete) {
+            Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
+                    ActionType.REMOVE, /* thirdPartyAction */ null);
+            if (isContactEditable()) {
+                deleteContact();
+            }
+        } else if (id == R.id.menu_share) {
+            Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
+                    ActionType.SHARE, /* thirdPartyAction */ null);
+            if (isContactShareable()) {
+                shareContact();
+            }
+        } else if (id == R.id.menu_create_contact_shortcut) {
+            Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
+                    ActionType.SHORTCUT, /* thirdPartyAction */ null);
+            if (isShortcutCreatable()) {
+                createLauncherShortcutWithContact();
+            }
+        } else if (id == R.id.menu_set_ringtone) {
+            doPickRingtone();
+        } else if (id == R.id.menu_send_to_voicemail) {// Update state and save
+            mSendToVoicemailState = !mSendToVoicemailState;
+            item.setTitle(mSendToVoicemailState
+                    ? R.string.menu_unredirect_calls_to_vm
+                    : R.string.menu_redirect_calls_to_vm);
+            final Intent intent = ContactSaveService.createSetSendToVoicemail(
+                    this, mLookupUri, mSendToVoicemailState);
+            this.startService(intent);
+        } else if (id == R.id.menu_help) {
+            Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
+                    ActionType.HELP, /* thirdPartyAction */ null);
+            HelpUtils.launchHelpAndFeedbackForContactScreen(this);
+        } else {
+            Logger.logQuickContactEvent(mReferrer, mContactType, CardType.UNKNOWN_CARD,
+                    ActionType.UNKNOWN_ACTION, /* thirdPartyAction */ null);
+            return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     private boolean showRawContactPickerDialog() {

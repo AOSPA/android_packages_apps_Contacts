@@ -18,31 +18,24 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="applicationLabel" msgid="3906689777043645443">"Байланыштар"</string>
     <string name="contactsList" msgid="8661624236494819731">"Байланыштар"</string>
+    <string name="shortcut_add_contact" msgid="7476283631356909204">"Байланыш кошуу"</string>
     <string name="shortcutContact" msgid="749243779392912958">"Байланыш"</string>
     <string name="shortcutDialContact" msgid="746622101599186779">"Түз чалуу"</string>
     <string name="shortcutMessageContact" msgid="2460337253595976198">"Түз SMS"</string>
-    <string name="shortcutActivityTitle" msgid="6642877210643565436">"Ыкчам чалуу үчүн байланыш тандаңыз"</string>
-    <string name="callShortcutActivityTitle" msgid="6065749861423648991">"Чалуу үчүн номер тандаңыз"</string>
-    <string name="messageShortcutActivityTitle" msgid="3084542316620335911">"Билдирүү жөнөтүлө турган номерди тандоо"</string>
+    <string name="shortcutActivityTitle" msgid="1504383567778497348">"Байланышты тандоо"</string>
     <string name="contactInsertOrEditActivityTitle" msgid="6527505405325862674">"Байланышка кошуу"</string>
     <string name="contactPickerActivityTitle" msgid="4301062192337417640">"Байланыш тандоо"</string>
     <string name="groupMemberPickerActivityTitle" msgid="1431750793695262522">"Тандоо"</string>
     <string name="header_entry_contact_list_adapter_header_title" msgid="2436981165830115659">"Жаңы байланыш түзүү"</string>
-    <string name="viewContactTitle" msgid="7989394521836644384">"Байланыштын чоо-жайы"</string>
-    <string name="contactDetailAbout" msgid="5430408883907061400">"Байланыш жөнүндө"</string>
-    <string name="contactDetailUpdates" msgid="3780588624763446941">"Жаңыртуулар"</string>
     <string name="searchHint" msgid="8482945356247760701">"Байланыштарды издөө"</string>
-    <string name="menu_viewContact" msgid="2795575601596468581">"Байланышты карап көрүү"</string>
     <string name="menu_addStar" msgid="2908478235715404876">"Сүйүктүүлөргө кошуу"</string>
     <string name="menu_removeStar" msgid="5844227078364227030">"Сүйүктүүлөрдөн алып салуу"</string>
     <string name="description_action_menu_remove_star" msgid="4699640108012265178">"Сүйүктүүлөрдөн чыгарылды"</string>
     <string name="description_action_menu_add_star" msgid="3327186327234177456">"Сүйүктүүлөргө кошулду"</string>
     <string name="menu_editContact" msgid="9042415603857662633">"Өзгөртүү"</string>
     <string name="menu_deleteContact" msgid="6788644058868189393">"Жок кылуу"</string>
-    <string name="menu_change_photo" msgid="7769177631511496210">"Сүрөт өзгөртүү"</string>
-    <string name="menu_create_contact_shortcut" msgid="1663022219127343858">"Шилтемени түзүү"</string>
-    <string name="menu_call" msgid="3992595586042260618">"Байланышка чалуу"</string>
-    <string name="menu_sendSMS" msgid="5535886767547006515">"Байланышка SMS жазуу"</string>
+    <string name="menu_change_photo" msgid="7769177631511496210">"Сүрөттү өзгөртүү"</string>
+    <string name="menu_create_contact_shortcut" msgid="1663022219127343858">"Шилтеме түзүү"</string>
     <string name="menu_splitAggregate" msgid="2627252205317945563">"Ажыратуу"</string>
     <string name="menu_editGroup" msgid="6696843438454341063">"Байланыштарды алып салуу"</string>
     <string name="menu_renameGroup" msgid="7169512355179757182">"Энбелгинин аталышын өзгөртүү"</string>
@@ -51,9 +44,8 @@
     <string name="menu_selectForGroup" msgid="3999234528229376098">"Байланыштарды тандоо"</string>
     <string name="menu_addContactsToGroup" msgid="655196688840626483">"Байланыштарды кошуу"</string>
     <string name="menu_removeFromGroup" msgid="6720354305399961978">"Энбелгиден алып салуу"</string>
-    <string name="menu_new_contact_action_bar" msgid="7371001434034419566">"Байланыш кошуу"</string>
-    <string name="menu_new_group_action_bar" msgid="8726987769872493051">"Жаңысын түзүү..."</string>
-    <string name="splitConfirmation" msgid="7342030840130187290">"Бул байланыш бир нече байланышка ажыратылсынбы?"</string>
+    <string name="menu_new_group_action_bar" msgid="3127059073617415221">"Энбелги түзүү"</string>
+    <string name="splitConfirmation" msgid="7342030840130187290">"Бул байланыш ажыратылсынбы?"</string>
     <string name="splitConfirmation_positive_button" msgid="9129409098807939699">"Ажыратуу"</string>
     <string name="splitConfirmationWithPendingChanges" msgid="7719062163511895696">"Сиз киргизген өзгөртүүлөрдү сактап, бул байланышты бир нече байланышка ажыраткыңыз келеби?"</string>
     <string name="splitConfirmationWithPendingChanges_positive_button" msgid="9073444264887244032">"Сактоо жана ажыратуу"</string>
@@ -61,20 +53,18 @@
     <string name="joinConfirmation_positive_button" msgid="4573092849769149516">"Сактоо жана бириктирүү"</string>
     <string name="contacts_linking_progress_bar" msgid="2846494347384549277">"Байланыштар бириктирилүүдө"</string>
     <string name="contacts_unlinking_progress_bar" msgid="5989310198163726929">"Байланыштар ажыратылууда"</string>
-    <string name="menu_joinAggregate" msgid="3599512127797513606">"Шилтемелөө"</string>
-    <string name="menu_linkedContacts" msgid="400444389718855621">"Шилтемеленген байланыштарды көрүү"</string>
+    <string name="menu_joinAggregate" msgid="3599512127797513606">"Байланыштыруу"</string>
+    <string name="menu_linkedContacts" msgid="400444389718855621">"Бириктирилген байланыштарды көрүү"</string>
     <string name="menu_save" msgid="1727844363591825909">"Сактоо"</string>
     <string name="titleJoinContactDataWith" msgid="6825255752748313944">"Байланыштрд бириктрүү"</string>
     <string name="blurbJoinContactDataWith" msgid="5864256698061641841">"<xliff:g id="NAME">%s</xliff:g> менен бириктириле турган байланышты тандаңыз."</string>
-    <string name="showAllContactsJoinItem" msgid="2189695051430392383">"Бардык байланыштарды көрсөтүү"</string>
     <string name="separatorJoinAggregateSuggestions" msgid="2831414448851313345">"Сунушталган байланыштар"</string>
     <string name="separatorJoinAggregateAll" msgid="7939932265026181043">"Бардык байланыштар"</string>
     <string name="contactsJoinedNamedMessage" msgid="1299418263439579455">"<xliff:g id="NAME">%s</xliff:g> байланыштырылды"</string>
     <string name="contactsJoinedMessage" msgid="3343535986195643136">"Байланыштар шилтемеленди"</string>
     <string name="contacts_deleted_one_named_toast" msgid="2252551736301363193">"<xliff:g id="NAME">%1$s</xliff:g> жок кылынды"</string>
     <string name="contacts_deleted_two_named_toast" msgid="3642082931473111791">"<xliff:g id="NAME_0">%1$s</xliff:g> жана <xliff:g id="NAME_1">%2$s</xliff:g> жок кылынды"</string>
-    <!-- no translation found for contacts_deleted_many_named_toast (7731565342428031249) -->
-    <skip />
+    <string name="contacts_deleted_many_named_toast" msgid="7731565342428031249">"<xliff:g id="NAME_0">%1$s</xliff:g>, <xliff:g id="NAME_1">%2$s</xliff:g>, <xliff:g id="NAME_2">%3$s</xliff:g>… жок кылынды"</string>
     <plurals name="contacts_deleted_toast" formatted="false" msgid="1477708624197262295">
       <item quantity="other">Байланыштар жок кылынды</item>
       <item quantity="one">Байланыш жок кылынды</item>
@@ -84,12 +74,12 @@
       <item quantity="one"><xliff:g id="COUNT_0">%d</xliff:g> байланыш</item>
     </plurals>
     <plurals name="contacts_count_with_account" formatted="false" msgid="7402583111980220575">
-      <item quantity="other"><xliff:g id="COUNT_2">%d</xliff:g> байланыш · <xliff:g id="ACCOUNT_3">%s</xliff:g></item>
-      <item quantity="one"><xliff:g id="COUNT_0">%d</xliff:g> байланыш · <xliff:g id="ACCOUNT_1">%s</xliff:g></item>
+      <item quantity="other"><xliff:g id="COUNT_2">%1$d</xliff:g> байланыш · <xliff:g id="ACCOUNT_3">%2$s</xliff:g></item>
+      <item quantity="one"><xliff:g id="COUNT_0">%1$d</xliff:g> байланыш · <xliff:g id="ACCOUNT_1">%2$s</xliff:g></item>
     </plurals>
     <string name="title_from_google" msgid="4664084747121207202">"Google каттоо эсебинен"</string>
     <string name="title_from_other_accounts" msgid="8307885412426754288">"<xliff:g id="ACCOUNT">%s</xliff:g> каттоо эсбнен"</string>
-    <string name="menu_set_ring_tone" msgid="8728345772068064946">"Рингтон коюу"</string>
+    <string name="menu_set_ring_tone" msgid="8728345772068064946">"Шыңгыр коюу"</string>
     <string name="menu_redirect_calls_to_vm" msgid="83331924006712755">"Үн почтасына которуу"</string>
     <string name="menu_unredirect_calls_to_vm" msgid="8725542534701811737">"Үн почтасын өчүрүү"</string>
     <string name="readOnlyContactWarning" msgid="7514475664695089411">"Бул байланыш окуу үчүн гана арналган. Аны жок кылуу мүмкүн эмес, бирок аны жашырып койсо болот."</string>
@@ -99,24 +89,18 @@
     <string name="batch_delete_confirmation" msgid="3984346060324014108">"Тандалган байланыштар жок кылынсынбы?"</string>
     <string name="batch_delete_read_only_contact_confirmation" msgid="8411117621035639964">"Окуу үчүн гана арналган каттоо эсебиңизден байланыштарды жок кылуу мүмкүн эмес, бирок аларды жашырып койсо болот."</string>
     <string name="batch_delete_multiple_accounts_confirmation" msgid="8207205649127030030">"Жок кылына турган байланыштарда бир нече каттоо эсебинин чоо-жайы бар. Окуу үчүн гана арналган каттоо эсептеринин чоо-жайы жашырылып, жок кылынбайт."</string>
-    <string name="multipleContactDeleteConfirmation" msgid="5235324124905653550">"Бул байланыш жок кылынса, анын чоо-жайы бир нече каттоо эсебинен жок кылынат."</string>
+    <string name="multipleContactDeleteConfirmation" msgid="5235324124905653550">"Бул байланыш жок кылынса, анын бир нече каттоо эсебиндеги чоо-жайы өчүп калат."</string>
     <string name="deleteConfirmation" msgid="3512271779086656043">"Бул байланыш жок кылынсынбы?"</string>
     <string name="deleteConfirmation_positive_button" msgid="7857888845028586365">"Жок кылуу"</string>
-    <string name="menu_discard" msgid="6854657936970228164">"Өзгөрүүлөрдү жарактан чыгаруу"</string>
     <string name="invalidContactMessage" msgid="8215051456181842274">"Мындай байланыш жок."</string>
     <string name="createContactShortcutSuccessful_NoName" msgid="8831303345367275472">"Байланыш башкы экранга кошулду."</string>
     <string name="createContactShortcutSuccessful" msgid="953651153238790069">"<xliff:g id="NAME">%s</xliff:g> Башкы экранга кошулду."</string>
-    <string name="pickerNewContactHeader" msgid="7750705279843568147">"Жаңы байланыш түзүү"</string>
-    <string name="pickerNewContactText" msgid="6166997164401048211">"Жаңы байланыш түзүү"</string>
     <string name="photoPickerNotFoundText" product="tablet" msgid="6247290728908599701">"Планшетте эч кандай сүрөт жок."</string>
     <string name="photoPickerNotFoundText" product="default" msgid="431331662154342581">"Телефондо эч кандай сүрөт жок."</string>
     <string name="attach_photo_dialog_title" msgid="5599827035558557169">"Байланыштын сүрөтү"</string>
     <string name="customLabelPickerTitle" msgid="1081475101983255212">"Ыңгайлаштырылган энбелгинин аталышы"</string>
-    <string name="send_to_voicemail_checkbox" msgid="9001686764070676353">"Үн почтасына түздөн-түз чалуу"</string>
     <string name="removePhoto" msgid="4898105274130284565">"Сүрөттү алып салуу"</string>
     <string name="noContacts" msgid="2228592924476426108">"Байланыштар тизмеңиз бош"</string>
-    <string name="noGroups" msgid="4607906327968232225">"Эч кандай энбелги жок"</string>
-    <string name="noAccounts" msgid="7768267764545265909">"Топторду түзүш үчүн эсеп керек."</string>
     <string name="emptyGroup" msgid="5102411903247859575">"Бул энбелги коюлган бир дагы байланыш жок"</string>
     <string name="emptyAccount" msgid="6873962901497975964">"Бул каттоо эсебинде эч кандай байланыш жок"</string>
     <string name="emptyMainList" msgid="2772242747899664460">"Байланыштар тизмеңиз бош"</string>
@@ -129,44 +113,23 @@
     <string name="contactGenericErrorToast" msgid="3885457515665783976">"Байланышты сактоодогу ката."</string>
     <string name="contactPhotoSavedErrorToast" msgid="6860883564984042194">"Байланыштын сүрөт өзгөрүүлөрү сакталган жок."</string>
     <string name="groupLoadErrorToast" msgid="7536267148196064554">"Энбелги жүктөлгөн жок"</string>
-    <string name="groupSavedToast" msgid="6491495462357722285">"Энбелги сакталды"</string>
     <string name="groupDeletedToast" msgid="520896687873262027">"Энбелги жок кылынды"</string>
     <string name="groupCreatedToast" msgid="1924195126172834870">"Энбелги түзүлдү"</string>
     <string name="groupCreateFailedToast" msgid="4359093891863474299">"Энбелги түзүлгөн жок"</string>
     <string name="groupUpdatedToast" msgid="3667977658676267687">"Энбелги жаңыртылды"</string>
     <string name="groupMembersRemovedToast" msgid="3510563559799376603">"Энбелгиден алынып салынды"</string>
-    <string name="groupMembersAddedToast" msgid="4824834898718972768">"Энге кошулду"</string>
+    <string name="groupMembersAddedToast" msgid="4824834898718972768">"Кошулду"</string>
     <string name="groupSavedErrorToast" msgid="2355891714292740162">"Энбелгинин өзгөрүүлөрүн сактай алган жок."</string>
-    <string name="groupExistsErrorMessage" msgid="5196811283836946189">"Ал энбелги мурунтан эле бар"</string>
+    <string name="groupExistsErrorMessage" msgid="5196811283836946189">"Мындай энбелги бар"</string>
     <string name="groupSomeContactsNoEmailsToast" msgid="8211161470235548732">"Айрым байланыштардын электрондук почталары жок."</string>
     <string name="groupSomeContactsNoPhonesToast" msgid="5530760834827530509">"Айрым байланыштардын телефон номерлери жок."</string>
     <string name="menu_sendEmailOption" msgid="5978319931321657780">"Электрондук кат жөнөтүү"</string>
     <string name="menu_sendMessageOption" msgid="8850168125274916426">"Билдирүү жөнөтүү"</string>
     <string name="pickerSelectContactsActivityTitle" msgid="1936544190231136729">"Байланыштарды тандоо"</string>
     <string name="send_to_selection" msgid="2251339182881603540">"Жөнөтүү"</string>
-    <plurals name="listTotalPhoneContacts" formatted="false" msgid="3692277679143308755">
-      <item quantity="other">телефон номерлери менен <xliff:g id="COUNT">%d</xliff:g> байланыш</item>
-      <item quantity="one">телефон номери менен 1 байланыш</item>
-    </plurals>
-    <string name="listTotalPhoneContactsZero" msgid="6968813857632984319">"Телефон номерлери бар байланыштар жок"</string>
-    <plurals name="listFoundAllContacts" formatted="false" msgid="4872115339963093220">
-      <item quantity="other"><xliff:g id="COUNT">%d</xliff:g> табылды</item>
-      <item quantity="one">1 табылды</item>
-    </plurals>
     <string name="listFoundAllContactsZero" msgid="922980883593159444">"Байланыштар жок"</string>
-    <plurals name="searchFoundContacts" formatted="false" msgid="7223023725334884618">
-      <item quantity="other"><xliff:g id="COUNT">%d</xliff:g> табылды</item>
-      <item quantity="one">1 табылды</item>
-    </plurals>
-    <string name="all_contacts_tab_label" msgid="5948889261993124839">"Бардыгы"</string>
-    <string name="callBack" msgid="5498224409038809224">"Кайра чалуу"</string>
-    <string name="callAgain" msgid="3197312117049874778">"Дагы чалуу"</string>
-    <string name="returnCall" msgid="8171961914203617813">"Кайра чалуу"</string>
     <string name="add_contact_dlg_message_fmt" msgid="7986472669444326576">"Байланыштарга \"<xliff:g id="EMAIL">%s</xliff:g>\" кошосузбу?"</string>
-    <string name="description_plus_button" msgid="515164827856229880">"кошуу"</string>
-    <string name="exporting_contact_list_progress" msgid="560522409559101193">"<xliff:g id="TOTAL_NUMBER">%s</xliff:g> байланыштын ичинен <xliff:g id="CURRENT_NUMBER">%s</xliff:g>"</string>
     <string name="search_settings_description" msgid="2675223022992445813">"Байланыштарыңыздын аттары"</string>
-    <string name="quickcontact_missing_app" msgid="358168575340921552">"Бул ишти аткаруучу эч бир колдонмо табылган жок."</string>
     <string name="quickcontact_transparent_view_description" msgid="987959416759562455">"Мурунку экранга кайтуу үчүн чыкылдатыңыз"</string>
     <string name="quickcontact_add_phone_number" msgid="731665835910658965">"Телефон номерин кошуу"</string>
     <string name="quickcontact_add_email" msgid="739298028384348482">"Электрондук почта дарегин кошуу"</string>
@@ -181,61 +144,36 @@
     <string name="dialog_new_group_account" msgid="3451312333591556651">"Каттоо эсебин тандоо"</string>
     <string name="group_name_dialog_insert_title" msgid="2668452090427027941">"Энбелги түзүү"</string>
     <string name="group_name_dialog_update_title" msgid="6328021162869677383">"Энбелгинин аталышын өзгөртүү"</string>
-    <string name="group_name_dialog_hint" msgid="5122118085780669813">"Энбелги"</string>
+    <string name="group_name_dialog_hint" msgid="7624523157537700160">"Энбелгинин аталышы"</string>
+    <string name="label_name_dialog_hint" msgid="1276051790427638142">"Энбелгинин аталышы"</string>
     <string name="audio_chat" msgid="2535716629358298691">"Үн чат"</string>
     <string name="video_chat" msgid="1872255818640336072">"Видео чат"</string>
-    <string name="connections" msgid="8098440723172028350">"Байланыштар"</string>
-    <string name="add_connection_button" msgid="4861308615789601727">"Байланыш кошуу"</string>
-    <string name="recent" msgid="2659189233141493004">"Акыркы"</string>
-    <string name="recent_updates" msgid="4267258535615860710">"Акыркы жаңыртуулар"</string>
     <string name="account_type_format" msgid="718948015590343010">"<xliff:g id="SOURCE">%1$s</xliff:g> байланышы"</string>
     <string name="google_account_type_format" msgid="5283997303922067997">"<xliff:g id="SOURCE">%1$s</xliff:g> каттоо эсеби"</string>
-    <!-- no translation found for from_account_format (4469138575127580203) -->
-    <skip />
     <string name="take_photo" msgid="7496128293167402354">"Сүрөт тартуу"</string>
     <string name="take_new_photo" msgid="7341354729436576304">"Жаңы сүрөт тартуу"</string>
     <string name="pick_photo" msgid="2129509985223564942">"Сүрөт тандаңыз"</string>
     <string name="pick_new_photo" msgid="9122450996263688237">"Жаңы сүрөт тандоо"</string>
     <string name="search_results_searching" msgid="3984833028938569930">"Изделүүдө…"</string>
-    <string name="menu_display_selected" msgid="6470001164297969034">"Тандалгандарды көрсөтүү"</string>
-    <string name="menu_display_all" msgid="8887488642609786198">"Баарын көрсөтүү"</string>
-    <string name="menu_select_all" msgid="621719255150713545">"Бардыгын тандоо"</string>
-    <string name="menu_select_none" msgid="7093222469852132345">"Баарын тандоодон чыгаруу"</string>
-    <string name="add_new_entry_for_section" msgid="5223080690667565044">"Жаңысын кошуу"</string>
-    <string name="add_organization" msgid="7311893231158291197">"Уюм кошуу"</string>
     <string name="event_edit_field_hint_text" msgid="5794424930242630477">"Дата"</string>
     <string name="group_edit_field_hint_text" msgid="8038224059926963133">"Энбелги"</string>
-    <string name="change_photo" msgid="8530597935483526383">"Өзгөртүү"</string>
-    <string name="description_star" msgid="2605854427360036550">"сүйүктүү"</string>
-    <string name="edit_contact" msgid="7529281274005689512">"Байланышты түзөтүү"</string>
-    <!-- no translation found for cancel_button_content_description (1288652456274531846) -->
-    <skip />
-    <!-- no translation found for back_arrow_content_description (4355362760545735065) -->
-    <skip />
+    <string name="cancel_button_content_description" msgid="1288652456274531846">"Жок"</string>
+    <string name="back_arrow_content_description" msgid="4355362760545735065">"Артка"</string>
     <string name="action_menu_back_from_edit_select" msgid="6435476408621731420">"жабуу"</string>
-    <string name="aggregation_suggestion_join_dialog_message" msgid="6786192560870357912">"Учурдагы байланыш тандалган байланышка шилтемеленсинби?"</string>
     <string name="aggregation_suggestion_edit_dialog_message" msgid="6549585283910518095">"Тандалган байланышты түзөтүүгө өтөсүзбү? Буга чейин киргизилген маалыматтар көчүрүлөт."</string>
-    <string name="menu_copyContact" msgid="1573960845106822639">"Менин Байланыштарыма көчүрүү"</string>
-    <string name="add_to_my_contacts" msgid="1068274916793627723">"Менин Байланыштарыма кошуу"</string>
     <string name="contact_directory_description" msgid="683398073603909119">"<xliff:g id="TYPE">%1$s</xliff:g> каталогу"</string>
     <string name="activity_title_settings" msgid="5464130076132770781">"Жөндөөлөр"</string>
     <string name="menu_settings" msgid="377929915873428211">"Жөндөөлөр"</string>
     <string name="menu_help" msgid="1680178646764069976">"Жардам жана жооп пикир"</string>
-    <string name="preference_displayOptions" msgid="1341720270148252393">"Параметрлерди көрсөтүү"</string>
     <string name="organization_company_and_title" msgid="6718207751363732025">"<xliff:g id="COMPANY_0">%2$s</xliff:g> , <xliff:g id="COMPANY_1">%1$s</xliff:g>"</string>
     <string name="non_phone_caption" msgid="1541655052330027380">"Телефон номери"</string>
     <string name="non_phone_add_to_contacts" msgid="6590985286250471169">"Байланыштарга кошуу"</string>
-    <string name="activity_title_confirm_add_detail" msgid="4065089866210730616">"Байланыштарга кошуу"</string>
     <string name="non_phone_close" msgid="7608506439725515667">"Жабуу"</string>
-    <string name="widget_name_and_phonetic" msgid="8739586586600099979">"<xliff:g id="DISPLAY_NAME">%1$s</xliff:g> (<xliff:g id="PHONETIC_NAME">%2$s</xliff:g>)"</string>
     <string name="date_year_toggle" msgid="7122002148518724139">"Жылы көрсөтүлсүн"</string>
-    <string name="social_widget_label" msgid="6378905543028924592">"Байланыш"</string>
-    <string name="social_widget_loading" msgid="5327336597364074608">"Жүктөлүүдө…"</string>
-    <string name="contacts_unavailable_create_contact" msgid="7014525713871959208">"Жаңы байланыш түзүү"</string>
     <string name="contacts_unavailable_add_account" msgid="4347232421410561500">"Каттоо эсебин кошуу"</string>
     <string name="contacts_unavailable_import_contacts" msgid="3182801738595937144">"Импорттоо"</string>
     <string name="create_group_item_label" msgid="3263064599743742865">"Жаңысын түзүү..."</string>
-    <string name="delete_group_dialog_message" msgid="335713829185261371">"\"<xliff:g id="GROUP_LABEL">%1$s</xliff:g>\" энбелгиси өчүрүлсүнбү? (Байланыштардын өзү өчүрүлбөйт)."</string>
+    <string name="delete_group_dialog_message" msgid="335713829185261371">"\"<xliff:g id="GROUP_LABEL">%1$s</xliff:g>\" энбелгиси өчүрүлсүнбү? (Байланыштардын өзү өчпөйт)."</string>
     <string name="toast_join_with_empty_contact" msgid="1215465657839085613">"Башка байланышка шилтемелөөдөн мурун, байланыштын атын териңиз."</string>
     <string name="copy_text" msgid="3257145021583508761">"Алмашуу буферине көчүрүү"</string>
     <string name="set_default" msgid="4417505153468300351">"Негизги кылуу"</string>
@@ -245,109 +183,67 @@
     <string name="cancel_confirmation_dialog_cancel_editing_button" msgid="3057023972074640671">"Жарактан чыгаруу"</string>
     <string name="cancel_confirmation_dialog_keep_editing_button" msgid="3316573928085916146">"Баш тартуу"</string>
     <string name="leave_customize_confirmation_dialog_message" msgid="4277114551206032979">"Өзгөртүүлөр жокко чыгарылсынбы?"</string>
-    <string name="call_type_and_date" msgid="747163730039311423">"<xliff:g id="CALL_TYPE">%1$s</xliff:g> <xliff:g id="CALL_SHORT_DATE">%2$s</xliff:g>"</string>
     <string name="enter_contact_name" msgid="4594274696120278368">"Байланыштардан издеп көрүңүз"</string>
     <string name="title_edit_group" msgid="8602752287270586734">"Байланыштарды алып салуу"</string>
     <string name="local_profile_title" msgid="2021416826991393684">"Менин жергиликтүү профайлым"</string>
     <string name="external_profile_title" msgid="8034998767621359438">"Менин <xliff:g id="EXTERNAL_SOURCE">%1$s</xliff:g> профайлым"</string>
-    <string name="toast_displaying_all_contacts" msgid="2737388783898593875">"Бардык байланыштарды көрсөтүү"</string>
-    <string name="generic_no_account_prompt" msgid="7218827704367325460">"Телефонуңузду жоготсоңуз дагы, байланыштарыңызды жоготпоңуз: онлайн кызмат менен синхрондоңуз."</string>
-    <string name="generic_no_account_prompt_title" msgid="753783911899054860">"Эсеп кошуу"</string>
-    <string name="contact_editor_prompt_zero_accounts" msgid="6648376557574360096">"Байланыштарыңыздын камдык көчүрмөсүн Google\'га сактоо үчүн каттоо эсебин кошууңуз керек болот."</string>
+    <string name="contact_editor_prompt_zero_accounts" msgid="6648376557574360096">"Байланыштарыңыздын камдык көчүрмөсүн Google\'га сактоо үчүн каттоо эсебин кошуңуз."</string>
     <string name="contact_editor_prompt_one_account" msgid="3087691056345099310">"Жаңы байланыштар <xliff:g id="ACCOUNT_NAME">%1$s</xliff:g> ичине сакталат."</string>
     <string name="contact_editor_prompt_multiple_accounts" msgid="8565761674283473549">"Жаңы байланыштар үчүн демейки каттоо эсебин тандаңыз:"</string>
-    <!-- no translation found for contact_editor_title_new_contact (3042788718983070111) -->
-    <skip />
+    <string name="contact_editor_title_new_contact" msgid="3042788718983070111">"Жаңы байланыш түзүү"</string>
     <string name="contact_editor_title_existing_contact" msgid="4898475703683187798">"Байланышты түзөтүү"</string>
     <string name="contact_editor_title_read_only_contact" msgid="2443496574528842237">"Жөн гана көрүү"</string>
     <string name="contact_editor_pick_raw_contact_to_edit_dialog_title" msgid="4186699385645902152">"Түзөтүү үчүн байланышты тандаңыз"</string>
-    <string name="contact_editor_pick_linked_contact_dialog_title" msgid="4618465940423857694">"Шилтемеленген байланыштар"</string>
+    <string name="contact_editor_pick_linked_contact_dialog_title" msgid="4618465940423857694">"Бириктирилген байланыштар"</string>
     <string name="contact_editor_add_linked_contact" msgid="426142748048816297">"Кошуу"</string>
     <string name="contact_editor_unlink_contacts" msgid="4525214336177236653">"Ажыратуу"</string>
-    <string name="add_account" msgid="8201790677994503186">"Эсеп кошуу"</string>
+    <string name="add_account" msgid="8201790677994503186">"Кошуу"</string>
     <string name="add_new_account" msgid="5748627740680940264">"Жаңы эсеп кошуу"</string>
     <string name="menu_export_database" msgid="2659719297530170820">"Берилиштер корлорунун файлдарын экспорттоо"</string>
-    <!-- no translation found for action_menu_add_new_contact_button (5506832825256203208) -->
-    <skip />
+    <string name="action_menu_add_new_contact_button" msgid="5506832825256203208">"Жаңы байланыш түзүү"</string>
     <string name="expanding_entry_card_view_see_more" msgid="3779194067124758079">"Дагы көрүү"</string>
     <string name="expanding_entry_card_view_see_less" msgid="5344160551629714168">"Азыраак көрүү"</string>
     <string name="recent_card_title" msgid="8982782042698001695">"Акыркы"</string>
-    <string name="about_card_title" msgid="2920942314212825637">"Жөнүндө"</string>
-    <string name="send_message" msgid="8938418965550543196">"Билдирүү жөнөтүү"</string>
+    <string name="about_card_title" msgid="2920942314212825637">"Байланыш жөнүндө"</string>
     <string name="toast_making_personal_copy" msgid="288549957278065542">"Жеке көчүрмөсүн түзүү…"</string>
     <string name="tomorrow" msgid="6241969467795308581">"Эртең"</string>
     <string name="today" msgid="8041090779381781781">"Бүгүн"</string>
     <string name="today_at_time_fmt" msgid="605665249491030460">"Бүгүн саат <xliff:g id="TIME_INTERVAL">%s</xliff:g>"</string>
     <string name="tomorrow_at_time_fmt" msgid="4856497969617819421">"Эртең саат <xliff:g id="TIME_INTERVAL">%s</xliff:g>"</string>
-    <string name="date_time_fmt" msgid="5053178726906863812">"<xliff:g id="DATE">%s</xliff:g>, <xliff:g id="TIME_INTERVAL">%s</xliff:g>"</string>
+    <string name="date_time_fmt" msgid="5053178726906863812">"<xliff:g id="DATE">%1$s</xliff:g>, <xliff:g id="TIME_INTERVAL">%2$s</xliff:g>"</string>
     <string name="untitled_event" msgid="3484859385405939366">"(Аталышы жок окуя)"</string>
-    <string name="date_time_set" msgid="4761419824439606690">"Орнотуу"</string>
+    <string name="date_time_set" msgid="4761419824439606690">"Коюу"</string>
     <string name="header_im_entry" msgid="3581720979640225615">"IM"</string>
     <string name="header_organization_entry" msgid="8515394955666265406">"Иштеген жери"</string>
     <string name="header_nickname_entry" msgid="6743561883967451485">"Ылакап аты"</string>
-    <string name="header_note_entry" msgid="4320190426480612344">"Кыска жазуу"</string>
+    <string name="header_note_entry" msgid="4320190426480612344">"Кошумча маалымат"</string>
     <string name="header_website_entry" msgid="1411467850000824745">"Вебсайт"</string>
     <string name="header_event_entry" msgid="6738250422744401460">"Иш-чара"</string>
-    <string name="header_relation_entry" msgid="1520292958088146460">"Мамилелик катышы"</string>
-    <string name="header_account_entry" msgid="2684318506427891827">"Каттоо эсеби"</string>
+    <string name="header_relation_entry" msgid="1520292958088146460">"Мага ким болот"</string>
     <string name="header_name_entry" msgid="1592791008096288306">"Ысымы"</string>
     <string name="header_email_entry" msgid="8666093061171624478">"Электрондук почта"</string>
     <string name="header_phone_entry" msgid="8450980572274173570">"Телефон"</string>
-    <string name="content_description_expand_editor" msgid="1111381475901897470">"Байланыш түзөткүчүн жайып көрсөтүү үчүн чыкылдатыңыз."</string>
-    <string name="content_description_collapse_editor" msgid="7598061318022977825">"Байланыш түзөткүчүн жыйыштыруу үчүн чыкылдатыңыз."</string>
     <string name="content_description_directions" msgid="2686791825798189335">"жайгашуу ордуна багыттоолор"</string>
-    <string name="content_description_recent_sms" msgid="1666389577263317445">"акыркы sms. <xliff:g id="MESSAGE_BODY">%s</xliff:g>. <xliff:g id="PHONE_NUMBER">%s</xliff:g>. <xliff:g id="DATE">%s</xliff:g>. жооп берүү үчүн чыкылдатыңыз"</string>
+    <string name="content_description_recent_sms" msgid="1666389577263317445">"акыркы sms. <xliff:g id="MESSAGE_BODY">%1$s</xliff:g>. <xliff:g id="PHONE_NUMBER">%2$s</xliff:g>. <xliff:g id="DATE">%3$s</xliff:g>. жооп берүү үчүн чыкылдатыңыз"</string>
     <string name="content_description_recent_call_type_incoming" msgid="5210739096863511410">"келүүчү"</string>
     <string name="content_description_recent_call_type_outgoing" msgid="5156553338985232744">"чыгуучу"</string>
     <string name="content_description_recent_call_type_missed" msgid="7371810920196048204">"жооп берилбей калган"</string>
-    <string name="content_description_recent_call" msgid="5183800406316723676">"акыркы чалуу. <xliff:g id="CALL_TYPE">%s</xliff:g>. <xliff:g id="PHONE_NUMBER">%s</xliff:g>. <xliff:g id="DATE">%s</xliff:g>. кайра чалуу үчүн чыкылдатыңыз"</string>
+    <string name="content_description_recent_call" msgid="5183800406316723676">"акыркы чалуу. <xliff:g id="CALL_TYPE">%1$s</xliff:g>. <xliff:g id="PHONE_NUMBER">%2$s</xliff:g>. <xliff:g id="DATE">%3$s</xliff:g>. кайра чалуу үчүн чыкылдатыңыз"</string>
     <string name="message_from_you_prefix" msgid="7180706529908434482">"Сиз: <xliff:g id="SMS_BODY">%s</xliff:g>"</string>
-    <string name="contact_editor_hangouts_im_alert" msgid="114855385615225735">"Кимдир-бирөөнүн Hangouts аныктагычы электрондук почта же телефон талаасына киргизилгенде Hangouts жакшыраак иштейт."</string>
     <string name="editor_more_fields" msgid="3630987771304393421">"Калган талааларды көрсөтүү"</string>
-    <!-- no translation found for editor_change_photo_content_description (820879708069864340) -->
-    <skip />
-    <!-- no translation found for editor_add_photo_content_description (4194479313465418120) -->
-    <skip />
-    <!-- no translation found for editor_contact_photo_content_description (8571975622926162369) -->
-    <skip />
+    <string name="editor_change_photo_content_description" msgid="820879708069864340">"Байланыштын сүрөтүн өзгөртүү"</string>
+    <string name="editor_add_photo_content_description" msgid="4194479313465418120">"Байланыштын сүрөтүн кошуу"</string>
+    <string name="editor_contact_photo_content_description" msgid="8571975622926162369">"Байланыштын сүрөтү"</string>
     <string name="editor_failed_to_load" msgid="1623639078580475818">"Түзөткүч ачылбай калды."</string>
     <string name="editor_account_selector_title" msgid="4426337993307015833">"Төмөнкүгө сакталууда"</string>
     <string name="editor_account_selector_read_only_title" msgid="4137969650184457126">"Байланыш маалыматын түзөтүүгө болбойт: <xliff:g id="ACCOUNT">%s</xliff:g>"</string>
-    <string name="editor_account_selector_description" msgid="3324358600570627740">"Учурда <xliff:g id="ACCOUNT_NAME">%s</xliff:g> ичине сакталууда. Башка каттоо эсебин тандоо үчүн эки жолу таптаңыз."</string>
-    <plurals name="editor_linked_contacts_selector_title" formatted="false" msgid="249075501821303190">
-      <item quantity="other">Шилтемеленген байланыштар (<xliff:g id="COUNT">%d</xliff:g>)</item>
-      <item quantity="one">Шилтемеленген байланыш</item>
-    </plurals>
-    <string name="quickcontact_contacts_number" msgid="6036916944287597682">"<xliff:g id="COUNT">%d</xliff:g> байланыш шилтемеленген"</string>
-    <string name="quick_contact_display_name_with_phonetic" msgid="3692038078718876610">"<xliff:g id="DISPLAY_NAME">%s</xliff:g> (<xliff:g id="PHONETIC_NAME">%s</xliff:g>)"</string>
     <string name="quickcontact_suggestion_link_button" msgid="3244619714781727946">"БАЙЛАНЫШТАРДЫ ШИЛТЕМЕЛӨӨ"</string>
-    <string name="quickcontact_suggestion_cancel_button" msgid="8236954313106630862">"ЖОККО ЧЫГАРУУ"</string>
-    <plurals name="quickcontact_suggestion_card_title" formatted="false" msgid="2660005966628746406">
-      <item quantity="other"><xliff:g id="COUNT">%d</xliff:g> Жупнуска кылса болот</item>
-      <item quantity="one">1 Жупнуска кылса болот</item>
-    </plurals>
-    <plurals name="quickcontact_suggestions_number" formatted="false" msgid="495992931510695330">
-      <item quantity="other"><xliff:g id="COUNT">%d</xliff:g> шилтемеленген байланыш</item>
-      <item quantity="one">1 шилтемеленген байланыш</item>
-    </plurals>
-    <plurals name="quickcontact_suggestion_account_type_number" formatted="false" msgid="3001681298924002373">
-      <item quantity="other">(<xliff:g id="COUNT">%d</xliff:g>)</item>
-      <item quantity="one"></item>
-    </plurals>
-    <string name="quickcontact_suggestion_account_type" msgid="5878263654735376962">"<xliff:g id="ACCOUNT_TYPE_0">%s</xliff:g><xliff:g id="ACCOUNT_TYPE_NUMBER">%s</xliff:g>"</string>
+    <string name="quickcontact_suggestion_cancel_button" msgid="8236954313106630862">"ЖОК"</string>
     <string name="suggestion_card_this_contact_title" msgid="3039457405374454914">"Ушул байланыш"</string>
     <string name="suggestion_card_duplicates_title" msgid="9107788743178980902">"Булар жупнуска болушу мүмкүн"</string>
     <string name="suggestion_card_help_message" msgid="4474061044387181093">"Бул байланыштар бир эле адам болушу мүмкүн. Аларды жалгыз байланыш кылып бириктирсеңиз болот."</string>
-    <string name="editor_linked_contacts_title" msgid="3077479751631492125">"Шилтемеленген байланыштар"</string>
-    <string name="from_your_accounts" msgid="1746293107836889912">"Каттоо эсептериңизден"</string>
-    <string name="photo_picker_title" msgid="5272832995550042801">"Сүрөт тандаңыз"</string>
-    <string name="contact_from_account_name" msgid="2078526819634079406">"<xliff:g id="ACCOUNT_NAME">%s</xliff:g> дегенден"</string>
-    <string name="editor_delete_view_description" msgid="8583095381562991959">"<xliff:g id="DATA_TYPE">%s </xliff:g><xliff:g id="DATA_KIND">%s</xliff:g> жок кылуу"</string>
+    <string name="editor_delete_view_description" msgid="8583095381562991959">"<xliff:g id="DATA_TYPE">%1$s </xliff:g><xliff:g id="DATA_KIND">%2$s</xliff:g> жок кылуу"</string>
     <string name="editor_delete_view_description_short" msgid="7335518371270844912">"<xliff:g id="DATA_KIND">%s</xliff:g> жок кылуу"</string>
-    <string name="photo_view_description_not_checked" msgid="8876314195990885177">"<xliff:g id="ACCOUNT_TYPE">%s </xliff:g><xliff:g id="USER_NAME">%s </xliff:g> дегенден сүрөт белгиленген жк"</string>
-    <string name="photo_view_description_checked" msgid="3906597168607472795">"<xliff:g id="ACCOUNT_TYPE">%s </xliff:g><xliff:g id="USER_NAME">%s </xliff:g> дегенден сүрөт белгиленди"</string>
-    <string name="photo_view_description_not_checked_no_info" msgid="2749154927006406981">"Белгисиз каттоо эсебинен келген сүрөт тандалган жок"</string>
-    <string name="photo_view_description_checked_no_info" msgid="4974335987092590591">"Белгисиз каттоо эсебинен келген сүрөт тандалды"</string>
     <string name="menu_assistant" msgid="5760693735722052454">"Сунуштар"</string>
     <string name="menu_assistant_new_badge" msgid="3132884821616980034">"Жаңы"</string>
     <string name="navigation_drawer_open" msgid="1126498472143250642">"Чабыттоо суурмасын ачуу"</string>
@@ -362,87 +258,48 @@
     <string name="hamburger_feature_highlight_body" msgid="4403398269286898733">"Байланыштар менен иштөө ыңгайлуу болушу үчүн аларды иреттеңиз"</string>
     <string name="undo" msgid="1425165101664071422">"Кайтаруу"</string>
     <string name="call_custom" msgid="6385303130912713318">"<xliff:g id="CUSTOM_LABEL">%s</xliff:g> чалуу"</string>
-    <!-- no translation found for call_home (1990519474420545392) -->
-    <skip />
-    <!-- no translation found for call_mobile (7502236805487609178) -->
-    <skip />
-    <!-- no translation found for call_work (5328785911463744028) -->
-    <skip />
-    <!-- no translation found for call_fax_work (7467763592359059243) -->
-    <skip />
-    <!-- no translation found for call_fax_home (8342175628887571876) -->
-    <skip />
-    <!-- no translation found for call_pager (9003902812293983281) -->
-    <skip />
-    <!-- no translation found for call_other (8563753966926932052) -->
-    <skip />
-    <!-- no translation found for call_callback (1910165691349426858) -->
-    <skip />
-    <!-- no translation found for call_car (3280537320306436445) -->
-    <skip />
-    <!-- no translation found for call_company_main (6105120947138711257) -->
-    <skip />
-    <!-- no translation found for call_isdn (1541590690193403411) -->
-    <skip />
-    <!-- no translation found for call_main (6082900571803441339) -->
-    <skip />
-    <!-- no translation found for call_other_fax (5745314124619636674) -->
-    <skip />
-    <!-- no translation found for call_radio (8296755876398357063) -->
-    <skip />
-    <!-- no translation found for call_telex (2223170774548648114) -->
-    <skip />
-    <!-- no translation found for call_tty_tdd (8951266948204379604) -->
-    <skip />
-    <!-- no translation found for call_work_mobile (8707874281430105394) -->
-    <skip />
-    <!-- no translation found for call_work_pager (3419348514157949008) -->
-    <skip />
+    <string name="call_home" msgid="1990519474420545392">"Үйгө чалуу"</string>
+    <string name="call_mobile" msgid="7502236805487609178">"Мобилдик түзмөккө чалуу"</string>
+    <string name="call_work" msgid="5328785911463744028">"Жумушка чалуу"</string>
+    <string name="call_fax_work" msgid="7467763592359059243">"Жумуш факсына чалуу"</string>
+    <string name="call_fax_home" msgid="8342175628887571876">"Үй факсына чалуу"</string>
+    <string name="call_pager" msgid="9003902812293983281">"Пейджерге чалуу"</string>
+    <string name="call_other" msgid="8563753966926932052">"Чалуу"</string>
+    <string name="call_callback" msgid="1910165691349426858">"Кайра чалуу номерине чалуу"</string>
+    <string name="call_car" msgid="3280537320306436445">"Автомобилдин номерине чалуу"</string>
+    <string name="call_company_main" msgid="6105120947138711257">"Компаниянын негизги номерине чалуу"</string>
+    <string name="call_isdn" msgid="1541590690193403411">"ISDN телефонуна чалуу"</string>
+    <string name="call_main" msgid="6082900571803441339">"Негизги номерге чалуу"</string>
+    <string name="call_other_fax" msgid="5745314124619636674">"Факска чалуу"</string>
+    <string name="call_radio" msgid="8296755876398357063">"Радио телефонго чалуу"</string>
+    <string name="call_telex" msgid="2223170774548648114">"Телекске чалуу"</string>
+    <string name="call_tty_tdd" msgid="8951266948204379604">"TTY/TDD номерине чалуу"</string>
+    <string name="call_work_mobile" msgid="8707874281430105394">"Жумуштун мобилдик түзмөгүнө чалуу"</string>
+    <string name="call_work_pager" msgid="3419348514157949008">"Жумуш пейджерине чалуу"</string>
     <string name="call_assistant" msgid="670941612175068337">"<xliff:g id="CUSTOM_LABEL">%s</xliff:g> чалуу"</string>
-    <!-- no translation found for call_mms (6274041545876221437) -->
-    <skip />
+    <string name="call_mms" msgid="6274041545876221437">"MMS номерине чалуу"</string>
     <string name="call_by_shortcut" msgid="2566802538698913124">"<xliff:g id="CONTACT_NAME">%s</xliff:g> (Чалуу)"</string>
     <string name="sms_custom" msgid="415060214233647603">"<xliff:g id="CUSTOM_LABEL">%s</xliff:g> номерине SMS жөнөтүү"</string>
-    <!-- no translation found for sms_home (7524332261493162995) -->
-    <skip />
-    <!-- no translation found for sms_mobile (5200107250451030769) -->
-    <skip />
-    <!-- no translation found for sms_work (2269624156655267740) -->
-    <skip />
-    <!-- no translation found for sms_fax_work (8028189067816907075) -->
-    <skip />
-    <!-- no translation found for sms_fax_home (9204042076306809634) -->
-    <skip />
-    <!-- no translation found for sms_pager (7730404569637015192) -->
-    <skip />
-    <!-- no translation found for sms_other (806127844607642331) -->
-    <skip />
-    <!-- no translation found for sms_callback (5004824430094288752) -->
-    <skip />
-    <!-- no translation found for sms_car (7444227058437359641) -->
-    <skip />
-    <!-- no translation found for sms_company_main (118970873419678087) -->
-    <skip />
-    <!-- no translation found for sms_isdn (8153785037515047845) -->
-    <skip />
-    <!-- no translation found for sms_main (8621625784504541679) -->
-    <skip />
-    <!-- no translation found for sms_other_fax (3888842199855843152) -->
-    <skip />
-    <!-- no translation found for sms_radio (3329166673433967820) -->
-    <skip />
-    <!-- no translation found for sms_telex (9034802430065267848) -->
-    <skip />
-    <!-- no translation found for sms_tty_tdd (6782284969132531532) -->
-    <skip />
-    <!-- no translation found for sms_work_mobile (2459939960512702560) -->
-    <skip />
-    <!-- no translation found for sms_work_pager (5566924423316960597) -->
-    <skip />
-    <!-- no translation found for sms_assistant (2773424339923116234) -->
-    <skip />
-    <!-- no translation found for sms_mms (4069352461380762677) -->
-    <skip />
+    <string name="sms_home" msgid="7524332261493162995">"Үйдүн телефонуна SMS жөнөтүү"</string>
+    <string name="sms_mobile" msgid="5200107250451030769">"Мобилдик телефонго SMS жөнөтүү"</string>
+    <string name="sms_work" msgid="2269624156655267740">"Жумуш телефонуна SMS жөнөтүү"</string>
+    <string name="sms_fax_work" msgid="8028189067816907075">"Жумуш факсына SMS жөнөтүү"</string>
+    <string name="sms_fax_home" msgid="9204042076306809634">"Үй факсына SMS жөнөтүү"</string>
+    <string name="sms_pager" msgid="7730404569637015192">"Пейжерге SMS жөнөтүү"</string>
+    <string name="sms_other" msgid="806127844607642331">"SMS жөнөтүү"</string>
+    <string name="sms_callback" msgid="5004824430094288752">"Кайра чалуу номерине SMS жөнөтүү"</string>
+    <string name="sms_car" msgid="7444227058437359641">"Автомобилдин телефон номерине SMS жөнөтүү"</string>
+    <string name="sms_company_main" msgid="118970873419678087">"Компаниянын негизги номерине SMS жөнөтүү"</string>
+    <string name="sms_isdn" msgid="8153785037515047845">"ISDN телефонуна SMS жөнөтүү"</string>
+    <string name="sms_main" msgid="8621625784504541679">"Негизги телефонго SMS жөнөтүү"</string>
+    <string name="sms_other_fax" msgid="3888842199855843152">"Факска SMS жөнөтүү"</string>
+    <string name="sms_radio" msgid="3329166673433967820">"Радио телефонго SMS жөнөтүү"</string>
+    <string name="sms_telex" msgid="9034802430065267848">"Телекске SMS жөнөтүү"</string>
+    <string name="sms_tty_tdd" msgid="6782284969132531532">"TTY/TDD телефонго SMS жөнөтүү"</string>
+    <string name="sms_work_mobile" msgid="2459939960512702560">"Жумуштун мобилдик телефонуна SMS жөнөтүү"</string>
+    <string name="sms_work_pager" msgid="5566924423316960597">"Жумуштун пейжерине SMS жөнөтүү"</string>
+    <string name="sms_assistant" msgid="2773424339923116234">"<xliff:g id="ASSISTANT">%s</xliff:g> номерине SMS билдирүү жөнөтүү"</string>
+    <string name="sms_mms" msgid="4069352461380762677">"MMS телефонго SMS жөнөтүү"</string>
     <string name="sms_by_shortcut" msgid="7741770672976099517">"<xliff:g id="CONTACT_NAME">%s</xliff:g> (Билдирүү жөнөтүү)"</string>
     <string name="description_video_call" msgid="7120921378651700947">"Видео чалуу"</string>
     <string name="clearFrequentsConfirmation_title" msgid="766292372438450432">"Көп чалынгандар тизмеси тазалансынбы?"</string>
@@ -451,154 +308,91 @@
     <string name="status_available" msgid="5586870015822828392">"Жеткиликтүү"</string>
     <string name="status_away" msgid="1838861100379804730">"Чыгып кетти"</string>
     <string name="status_busy" msgid="9147992455450257136">"Бош эмес"</string>
-    <!-- no translation found for local_invisible_directory (6046691709127661065) -->
-    <skip />
-    <!-- no translation found for directory_search_label (1887759056597975053) -->
-    <skip />
+    <string name="local_invisible_directory" msgid="6046691709127661065">"Башка"</string>
+    <string name="directory_search_label" msgid="1887759056597975053">"Каталог"</string>
     <string name="directory_search_label_work" msgid="8618292129829443176">"Жумуш профилиндеги байланыштар китепчеси"</string>
     <string name="local_search_label" msgid="2551177578246113614">"Бардык байланыштар"</string>
-    <string name="foundTooManyContacts" msgid="5163335650920020220">"<xliff:g id="COUNT">%d</xliff:g> ашык табылды."</string>
     <string name="description_quick_contact_for" msgid="6737516415168327789">"<xliff:g id="NAME">%1$s</xliff:g> үчүн тез байланышуу"</string>
     <string name="missing_name" msgid="8745511583852904385">"(Аты жок)"</string>
     <string name="favoritesFrequentContacted" msgid="6184232487472425690">"Көп байланышып турган"</string>
-    <string name="description_view_contact_detail" msgid="9133251213656414807">"Байланыштын чоо-жайын карап көрүү"</string>
     <string name="list_filter_phones" msgid="735313795643493365">"Телефон номерлери бар бардык байланыштар"</string>
     <string name="list_filter_phones_work" msgid="1470173699551475015">"Жумуш профилиндеги байланыштар"</string>
     <string name="view_updates_from_group" msgid="1782685984905600034">"Жаңыртууларды көрүү"</string>
     <string name="account_phone" msgid="7128032778471187553">"Түзмөк"</string>
     <string name="account_sim" msgid="6519016427905087952">"SIM-карта"</string>
-    <!-- no translation found for nameLabelsGroup (2034640839640477827) -->
-    <skip />
-    <!-- no translation found for nicknameLabelsGroup (2891682101053358010) -->
-    <skip />
-    <!-- no translation found for full_name (6602579550613988977) -->
-    <skip />
+    <string name="nameLabelsGroup" msgid="2034640839640477827">"Аты"</string>
+    <string name="nicknameLabelsGroup" msgid="2891682101053358010">"Ылакап аты"</string>
     <string name="name_given" msgid="4280790853455320619">"Аты"</string>
     <string name="name_family" msgid="7466985689626017037">"Фамилиясы"</string>
-    <!-- no translation found for name_prefix (59756378548779822) -->
-    <skip />
-    <!-- no translation found for name_middle (8467433655992690326) -->
-    <skip />
-    <!-- no translation found for name_suffix (3855278445375651441) -->
-    <skip />
-    <!-- no translation found for name_phonetic (4259595234312430484) -->
-    <skip />
+    <string name="name_prefix" msgid="59756378548779822">"Атынын префикси"</string>
+    <string name="name_middle" msgid="8467433655992690326">"Атасынын аты"</string>
+    <string name="name_suffix" msgid="3855278445375651441">"Атынын суффикси"</string>
+    <string name="name_phonetic" msgid="4259595234312430484">"Аты-жөнү (угулушу боюнча)"</string>
     <string name="name_phonetic_given" msgid="8723179018384187631">"Аты (угулушу боюнча)"</string>
-    <!-- no translation found for name_phonetic_middle (8643721493320405200) -->
-    <skip />
+    <string name="name_phonetic_middle" msgid="8643721493320405200">"Атасынын аты (угулушу боюнча)"</string>
     <string name="name_phonetic_family" msgid="2640133663656011626">"Фамилиясы (угулушу боюнча)"</string>
-    <!-- no translation found for phoneLabelsGroup (6468091477851199285) -->
-    <skip />
-    <!-- no translation found for emailLabelsGroup (8389931313045344406) -->
-    <skip />
-    <!-- no translation found for postalLabelsGroup (3487738141112589324) -->
-    <skip />
-    <!-- no translation found for imLabelsGroup (3898238486262614027) -->
-    <skip />
-    <!-- no translation found for organizationLabelsGroup (2478611760751832035) -->
-    <skip />
-    <!-- no translation found for relationLabelsGroup (1854373894284572781) -->
-    <skip />
+    <string name="phoneLabelsGroup" msgid="6468091477851199285">"Телефон"</string>
+    <string name="emailLabelsGroup" msgid="8389931313045344406">"Электрондук почта"</string>
+    <string name="postalLabelsGroup" msgid="3487738141112589324">"Почта дареги"</string>
+    <string name="imLabelsGroup" msgid="3898238486262614027">"IM"</string>
+    <string name="organizationLabelsGroup" msgid="2478611760751832035">"Уюм"</string>
+    <string name="relationLabelsGroup" msgid="1854373894284572781">"Мамиле"</string>
     <string name="eventLabelsGroup" msgid="7960408705307831289">"Өзгөчө күн"</string>
     <string name="sms" msgid="1756857139634224222">"SMS билдирүү жөнөтүү"</string>
-    <!-- no translation found for postal_address (8765560217149624536) -->
-    <skip />
-    <!-- no translation found for ghostData_company (5414421120553765775) -->
-    <skip />
-    <!-- no translation found for ghostData_title (7496735200318496110) -->
-    <skip />
-    <!-- no translation found for label_notes (8337354953278341042) -->
-    <skip />
+    <string name="postal_address" msgid="8765560217149624536">"Почта дареги"</string>
+    <string name="ghostData_company" msgid="5414421120553765775">"Компания"</string>
+    <string name="ghostData_title" msgid="7496735200318496110">"Аталышы"</string>
+    <string name="label_notes" msgid="8337354953278341042">"Эскертүүлөр"</string>
     <string name="label_custom_field" msgid="1994056912242214426">"Өздүк"</string>
     <string name="label_sip_address" msgid="7252153678613978127">"SIP"</string>
-    <!-- no translation found for websiteLabelsGroup (4202998982804009261) -->
-    <skip />
+    <string name="websiteLabelsGroup" msgid="4202998982804009261">"Вебсайт"</string>
     <string name="groupsLabel" msgid="7000816729542098972">"Энбелгилер"</string>
-    <!-- no translation found for email_home (8573740658148184279) -->
-    <skip />
-    <!-- no translation found for email_mobile (2042889209787989814) -->
-    <skip />
-    <!-- no translation found for email_work (2807430017302722689) -->
-    <skip />
-    <!-- no translation found for email_other (3454004077967657109) -->
-    <skip />
+    <string name="email_home" msgid="8573740658148184279">"Үйдүн электрондук почта дарегине билдирүү жөнөтүү"</string>
+    <string name="email_mobile" msgid="2042889209787989814">"Мобилдик түзмөккө электрондук почта билдирүүсүн жөнөтүү"</string>
+    <string name="email_work" msgid="2807430017302722689">"Жумуштун электрондук почтасына билдирүү жөнөтүү"</string>
+    <string name="email_other" msgid="3454004077967657109">"Электрондук почта"</string>
     <string name="email_custom" msgid="5536404237099078802">"<xliff:g id="CUSTOM_LABEL">%s</xliff:g> электрондук кат жөнөтүү"</string>
-    <!-- no translation found for email (5668400997660065897) -->
-    <skip />
-    <!-- no translation found for postal_street (8133143961580058972) -->
-    <skip />
-    <!-- no translation found for postal_pobox (4431938829180269821) -->
-    <skip />
-    <!-- no translation found for postal_neighborhood (1450783874558956739) -->
-    <skip />
-    <!-- no translation found for postal_city (6597491300084895548) -->
-    <skip />
-    <!-- no translation found for postal_region (6045263193478437672) -->
-    <skip />
-    <!-- no translation found for postal_postcode (572136414136673751) -->
-    <skip />
-    <!-- no translation found for postal_country (7638264508416368690) -->
-    <skip />
-    <!-- no translation found for map_home (1243547733423343982) -->
-    <skip />
-    <!-- no translation found for map_work (1360474076921878088) -->
-    <skip />
-    <!-- no translation found for map_other (3817820803587012641) -->
-    <skip />
+    <string name="email" msgid="5668400997660065897">"Электрондук почта"</string>
+    <string name="postal_street" msgid="8133143961580058972">"Көчөсү"</string>
+    <string name="postal_city" msgid="6597491300084895548">"Шаары"</string>
+    <string name="postal_region" msgid="6045263193478437672">"Штаты"</string>
+    <string name="postal_postcode" msgid="572136414136673751">"ZIP коду"</string>
+    <string name="postal_country" msgid="7638264508416368690">"Өлкөсү"</string>
+    <string name="map_home" msgid="1243547733423343982">"Үй дарегин көрүү"</string>
+    <string name="map_work" msgid="1360474076921878088">"Жумуш дарегин көрүү"</string>
+    <string name="map_other" msgid="3817820803587012641">"Дарегин көрүү"</string>
     <string name="map_custom" msgid="8761800628069473526">"<xliff:g id="CUSTOM_LABEL">%s</xliff:g> дарегиин көрүү"</string>
-    <!-- no translation found for chat_aim (2588492205291249142) -->
-    <skip />
-    <!-- no translation found for chat_msn (8041633440091073484) -->
-    <skip />
-    <!-- no translation found for chat_yahoo (6629211142719943666) -->
-    <skip />
-    <!-- no translation found for chat_skype (1210045020427480566) -->
-    <skip />
-    <!-- no translation found for chat_qq (4294637812847719693) -->
-    <skip />
-    <!-- no translation found for chat_gtalk (981575737258117697) -->
-    <skip />
-    <!-- no translation found for chat_icq (8438405386153745775) -->
-    <skip />
-    <!-- no translation found for chat_jabber (7561444230307829609) -->
-    <skip />
-    <!-- no translation found for chat (9025361898797412245) -->
-    <skip />
+    <string name="chat_aim" msgid="2588492205291249142">"AIM аркылуу маектешүү"</string>
+    <string name="chat_msn" msgid="8041633440091073484">"Windows Live аркылуу маектешүү"</string>
+    <string name="chat_yahoo" msgid="6629211142719943666">"Yahoo аркылуу маектешүү"</string>
+    <string name="chat_skype" msgid="1210045020427480566">"Skype аркылуу маектешүү"</string>
+    <string name="chat_qq" msgid="4294637812847719693">"QQ аркылуу маектешүү"</string>
+    <string name="chat_gtalk" msgid="981575737258117697">"Google Talk аркылуу маектешүү"</string>
+    <string name="chat_icq" msgid="8438405386153745775">"ICQ аркылуу маектешүү"</string>
+    <string name="chat_jabber" msgid="7561444230307829609">"Jabber аркылуу маектешүү"</string>
+    <string name="chat" msgid="9025361898797412245">"Маек"</string>
     <string name="description_minus_button" msgid="6908099247930477551">"жок кылуу"</string>
-    <!-- no translation found for expand_name_fields_description (6948274252874552543) -->
-    <skip />
+    <string name="expand_name_fields_description" msgid="6948274252874552543">"Ысымдар жазылган талаалардан көбүрөөк көрсөтүү"</string>
     <string name="collapse_name_fields_description" msgid="4757877385895561556">"Адамдын аты-жөнү жазылган талааларды жыйыштыруу"</string>
-    <!-- no translation found for expand_phonetic_name_fields_description (9133052674087187927) -->
-    <skip />
+    <string name="expand_phonetic_name_fields_description" msgid="9133052674087187927">"Ысымдардын транскрипциясы жазылган талаалардан көбүрөөк көрсөтүү"</string>
     <string name="collapse_phonetic_name_fields_description" msgid="9102249481855019452">"Ысымдардын транскрипциясы жазылган талааларды жыйыштыруу"</string>
     <string name="expand_fields_description" msgid="8129294181216760037">"Жайып көрсөтүү"</string>
     <string name="collapse_fields_description" msgid="1884143625854637874">"Жыйыштыруу"</string>
     <string name="announce_expanded_fields" msgid="1075947220478530622">"Жайылып көрсөтүлдү"</string>
     <string name="announce_collapsed_fields" msgid="6414231530177338704">"Жыйыштырылды"</string>
-    <!-- no translation found for list_filter_all_accounts (8908683398914322369) -->
-    <skip />
-    <!-- no translation found for list_filter_all_starred (5031734941601931356) -->
-    <skip />
+    <string name="list_filter_all_accounts" msgid="8908683398914322369">"Бардык байланыштар"</string>
+    <string name="list_filter_all_starred" msgid="5031734941601931356">"Белгиленген байланыштар"</string>
     <string name="list_filter_customize" msgid="4789963356004169321">"Ыңгайлаштыруу"</string>
-    <!-- no translation found for list_filter_single (5871400283515893087) -->
-    <skip />
+    <string name="list_filter_single" msgid="5871400283515893087">"Байланыш"</string>
     <string name="display_ungrouped" msgid="6885954210243119591">"Бардык башка байланыштар"</string>
     <string name="display_all_contacts" msgid="2031647544742889505">"Бардык байланыштар"</string>
-    <!-- no translation found for menu_sync_remove (3266725887008450161) -->
-    <skip />
-    <!-- no translation found for dialog_sync_add (8267045393119375803) -->
-    <skip />
-    <!-- no translation found for display_more_groups (2682547080423434170) -->
-    <skip />
+    <string name="menu_sync_remove" msgid="3266725887008450161">"Шайкештирүү тобун өчүрүү"</string>
+    <string name="dialog_sync_add" msgid="8267045393119375803">"Шайкештирүү тобуна кошуу"</string>
+    <string name="display_more_groups" msgid="2682547080423434170">"Дагы топтор…"</string>
     <string name="display_warn_remove_ungrouped" msgid="8872290721676651414">"\"<xliff:g id="GROUP">%s</xliff:g>\" тобун шайкештирүүдөн алып салуу топко кирбеген башка байланыштарды дагы шайкештирүүдөн чыгарып салат."</string>
-    <!-- no translation found for savingDisplayGroups (2133152192716475939) -->
-    <skip />
-    <!-- no translation found for menu_done (796017761764190697) -->
-    <skip />
-    <!-- no translation found for menu_doNotSave (58593876893538465) -->
-    <skip />
+    <string name="savingDisplayGroups" msgid="2133152192716475939">"Көрсөтүү параметрлери сакталууда…"</string>
     <string name="listCustomView" msgid="1840624396582117590">"Ылайыкташтырылган көрүнүш"</string>
-    <string name="dialog_new_contact_account" msgid="4969619718062454756">"Өткөрүп алынган байланыштар төмөнкүгө сакталсын:"</string>
+    <string name="dialog_new_contact_account" msgid="4969619718062454756">"Өткөрүлүп алынган байланыштар төмөнкүгө сакталсын:"</string>
     <string name="import_from_sim" msgid="6912071635295799131">"SIM-карта"</string>
     <string name="import_from_sim_summary_fmt" msgid="5169032449686348118">"<xliff:g id="SIM_NAME">%1$s</xliff:g> SIM-картасы"</string>
     <plurals name="import_from_sim_secondary_contact_count_fmt" formatted="false" msgid="5821095773211149295">
@@ -616,57 +410,41 @@
     <string name="cancel_export_confirmation_message" msgid="1995462401949262638">"<xliff:g id="FILENAME">%s</xliff:g> файлын экспорттоо токтотулсунбу?"</string>
     <string name="cancel_vcard_import_or_export_failed" msgid="6139900383366166706">"vCard файлдарын импорттоо/экспорттоо токтотулган жок."</string>
     <string name="fail_reason_unknown" msgid="1714092345030570863">"Белгисиз ката."</string>
-    <string name="fail_reason_could_not_open_file" msgid="2067725459821997463">"\"<xliff:g id="FILE_NAME">%s</xliff:g>\" ачылбай жатат: <xliff:g id="EXACT_REASON">%s</xliff:g>."</string>
+    <string name="fail_reason_could_not_open_file" msgid="2067725459821997463">"\"<xliff:g id="FILE_NAME">%1$s</xliff:g>\" ачылбай жатат: <xliff:g id="EXACT_REASON">%2$s</xliff:g>."</string>
     <string name="fail_reason_could_not_initialize_exporter" msgid="707260459259688510">"Экспорттоо башталбай жатат: <xliff:g id="EXACT_REASON">%s</xliff:g>."</string>
     <string name="fail_reason_no_exportable_contact" msgid="8728506011371262065">"Экспортко жарактуу байланыш жок."</string>
     <string name="missing_required_permission" msgid="5865884842972833120">"Керектүү уруксатты өчүрүп койгонсуз."</string>
     <string name="fail_reason_error_occurred_during_export" msgid="3018855323913649063">"Экспорттоо учурунда ката кетти: \"<xliff:g id="EXACT_REASON">%s</xliff:g>\"."</string>
-    <string name="fail_reason_too_long_filename" msgid="3393764245254738333">"Талап кылынган файлдын аты өтө узун (\"<xliff:g id="FILENAME">%s</xliff:g>\")."</string>
     <string name="fail_reason_io_error" msgid="6748358842976073255">"I/O катасы"</string>
     <string name="fail_reason_low_memory_during_import" msgid="875222757734882898">"Эстутум жетишсиз. Файл өтө чоң окшойт."</string>
-    <string name="fail_reason_vcard_parse_error" msgid="888263542360355784">"Аныкталбаган себептерден улам vCard файлынын синтаксикалык анализи аткарылбай жатат."</string>
     <string name="fail_reason_not_supported" msgid="8219562769267148825">"Бул формат колдоого алынбайт."</string>
-    <string name="fail_reason_failed_to_collect_vcard_meta_info" msgid="6427931733267328564">"Берилген vCard файл(дар)ынын мета маалыматтарын чогултуу мүмкүн болбой жатат."</string>
-    <string name="fail_reason_failed_to_read_files" msgid="5823434810622484922">"Бир же эки файл өткөрүлүп алынбай жатат (%s)."</string>
     <string name="exporting_vcard_finished_title" msgid="4767045779458185251">"<xliff:g id="FILENAME">%s</xliff:g> өткөрүлүп бүттү."</string>
     <string name="exporting_vcard_finished_title_fallback" msgid="6060472638008218274">"Байланыштар өткөрүлүп бүттү."</string>
     <string name="exporting_vcard_finished_toast" msgid="1739055986856453882">"Байланыштар өткөрүлүп берилди. Байланыштар менен бөлүшүү үчүн эскертмени басыңыз."</string>
     <string name="touch_to_share_contacts" msgid="4882485525268469736">"Байланыштар менен бөлүшүү үчүн таптап коюңуз."</string>
     <string name="exporting_vcard_canceled_title" msgid="2652222370493306887">"<xliff:g id="FILENAME">%s</xliff:g> файлын экспорттоо токтотулду."</string>
-    <!-- no translation found for exporting_contact_list_title (9072240631534457415) -->
-    <skip />
+    <string name="exporting_contact_list_title" msgid="9072240631534457415">"Байланыштын чоо-жайы өткөрүлүп берилүүдө"</string>
     <string name="exporting_contact_list_message" msgid="3367949209642931952">"Байланыштын дайындары өткөрүлүп берилүүдө."</string>
     <string name="composer_failed_to_get_database_infomation" msgid="1765944280846236723">"Дайындар базасынын маалыматтары алынбай койду."</string>
-    <string name="composer_has_no_exportable_contact" msgid="3296493229040294335">"Экспорттоло турган байланыштар жок. Эгер байланыштар телефонуңузда болсо, айрым дайындарды камсыздоочулар байланыштарды телефондон экспорттоого жол бербеши мүмкүн."</string>
+    <string name="composer_has_no_exportable_contact" msgid="5712531702823346549">"Экспортко жарактуу байланыш жок."</string>
     <string name="composer_not_initialized" msgid="2321648986367005254">"vCard түзүүчү туура эмес иштеп баштады."</string>
     <string name="exporting_contact_failed_title" msgid="4892358112409576342">"Экспорттой албады"</string>
     <string name="exporting_contact_failed_message" msgid="4938527850142003141">"Байланыш маалыматтары өткөрүлүп берилген жок.\nСебеби: \"<xliff:g id="FAIL_REASON">%s</xliff:g>\""</string>
-    <!-- no translation found for importing_vcard_description (4245275224298571351) -->
-    <skip />
+    <string name="importing_vcard_description" msgid="4245275224298571351">"<xliff:g id="NAME">%s</xliff:g> өткөрүлүп алынууда"</string>
     <string name="reading_vcard_failed_title" msgid="4251647443358422855">"vCard файдарынын дайындарын окуу мүмкүн эмес"</string>
-    <string name="reading_vcard_canceled_title" msgid="1925216585981542019">"vCard файлдарынын дайындарын окуу токтотулду"</string>
-    <!-- no translation found for importing_vcard_finished_title (3341541727268747967) -->
-    <skip />
+    <string name="importing_vcard_finished_title" msgid="3341541727268747967">"<xliff:g id="FILENAME">%s</xliff:g> vCard импорттолуп бүттү"</string>
     <string name="importing_vcard_canceled_title" msgid="2147475978165599336">"<xliff:g id="FILENAME">%s</xliff:g> файлын импорттоо токтотулду"</string>
-    <!-- no translation found for vcard_import_will_start_message (2804911199145873396) -->
-    <skip />
-    <!-- no translation found for vcard_import_will_start_message_with_default_name (1022969530654129470) -->
-    <skip />
+    <string name="vcard_import_will_start_message" msgid="2804911199145873396">"<xliff:g id="FILENAME">%s</xliff:g> бир аздан кийин өткөрүлүп алынат."</string>
+    <string name="vcard_import_will_start_message_with_default_name" msgid="1022969530654129470">"Файл бир аздан кийин өткөрүлүп алынат."</string>
     <string name="vcard_import_request_rejected_message" msgid="2890471184508516011">"vCard файлдарынын өткөрүп берүү талабы четке кагылды. Кийинчерээк кайра аракет кылып көрүңүз."</string>
-    <!-- no translation found for vcard_export_will_start_message (2210241345252081463) -->
-    <skip />
-    <string name="vcard_export_will_start_message_fallback" msgid="6553826997490909749">"Файл бир аздан кийин өткөрүлүп берилет."</string>
     <string name="contacts_export_will_start_message" msgid="8538705791417534431">"Байланыштар жакында өткөрүлүп берилет."</string>
     <string name="vcard_export_request_rejected_message" msgid="2844874826431327531">"vCard файлдарын өткөрүп берүү талабы четке кагылды. Кийинчерээк кайра аракет кылып көрүңүз."</string>
-    <!-- no translation found for vcard_unknown_filename (7171709890959915954) -->
-    <skip />
+    <string name="vcard_unknown_filename" msgid="7171709890959915954">"байланыш"</string>
     <string name="caching_vcard_message" msgid="4926308675041506756">"vCard файл(дар)ы жергиликтүү убактылуу сактагычка кэштелип жатат. Андан соң, өткөрүп алуу башталат."</string>
     <string name="vcard_import_failed" msgid="5223531255894842406">"vCard файлдары өткөрүлүп алынган жок."</string>
     <string name="nfc_vcard_file_name" msgid="2823095213265993609">"NFC аркылуу"</string>
-    <string name="confirm_export_title" msgid="6834385377255286349">"Байланыштар өткөрүлүп берилсинби?"</string>
     <string name="caching_vcard_title" msgid="1226272312940516605">"Кэштөө"</string>
-    <!-- no translation found for progress_notifier_message (2311011466908220528) -->
-    <skip />
+    <string name="progress_notifier_message" msgid="2311011466908220528">"<xliff:g id="CURRENT_NUMBER">%1$s</xliff:g>/<xliff:g id="TOTAL_NUMBER">%2$s</xliff:g>: <xliff:g id="NAME">%3$s</xliff:g> өткөрүп алынууда"</string>
     <string name="export_to_vcf_file" product="default" msgid="4407527157056120858">".vcf файлына өткөрүп берүү"</string>
     <string name="display_options_sort_list_by" msgid="7028809117272018712">"Төмөнкү боюнча иргөө"</string>
     <string name="display_options_sort_by_given_name" msgid="2778421332815687873">"Аты"</string>
@@ -675,13 +453,10 @@
     <string name="display_options_view_given_name_first" msgid="3616004640258761473">"Аты биринчи жазылсын"</string>
     <string name="display_options_view_family_name_first" msgid="956445100777296467">"Фамилиясы биринчи жазылсын"</string>
     <string name="settings_accounts" msgid="350219740670774576">"Каттоо эсептер"</string>
-    <string name="default_editor_account" msgid="699591683362420991">"Жаңы байланыштарыңыз үчүн демейки каттоо эсеби"</string>
-    <string name="settings_my_info_title" msgid="1534272456405343119">"Менин дайындарым"</string>
+    <string name="default_editor_account" msgid="699591683362420991">"Жаңы байланыштар үчүн демейки каттоо эсеби"</string>
+    <string name="settings_my_info_title" msgid="1534272456405343119">"Өзүм жөнүндө маалымат"</string>
     <string name="set_up_profile" msgid="7370213843590143771">"Профилди жөндөө"</string>
     <string name="setting_about" msgid="7014388749752042863">"Байланыштар жөнүндө"</string>
-    <!-- no translation found for share_visible_contacts (890150378880783797) -->
-    <skip />
-    <string name="share_visible_contacts_failure" msgid="7324717548166915560">"Көрүнүктүү байланыштар бөлүшүлбөй койду."</string>
     <string name="share_favorite_contacts" msgid="4280926751003081042">"Сүйүктүү байланыштарды бөлүшүү"</string>
     <string name="share_contacts" msgid="8109287987498711664">"Бардык байланыштар менен бөлүшүү"</string>
     <string name="share_contacts_failure" msgid="1216431977330560559">"Байланыштар бөлүшүлбөй койду."</string>
@@ -689,47 +464,32 @@
     <string name="dialog_import" msgid="2423592905927819672">"Байланыштарды импорттоо"</string>
     <string name="share_error" msgid="948429331673358107">"Бул байланышты бөлүшүү мүмкүн эмес."</string>
     <string name="no_contact_to_share" msgid="1276397530378323033">"Бөлүшө турган байланыш жок."</string>
-    <!-- no translation found for menu_contacts_filter (2165153460860262501) -->
-    <skip />
-    <!-- no translation found for activity_title_contacts_filter (8275542497615516969) -->
-    <skip />
-    <string name="custom_list_filter" msgid="2105275443109077687">"Ылайыкташтырылган көрүнүштү аныктоо"</string>
+    <string name="menu_contacts_filter" msgid="2165153460860262501">"Көрсөтүлүүчү байланыштар"</string>
+    <string name="activity_title_contacts_filter" msgid="8275542497615516969">"Көрсөтүлүүчү байланыштар"</string>
+    <string name="custom_list_filter" msgid="9048525797111024204">"Көрүнүштү ыңгайлаштыруу"</string>
     <string name="menu_custom_filter_save" msgid="2679793632208086460">"Сактоо"</string>
     <string name="hint_findContacts" msgid="7128627979899070325">"Байланыштарды издеңиз"</string>
-    <!-- no translation found for contactsFavoritesLabel (8417039765586853670) -->
-    <skip />
-    <string name="listTotalAllContactsZero" msgid="5513001821794568211">"Эч бир байланыш жок."</string>
-    <string name="menu_clear_frequents" msgid="7688250191932838833">"Көп чалуулар тизмесин тазалоо"</string>
-    <string name="menu_select_sim" msgid="3603578201960504010">"SIM карта тандаңыз"</string>
-    <string name="menu_accounts" msgid="1424330057450189074">"Каттоо эсептерин башкаруу"</string>
+    <string name="contactsFavoritesLabel" msgid="8417039765586853670">"Cүйүктүүлөр"</string>
     <string name="menu_import" msgid="6107961135813836467">"Өткөрүп алуу"</string>
     <string name="menu_export" msgid="2658783911863503902">"Өткөрүп берүү"</string>
     <string name="menu_blocked_numbers" msgid="5272951629083025995">"Бөгөттөлгөн номерлер"</string>
-    <!-- no translation found for contact_status_update_attribution (752179367353018597) -->
-    <skip />
-    <!-- no translation found for contact_status_update_attribution_with_date (7358045508107825068) -->
-    <skip />
+    <string name="contact_status_update_attribution" msgid="752179367353018597">"<xliff:g id="SOURCE">%1$s</xliff:g> аркылуу"</string>
+    <string name="contact_status_update_attribution_with_date" msgid="7358045508107825068">"<xliff:g id="DATE">%1$s</xliff:g> <xliff:g id="SOURCE">%2$s</xliff:g> аркылуу"</string>
     <string name="action_menu_back_from_search" msgid="8793348588949233348">"издөөнү токтотуу"</string>
     <string name="description_clear_search" msgid="688023606766232904">"Издөөнү тазалоо"</string>
-    <string name="settings_contact_display_options_title" msgid="4890258244494248687">"Байланышты көрсөтүү параметрлери"</string>
     <string name="select_account_dialog_title" msgid="5478489655696599219">"Каттоо эсеби"</string>
     <string name="set_default_account" msgid="4311613760725609801">"Чалууларда ар дайым бул колдонулсун"</string>
-    <string name="select_phone_account_for_calls" msgid="3810607744451014540">"Төмөнкү менен чалуу"</string>
     <string name="call_with_a_note" msgid="8389827628360791676">"Кыска жазуу менен чалуу"</string>
     <string name="call_subject_hint" msgid="3043028982108363572">"Чалуу менен жөнөтүлө турган кыска жазууну териңиз…"</string>
     <string name="send_and_call_button" msgid="7740295432834590737">"ЖӨНӨТҮҮ ЖАНА ЧАЛУУ"</string>
     <string name="call_subject_limit" msgid="4545212901205397669">"<xliff:g id="COUNT">%1$s</xliff:g> / <xliff:g id="LIMIT">%2$s</xliff:g>"</string>
     <string name="call_subject_type_and_number" msgid="7667188212129152558">"<xliff:g id="TYPE">%1$s</xliff:g> • <xliff:g id="NUMBER">%2$s</xliff:g>"</string>
-    <plurals name="tab_title_with_unread_items" formatted="false" msgid="7682024005130747825">
-      <item quantity="other"> <xliff:g id="TITLE_2">%1$s</xliff:g>. <xliff:g id="COUNT_3">%2$d</xliff:g> нерсе окула элек. </item>
-      <item quantity="one"> <xliff:g id="TITLE_0">%1$s</xliff:g>. <xliff:g id="COUNT_1">%2$d</xliff:g> нерсе окула элек. </item>
-    </plurals>
     <string name="about_build_version" msgid="1765533099416999801">"Куралма версиясы"</string>
-    <string name="about_open_source_licenses" msgid="6479990452352919641">"Ачык программалык камсыздоонун уруксаттамалары"</string>
-    <string name="about_open_source_licenses_summary" msgid="57418386931763994">"Ачык программалык камсыздоонун уруксаттамасынын чоо-жайы"</string>
+    <string name="about_open_source_licenses" msgid="6479990452352919641">"Баштапкы коду ачык программалардын уруксаттамалары"</string>
+    <string name="about_open_source_licenses_summary" msgid="57418386931763994">"Баштапкы коду ачык программалардын уруксаттамаларынын чоо-жайы"</string>
     <string name="about_privacy_policy" msgid="3705518622499152626">"Купуялык саясаты"</string>
     <string name="about_terms_of_service" msgid="4642400812150296723">"Тейлөө шарттары"</string>
-    <string name="activity_title_licenses" msgid="5467767062737708066">"Ачык программалык камсыздоонун уруксаттамалары"</string>
+    <string name="activity_title_licenses" msgid="5467767062737708066">"Баштапкы коду ачык программалардын уруксаттамалары"</string>
     <string name="url_open_error_toast" msgid="452592089815420457">"URL ачылбай койду."</string>
     <string name="account_filter_view_checked" msgid="6696859503887762213">"<xliff:g id="ACCOUNT_INFO">%s</xliff:g> белгиленди"</string>
     <string name="account_filter_view_not_checked" msgid="2248684521205038389">"<xliff:g id="ACCOUNT_INFO">%s</xliff:g> белгиленген жок"</string>
@@ -737,8 +497,8 @@
     <string name="description_delete_contact" msgid="53835657343783663">"Жок кылуу"</string>
     <string name="description_no_name_header" msgid="8884991311595943271">"Эллипс"</string>
     <string name="callDurationSecondFormat" msgid="7067644915903528776">"<xliff:g id="SECONDS">%s</xliff:g> сек"</string>
-    <string name="callDurationMinuteFormat" msgid="4647095486747447674">"<xliff:g id="MINUTES">%s</xliff:g> мүн. <xliff:g id="SECONDS">%s</xliff:g> сек"</string>
-    <string name="callDurationHourFormat" msgid="7392254193808506640">"<xliff:g id="MINUTES_0">%s</xliff:g> с <xliff:g id="MINUTES_1">%s</xliff:g> мүн <xliff:g id="SECONDS">%s</xliff:g> сек"</string>
+    <string name="callDurationMinuteFormat" msgid="4647095486747447674">"<xliff:g id="MINUTES">%1$s</xliff:g> мүн. <xliff:g id="SECONDS">%2$s</xliff:g> сек"</string>
+    <string name="callDurationHourFormat" msgid="7392254193808506640">"<xliff:g id="MINUTES_0">%1$s</xliff:g> с <xliff:g id="MINUTES_1">%2$s</xliff:g> мүн <xliff:g id="SECONDS">%3$s</xliff:g> сек"</string>
     <string name="dynamic_shortcut_disabled_message" msgid="249939425761315252">"Кыска жол өчүрүлдү"</string>
     <string name="dynamic_shortcut_contact_removed_message" msgid="6845645831837615899">"Байланыш алынып салынган"</string>
     <string name="sim_import_button_text" msgid="4270841592496619317">"Өткөрүп алуу"</string>
@@ -750,8 +510,8 @@
       <item quantity="one">SIM-картадан 1 байланыш өткөрүлүп алынды</item>
     </plurals>
     <string name="sim_import_failed_toast" msgid="5559267299793622705">"SIM-картадагы байланыштар өткөрүлүп алынган жок"</string>
-    <string name="sim_import_dialog_title" msgid="6699935401502172530">"Импорттоло турган байланыштарды тандаңыз"</string>
-    <string name="sim_import_cancel_content_description" msgid="2388362519166414488">"Импорттоону жокко чыгаруу"</string>
+    <string name="sim_import_title" msgid="2511154832820812822">"SIM-картадан өткөрүп алуу"</string>
+    <string name="sim_import_cancel_content_description" msgid="1619832410253424452">"Жокко чыгаруу"</string>
     <string name="auto_sync_off" msgid="2180147284456026587">"Түзмөктүн авто шайкештештирүү функциясы өчүрүлгөн. Күйгүзүү үчүн тийип коюңуз."</string>
     <string name="dismiss_sync_alert" msgid="8941131776605093596">"Этибарга албоо"</string>
     <string name="account_sync_off" msgid="7646143254066243924">"Каттоо эсебинин шайкештештирүү функциясы өчүрүлгөн. Күйгүзүү үчүн тийип коюңуз."</string>
@@ -760,6 +520,9 @@
     <string name="turn_auto_sync_on_dialog_confirm_btn" msgid="1070332014838295599">"Күйгүзүү"</string>
     <string name="connection_error_message" msgid="7046408921529247089">"Байланыш жок"</string>
     <string name="single_sim_display_label" msgid="6985770499439371497">"SIM-карта"</string>
-    <!-- no translation found for show_more_content_description (4277410425912984722) -->
-    <skip />
+    <string name="show_more_content_description" msgid="4277410425912984722">"Дагы көрсөтүү"</string>
+    <string name="importing_sim_finished_title" msgid="5196369441294050721">"SIM-картадан өткөрүп алуу аяктады"</string>
+    <string name="importing_sim_failed_title" msgid="39706901030537985">"Импорттолбой калды"</string>
+    <string name="importing_sim_failed_message" msgid="3345258302998021066">"SIM-картадан байланыштар импорттолбой койду"</string>
+    <string name="importing_sim_in_progress_title" msgid="3638299581276676109">"SIM-картадан өткөрүлүп алынууда"</string>
 </resources>

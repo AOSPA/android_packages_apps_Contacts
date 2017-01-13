@@ -35,17 +35,15 @@ import android.widget.TextView;
 
 import com.android.contacts.R;
 import com.android.contacts.activities.ActionBarAdapter;
-import com.android.contacts.common.list.ContactEntryListFragment;
-import com.android.contacts.common.list.MultiSelectEntryContactListAdapter;
-import com.android.contacts.common.list.MultiSelectEntryContactListAdapter.SelectedContactsListener;
-import com.android.contacts.common.logging.ListEvent.ActionType;
-import com.android.contacts.common.logging.Logger;
-import com.android.contacts.common.logging.SearchState;
-import com.android.contacts.common.model.AccountTypeManager;
-import com.android.contacts.common.model.account.AccountType;
-import com.android.contacts.common.model.account.AccountWithDataSet;
-import com.android.contacts.common.model.account.GoogleAccountType;
 import com.android.contacts.group.GroupMembersFragment;
+import com.android.contacts.list.MultiSelectEntryContactListAdapter.SelectedContactsListener;
+import com.android.contacts.logging.ListEvent.ActionType;
+import com.android.contacts.logging.Logger;
+import com.android.contacts.logging.SearchState;
+import com.android.contacts.model.AccountTypeManager;
+import com.android.contacts.model.account.AccountType;
+import com.android.contacts.model.account.AccountWithDataSet;
+import com.android.contacts.model.account.GoogleAccountType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,29 +68,10 @@ public abstract class MultiSelectContactsListFragment<T extends MultiSelectEntry
 
     private static final String EXTRA_KEY_SELECTED_CONTACTS = "selected_contacts";
 
-    private static final String KEY_SEARCH_RESULT_CLICKED = "search_result_clicked";
-
     private OnCheckBoxListActionListener mCheckBoxListListener;
-    private boolean mSearchResultClicked;
 
     public void setCheckBoxListListener(OnCheckBoxListActionListener checkBoxListListener) {
         mCheckBoxListListener = checkBoxListListener;
-    }
-
-    /**
-     * Whether a search result was clicked by the user. Tracked so that we can distinguish
-     * between exiting the search mode after a result was clicked from exiting w/o clicking
-     * any search result.
-     */
-    public boolean wasSearchResultClicked() {
-        return mSearchResultClicked;
-    }
-
-    /**
-     * Resets whether a search result was clicked by the user to false.
-     */
-    public void resetSearchResultClicked() {
-        mSearchResultClicked = false;
     }
 
     public void setAnimateOnLoad(boolean shouldAnimate) {
@@ -121,7 +100,6 @@ public abstract class MultiSelectContactsListFragment<T extends MultiSelectEntry
             final TreeSet<Long> selectedContactIds = (TreeSet<Long>)
                     savedInstanceState.getSerializable(EXTRA_KEY_SELECTED_CONTACTS);
             getAdapter().setSelectedContactIds(selectedContactIds);
-            mSearchResultClicked = savedInstanceState.getBoolean(KEY_SEARCH_RESULT_CLICKED);
         }
     }
 
@@ -151,7 +129,6 @@ public abstract class MultiSelectContactsListFragment<T extends MultiSelectEntry
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_KEY_SELECTED_CONTACTS, getSelectedContactIds());
-        outState.putBoolean(KEY_SEARCH_RESULT_CLICKED, mSearchResultClicked);
     }
 
     public void displayCheckBoxes(boolean displayCheckBoxes) {
@@ -206,11 +183,6 @@ public abstract class MultiSelectContactsListFragment<T extends MultiSelectEntry
         }
         if (getAdapter().isDisplayingCheckBoxes()) {
             getAdapter().toggleSelectionOfContactId(contactId);
-        } else {
-            if (isSearchMode()) {
-                mSearchResultClicked = true;
-                Logger.logSearchEvent(createSearchStateForSearchResultClick(position));
-            }
         }
         if (mCheckBoxListListener != null && getAdapter().getSelectedContactIds().size() == 0) {
             mCheckBoxListListener.onStopDisplayingCheckBoxes();

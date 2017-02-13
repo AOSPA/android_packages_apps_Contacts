@@ -51,6 +51,8 @@
     <uses-permission android:name="com.android.voicemail.permission.READ_VOICEMAIL" />
     <!-- Following used for Contact metadata syncing -->
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <!-- For enrich call -->
+    <uses-permission android:name="com.qualcomm.qti.internal.permission.ACCESS_ENRICHED_CALL" />
 
     <application
         android:name="com.android.contacts.ContactsApplication"
@@ -62,6 +64,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="false"
     >
+        <uses-library android:name="org.codeaurora.rcscommon" android:required="false" />
 
         <!-- The main Contacts activity with the contact list, favorites, and groups. -->
         <activity android:name=".activities.PeopleActivity"

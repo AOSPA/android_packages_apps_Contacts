@@ -162,6 +162,7 @@ import com.android.contacts.common.util.MaterialColorMapUtils.MaterialPalette;
 import com.android.contacts.common.util.UriUtils;
 import com.android.contacts.common.util.ViewUtil;
 import com.android.contacts.detail.ContactDisplayUtils;
+import com.android.contacts.detail.EnrichDisplayUtils;
 import com.android.contacts.editor.AggregationSuggestionEngine;
 import com.android.contacts.editor.AggregationSuggestionEngine.Suggestion;
 import com.android.contacts.editor.ContactEditorFragment;
@@ -207,6 +208,8 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.android.contacts.quickcontact.ExpandingEntryCardView.VideoCallingCallback;
+import org.codeaurora.rcscommon.CallComposerData;
+import org.codeaurora.rcscommon.RcsManager;
 
 /**
  * Mostly translucent {@link Activity} that shows QuickContact dialog. It loads
@@ -693,6 +696,138 @@ public class QuickContactActivity extends ContactsActivity
                 ContextCompat.getColor(this, R.color.disabled_button_text));
     }
 
+    private final int MSG_REFRESH_CONTACT = 0;
+
+    Handler mEnrichHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_REFRESH_CONTACT:
+                    if (mContactData != null) {
+                        reFreshContact();
+                    }
+                    break;
+            }
+        }
+    };
+
+
+    EnrichDisplayUtils.EnrichUpdateCallback mEnrichUpdateCallback =
+            new EnrichDisplayUtils.EnrichUpdateCallback() {
+
+                @Override
+                public void updateContact() {
+                    // post to looper as this has
+                    // animation change
+                    Message msg = Message.obtain();
+                    msg.what = MSG_REFRESH_CONTACT;
+                    mEnrichHandler.sendMessage(msg);
+                }
+
+                @Override
+                public void beginEnrichCall() {
+                    QuickContactActivity.this.beginEnrichCall();
+                }
+
+                @Override
+                public void endEnrichCall() {
+                    QuickContactActivity.this.endEnrichCall();
+
+                }
+
+                @Override
+                public void startCallWithEnrichData
+                        (final int dataId,
+                         final String phoneNumber,
+                         final CallComposerData data) {
+                    QuickContactActivity.this.startCallWithEnrichData(dataId,
+                            phoneNumber, data);
+                }
+            };
+
+    class EnrichCallData {
+        int dataId;
+        String phoneNumber;
+        CallComposerData data;
+
+        public EnrichCallData(int dataId, String phoneNumber, CallComposerData data) {
+            this.dataId = dataId;
+            this.phoneNumber = phoneNumber;
+            this.data = data;
+        }
+    }
+
+    private void beginEnrichCall() {
+        mHasIntentLaunched = true;
+    }
+
+    private void endEnrichCall() {
+        mHasIntentLaunched = false;
+    }
+
+    /**
+     *
+     * API handles enrich call invocation
+     *
+     * Modification required to handle asynchronous callback
+     * from enrich call.
+     *
+     * @param dataId
+     * @param number
+     * @param data
+     */
+    private void startCallWithEnrichData(int dataId, String number,
+                                         CallComposerData data) {
+        final Intent intent = CallUtil.getCallIntent(number);
+        if (TouchPointManager.getInstance().hasValidPoint()) {
+            Bundle extras = new Bundle();
+            extras.putParcelable(TouchPointManager.TOUCH_POINT,
+                    TouchPointManager.getInstance().getPoint());
+            intent.putExtra(TelecomManager.EXTRA_OUTGOING_CALL_EXTRAS, extras);
+        }
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // pass enrich data to Dialer
+        intent.putExtra(RcsManager.
+                ENRICH_CALL_INTENT_EXTRA, data);
+
+        try {
+            ImplicitIntentsUtil.startActivityInAppIfPossible(
+                    QuickContactActivity.this, intent);
+        } catch (SecurityException ex) {
+            Toast.makeText(QuickContactActivity.this, R.string.missing_app,
+                    Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "QuickContacts does not have permission to launch "
+                    + intent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(QuickContactActivity.this, R.string.missing_app,
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        // Default to USAGE_TYPE_CALL. Usage is summed among all types for sorting each data id
+        // so the exact usage type is not necessary in all cases
+        String usageType = DataUsageFeedback.USAGE_TYPE_CALL;
+
+        // Data IDs start at 1 so anything less is invalid
+        if (dataId > 0) {
+            final Uri dataUsageUri = DataUsageFeedback.FEEDBACK_URI.buildUpon()
+                    .appendPath(String.valueOf(dataId))
+                    .appendQueryParameter(DataUsageFeedback.USAGE_TYPE, usageType)
+                    .build();
+            try {
+                final boolean successful = getContentResolver().update(
+                        dataUsageUri, new ContentValues(), null, null) > 0;
+                if (!successful) {
+                    Log.w(TAG, "DataUsageFeedback increment failed");
+                }
+            } catch (SecurityException ex) {
+                Log.w(TAG, "DataUsageFeedback increment failed", ex);
+            }
+        } else {
+            Log.w(TAG, "Invalid Data ID");
+        }
+
+    }
+
     private interface ContextMenuIds {
         static final int COPY_TEXT = 0;
         static final int CLEAR_DEFAULT = 1;
@@ -1046,6 +1181,13 @@ public class QuickContactActivity extends ContactsActivity
                 }
             });
         }
+        if (RcsManager.getInstance(mContext)
+                .isEnrichCallFeatureEnabled()) {
+            EnrichDisplayUtils.initializeEnrichCall(
+                    getApplicationContext(),
+                    mEnrichUpdateCallback);
+        }
+
 
         mRecentCard.setOnClickListener(mEntryClickHandler);
         mRecentCard.setTitle(getResources().getString(R.string.recent_card_title));
@@ -1801,6 +1943,8 @@ public class QuickContactActivity extends ContactsActivity
         String thirdContentDescription = null;
         Bundle thirdExtras = null;
         int iconResourceId = 0;
+        Drawable enrichIcon = null;
+        String enrichContentDescription = null;
 
         context = context.getApplicationContext();
         final Resources res = context.getResources();
@@ -1988,6 +2132,16 @@ public class QuickContactActivity extends ContactsActivity
                         thirdContentDescription =
                                 res.getString(R.string.description_video_call);
                     }
+                }
+
+                // Just enable Enrich icon here. Decision on capability will
+                // be handled as part of ContactDisplayUtils
+                if (RcsManager.getInstance(context)
+                        .isEnrichCallFeatureEnabled()) {
+                    enrichIcon = res.getDrawable(
+                            R.drawable.ic_enrich_call_black_24dp);
+                    enrichContentDescription =
+                            res.getString(R.string.description_enrich_call);
                 }
             }
         } else if (dataItem instanceof EmailDataItem) {
@@ -2215,7 +2369,7 @@ public class QuickContactActivity extends ContactsActivity
                         : smsContentDescription,
                 shouldApplyColor, isEditable,
                 entryContextMenuInfo, thirdIcon, thirdIntent, thirdContentDescription, thirdAction,
-                thirdExtras, iconResourceId);
+                thirdExtras, iconResourceId, enrichIcon, enrichContentDescription);
     }
 
     private List<Entry> dataItemsToEntries(List<DataItem> dataItems,
@@ -2491,7 +2645,9 @@ public class QuickContactActivity extends ContactsActivity
                     /* thirdContentDescription = */ null,
                     /* thirdAction = */ Entry.ACTION_NONE,
                     /* thirdActionExtras = */ null,
-                    interaction.getIconResourceId()));
+                    interaction.getIconResourceId(),
+                    /* enrichIcon = */ null,
+                    /* enrichContentDescription = */ null));
         }
         return entries;
     }
@@ -2725,6 +2881,7 @@ public class QuickContactActivity extends ContactsActivity
 
     @Override
     public void onDestroy() {
+        EnrichDisplayUtils.releaseEnrichCall();
         super.onDestroy();
         if (mAggregationSuggestionEngine != null) {
             mAggregationSuggestionEngine.quit();

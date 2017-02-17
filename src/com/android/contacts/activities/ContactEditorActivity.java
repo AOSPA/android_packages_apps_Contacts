@@ -281,13 +281,8 @@ public class ContactEditorActivity extends AppCompatContactsActivity implements
                     if (mFinishActivityOnSaveCompleted) {
                         setResult(resultIntent == null ? RESULT_CANCELED : RESULT_OK, resultIntent);
                     } else if (resultIntent != null) {
-                        // If it's a smart profile Intent it must be started "for result"
-                        if (QuickContact.ACTION_QUICK_CONTACT.equals(resultIntent.getAction())) {
-                            ImplicitIntentsUtil.startActivityInApp(
-                                    ContactEditorActivity.this, resultIntent);
-                        } else {
-                            startActivityForResult(resultIntent, /* requestCode */ 0);
-                        }
+                        ImplicitIntentsUtil.startActivityInApp(
+                                ContactEditorActivity.this, resultIntent);
                     }
                     finish();
                 }
@@ -318,9 +313,7 @@ public class ContactEditorActivity extends AppCompatContactsActivity implements
     public void onCreate(Bundle savedState) {
         super.onCreate(savedState);
 
-        if (RequestPermissionsActivity.startPermissionActivity(this)) {
-            return;
-        }
+        RequestPermissionsActivity.startPermissionActivityIfNeeded(this);
 
         final Intent intent = getIntent();
         final String action = intent.getAction();

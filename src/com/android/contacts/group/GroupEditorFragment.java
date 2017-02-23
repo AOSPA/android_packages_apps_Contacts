@@ -242,7 +242,8 @@ public class GroupEditorFragment extends Fragment implements SelectAccountDialog
             onRestoreInstanceState(savedInstanceState);
             if (mStatus == Status.SELECTING_ACCOUNT) {
                 // Account select dialog is showing.  Don't setup the editor yet.
-            } else if (mStatus == Status.LOADING || mListToDisplay.size() == 0) {
+            } else if (mStatus == Status.LOADING
+                    || (mGroupUri != null && mListToDisplay.size() == 0)) {
                 startGroupMetaDataLoader();
             } else {
                 setupEditorForAccount();

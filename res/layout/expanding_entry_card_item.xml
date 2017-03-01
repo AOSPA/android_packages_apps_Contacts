@@ -115,12 +115,26 @@
          android:id="@+id/icon_alternate"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_alignParentEnd="true"
          android:layout_alignParentTop="true"
+         android:layout_alignWithParentIfMissing="true"
+         android:layout_toStartOf="@+id/enrich_icon"
          android:visibility="gone"
          android:background="?android:attr/selectableItemBackgroundBorderless"
          android:paddingTop="@dimen/expanding_entry_card_item_icon_margin_top"
          android:paddingBottom="@dimen/expanding_entry_card_item_icon_margin_bottom"
          android:paddingLeft="@dimen/expanding_entry_card_item_icon_margin_left"
          android:paddingRight="@dimen/expanding_entry_card_item_icon_margin_right"/>
+
+    <ImageView
+        android:id="@+id/enrich_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:paddingTop="@dimen/expanding_entry_card_item_icon_margin_top"
+        android:paddingBottom="@dimen/expanding_entry_card_item_icon_margin_bottom"
+        android:paddingLeft="@dimen/expanding_entry_card_item_icon_margin_left"
+        android:paddingRight="@dimen/expanding_entry_card_item_icon_margin_right" />
 </view>

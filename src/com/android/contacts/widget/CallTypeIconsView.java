@@ -44,6 +44,12 @@ public class CallTypeIconsView extends View {
     private int mHeight;
 
     private static Resources sResources;
+    private static final int INCOMING_IMS_TYPE = 1000;
+    private static final int OUTGOING_IMS_TYPE = 1001;
+    private static final int MISSED_IMS_TYPE = 1002;
+    private static final int INCOMING_WIFI_TYPE = 1003;
+    private static final int OUTGOING_WIFI_TYPE = 1004;
+    private static final int MISSED_WIFI_TYPE = 1005;
 
     public CallTypeIconsView(Context context) {
         this(context, null);
@@ -88,10 +94,16 @@ public class CallTypeIconsView extends View {
     private Drawable getCallTypeDrawable(int callType) {
         switch (callType) {
             case Calls.INCOMING_TYPE:
+            case INCOMING_IMS_TYPE:
+            case INCOMING_WIFI_TYPE:
                 return sResources.incoming;
             case Calls.OUTGOING_TYPE:
+            case OUTGOING_IMS_TYPE:
+            case OUTGOING_WIFI_TYPE:
                 return sResources.outgoing;
             case Calls.MISSED_TYPE:
+            case MISSED_IMS_TYPE:
+            case MISSED_WIFI_TYPE:
                 return sResources.missed;
             case Calls.VOICEMAIL_TYPE:
                 return sResources.voicemail;

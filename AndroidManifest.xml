@@ -74,7 +74,7 @@
             android:alwaysRetainTaskState="true"
             android:launchMode="singleTop"
             android:resizeableActivity="true"
-            android:theme="@style/PeopleActivityTheme"
+            android:theme="@style/LaunchScreenTheme"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -185,6 +185,8 @@
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustResize"
             android:visibleToInstantApps="true">
+            <meta-data android:name="android.app.shortcuts.new_config"
+                android:value="true" />
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -331,6 +333,15 @@
         <receiver
             android:name=".quickcontact.QuickContactBroadcastReceiver"
             android:exported="false"/>
+
+        <!-- Responsible for creating notification channels when boot is completed or when app is
+        re-installed -->
+        <receiver android:name=".interactions.OnBootOrUpgradeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
         <activity-alias
             android:name="ContactShortcut"

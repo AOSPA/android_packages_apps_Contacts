@@ -35,6 +35,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
@@ -45,6 +46,7 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.os.BuildCompat;
 import android.util.Log;
 
 import com.android.contacts.activities.RequestPermissionsActivity;
@@ -91,6 +93,7 @@ public class DynamicShortcuts {
     // though new ones may be added
     private static final int SHORTCUT_TYPE_UNKNOWN = 0;
     private static final int SHORTCUT_TYPE_CONTACT_URI = 1;
+    private static final int SHORTCUT_TYPE_ACTION_URI = 2;
 
     // The spec specifies that it should be 44dp @ xxxhdpi
     // Note that ShortcutManager.getIconMaxWidth and ShortcutManager.getMaxHeight return different
@@ -163,9 +166,8 @@ public class DynamicShortcuts {
         for (ShortcutInfo shortcut : mShortcutManager.getPinnedShortcuts()) {
             final PersistableBundle extras = shortcut.getExtras();
 
-            if (!shortcut.isDynamic() || extras == null ||
-                    extras.getInt(EXTRA_SHORTCUT_TYPE, SHORTCUT_TYPE_UNKNOWN) !=
-                            SHORTCUT_TYPE_CONTACT_URI) {
+            if (extras == null || extras.getInt(EXTRA_SHORTCUT_TYPE, SHORTCUT_TYPE_UNKNOWN) !=
+                    SHORTCUT_TYPE_CONTACT_URI) {
                 continue;
             }
 
@@ -285,7 +287,7 @@ public class DynamicShortcuts {
             return null;
         }
         final PersistableBundle extras = new PersistableBundle();
-        extras.putInt(EXTRA_SHORTCUT_TYPE, SHORTCUT_TYPE_CONTACT_URI);
+        extras.putInt(EXTRA_SHORTCUT_TYPE, SHORTCUT_TYPE_ACTION_URI);
 
         final ShortcutInfo.Builder builder = new ShortcutInfo.Builder(mContext, id)
                 .setIntent(action)
@@ -325,12 +327,18 @@ public class DynamicShortcuts {
 
     private void addIconForContact(long id, String lookupKey, String displayName,
             ShortcutInfo.Builder builder) {
-        final Bitmap bitmap = getContactPhoto(id);
-        if (bitmap != null) {
-            builder.setIcon(Icon.createWithBitmap(bitmap));
-        } else {
-            builder.setIcon(Icon.createWithBitmap(getFallbackAvatar(displayName, lookupKey)));
+        Bitmap bitmap = getContactPhoto(id);
+        if (bitmap == null) {
+            bitmap = getFallbackAvatar(displayName, lookupKey);
         }
+        final Icon icon;
+        if (BuildCompat.isAtLeastO()) {
+            icon = Icon.createWithAdaptiveBitmap(bitmap);
+        } else {
+            icon = Icon.createWithBitmap(bitmap);
+        }
+
+        builder.setIcon(icon);
     }
 
     private Bitmap getContactPhoto(long id) {
@@ -361,7 +369,7 @@ public class DynamicShortcuts {
         final int sourceWidth = bitmapDecoder.getWidth();
         final int sourceHeight = bitmapDecoder.getHeight();
 
-        final int iconMaxWidth = mShortcutManager.getIconMaxWidth();;
+        final int iconMaxWidth = mShortcutManager.getIconMaxWidth();
         final int iconMaxHeight = mShortcutManager.getIconMaxHeight();
 
         final int sampleSize = Math.min(
@@ -390,25 +398,52 @@ public class DynamicShortcuts {
                 prescaledXOffset, prescaledYOffset,
                 sourceWidth - prescaledXOffset, sourceHeight - prescaledYOffset
         ), opts);
-
         bitmapDecoder.recycle();
 
-        return BitmapUtil.getRoundedBitmap(bitmap, targetSize, targetSize);
+        if (!BuildCompat.isAtLeastO()) {
+            return BitmapUtil.getRoundedBitmap(bitmap, targetSize, targetSize);
+        }
+
+        // If on O or higher, add padding around the bitmap.
+        final int paddingW = (int) (bitmap.getWidth() *
+                AdaptiveIconDrawable.getExtraInsetPercentage());
+        final int paddingH = (int) (bitmap.getHeight() *
+                AdaptiveIconDrawable.getExtraInsetPercentage());
+
+        final Bitmap scaledBitmap = Bitmap.createBitmap(bitmap.getWidth() + paddingW,
+                bitmap.getHeight() + paddingH, bitmap.getConfig());
+
+        final Canvas scaledCanvas = new Canvas(scaledBitmap);
+        scaledCanvas.drawBitmap(bitmap, paddingW / 2, paddingH / 2, null);
+
+        return scaledBitmap;
     }
 
     private Bitmap getFallbackAvatar(String displayName, String lookupKey) {
-        final int w = RECOMMENDED_ICON_PIXEL_LENGTH;
-        final int h = RECOMMENDED_ICON_PIXEL_LENGTH;
+        final int width;
+        final int height;
+        final int padding;
+        if (BuildCompat.isAtLeastO()) {
+            // Add padding on >= O
+            padding = (int) (RECOMMENDED_ICON_PIXEL_LENGTH *
+                    AdaptiveIconDrawable.getExtraInsetPercentage());
+            width = RECOMMENDED_ICON_PIXEL_LENGTH + padding;
+            height = RECOMMENDED_ICON_PIXEL_LENGTH + padding;
+        } else {
+            padding = 0;
+            width = RECOMMENDED_ICON_PIXEL_LENGTH;
+            height = RECOMMENDED_ICON_PIXEL_LENGTH;
+        }
 
         final ContactPhotoManager.DefaultImageRequest request =
                 new ContactPhotoManager.DefaultImageRequest(displayName, lookupKey, true);
         final Drawable avatar = ContactPhotoManager.getDefaultAvatarDrawableForContact(
                 mContext.getResources(), true, request);
-        final Bitmap result = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        final Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         // The avatar won't draw unless it thinks it is visible
         avatar.setVisible(true, true);
         final Canvas canvas = new Canvas(result);
-        avatar.setBounds(0, 0, w, h);
+        avatar.setBounds(padding, padding, width - padding, height - padding);
         avatar.draw(canvas);
         return result;
     }

@@ -276,6 +276,7 @@ public class PeopleActivity extends AppCompatContactsActivity implements
                 SharedPreferenceUtil.setHamburgerMenuClickedBefore(PeopleActivity.this);
                 mMenuClickedBefore = true;
             }
+            drawerView.requestFocus();
             invalidateOptionsMenu();
             // Stop search and selection mode like Gmail and Keep. Otherwise, if user switches to
             // another fragment in navigation drawer, the current search/selection mode will be
@@ -759,6 +760,14 @@ public class PeopleActivity extends AppCompatContactsActivity implements
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // If the drawer is open, consume KEYCODE_BACK event only.
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                // Should eventually go to onBackPressed().
+                return super.onKeyDown(keyCode, event);
+            }
+            return false;
+        }
         // Bring up the search UI if the user starts typing
         final int unicodeChar = event.getUnicodeChar();
         if ((unicodeChar != 0)

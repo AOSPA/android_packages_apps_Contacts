@@ -339,11 +339,11 @@ public class ContactsFragment extends ListFragment {
 
     private String getSelectionForAccount() {
         @SuppressWarnings("deprecation")
-        ContactListFilter filter = (ContactListFilter) mPickMode.getIntent()
-                .getParcelableExtra(AccountFilterActivity.EXTRA_CONTACT_LIST_FILTER);
-        if (filter == null) {
+        ContactListFilter filter = ContactListFilter
+                .restoreDefaultPreferences(PreferenceManager
+                        .getDefaultSharedPreferences(mContext));
+        if(filter == null)
             return null;
-        }
         switch (filter.filterType) {
             case ContactListFilter.FILTER_TYPE_ALL_ACCOUNTS:
                 return null;

@@ -99,6 +99,13 @@ public abstract class AccountTypeManager {
             public boolean apply(@Nullable AccountInfo input) {
                 return input != null && input.getType().isGroupMembershipEditable();
             }
+        },
+        CONTACTS_WRITABLE_WITHOUT_SIM {
+            @Override
+            public boolean apply(@Nullable AccountInfo input) {
+                return input != null && !input.getType().isSimAccount()
+                        && input.getType().areContactsWritable();
+            }
         };
     }
 

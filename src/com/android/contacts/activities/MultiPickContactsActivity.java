@@ -122,7 +122,7 @@ public class MultiPickContactsActivity extends Activity implements
     private static final int ACCOUNT_TYPE_COLUMN_ID = 5;
     private static final int ACCOUNT_NAME_COLUMN_ID = 6;
     // reduce the value to avoid too large transaction.
-    private int MAX_CONTACTS_NUM_TO_SELECT_ONCE = 2000;
+
     private static final int BUFFER_LENGTH = 400;
 
     private static final int TOAST_EXPORT_FINISHED = 0;
@@ -403,14 +403,6 @@ public class MultiPickContactsActivity extends Activity implements
                 if (mPickMode.isSearchMode()) {
                     exitSearchMode();
                 }
-                if (mChoiceSet.size() > MAX_CONTACTS_NUM_TO_SELECT_ONCE) {
-                    Toast.makeText(
-                        mContext,
-                        mContext.getString(R.string.too_many_contacts_add,
-                                MAX_CONTACTS_NUM_TO_SELECT_ONCE),
-                        Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if (mDelete) {
                     showDialog(R.id.dialog_delete_contact_confirmation);
                 } else if(mExportSub > -1) {
@@ -505,7 +497,6 @@ public class MultiPickContactsActivity extends Activity implements
             final int BATCH_DELETE_CONTACT_NUMBER = 400;
             mOpsContacts = new ArrayList<ContentProviderOperation>();
             while (!mCanceled & iterator.hasNext()) {
-                mProgressDialog.setProgress(count);
                 String id = String.valueOf(iterator.next());
                 String[] value = choiceSet.getStringArray(id);
                 long longId = Long.parseLong(id);
@@ -557,14 +548,12 @@ public class MultiPickContactsActivity extends Activity implements
             // Cancel delete operate.
             mCanceled = true;
             Toast.makeText(mContext, R.string.delete_termination, Toast.LENGTH_SHORT).show();
-            finish();
         }
 
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             if (i == DialogInterface.BUTTON_NEGATIVE) {
                 mCanceled = true;
-                mProgressDialog.dismiss();
             }
         }
     }
@@ -774,10 +763,7 @@ public class MultiPickContactsActivity extends Activity implements
                     operationList.clear();
                 }
             }
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-                mProgressDialog = null;
-            }
+
             if (!isSimCardFull) {
                 // if canceled, show toast indicating export is interrupted.
                 if (canceled) {
@@ -933,7 +919,6 @@ public class MultiPickContactsActivity extends Activity implements
                 public void onCancel(DialogInterface dialog) {
                     Log.d(TAG, "Cancel exporting contacts");
                     canceled = true;
-                    finish();
                 }
             });
             mProgressDialog.setMessage(mContext.getString(R.string.exporting));
@@ -948,7 +933,6 @@ public class MultiPickContactsActivity extends Activity implements
                         public void onClick(DialogInterface dialog, int which) {
                             Log.d(TAG, "Cancel exporting contacts by click button");
                             canceled = true;
-                            finish();
                         }
                     });
 

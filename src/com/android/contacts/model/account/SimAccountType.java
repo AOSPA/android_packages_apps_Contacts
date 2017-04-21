@@ -139,7 +139,7 @@ public class SimAccountType extends BaseAccountType {
         // Use the "SIM" type label for the name as well because on OEM phones the "name" is
         // not always user-friendly
         return new AccountInfo(
-                new AccountDisplayInfo(account, getDisplayLabel(context), getDisplayLabel(context),
+                new AccountDisplayInfo(account, account.name, getDisplayLabel(context),
                         getDisplayIcon(context), true), this);
     }
 }

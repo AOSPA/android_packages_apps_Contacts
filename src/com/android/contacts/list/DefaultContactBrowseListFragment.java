@@ -1015,7 +1015,7 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
         final boolean showSelectedContactOptions = mActionBarAdapter.isSelectionMode()
                 && getSelectedContactIds().size() != 0;
         makeMenuItemVisible(menu, R.id.menu_share, showSelectedContactOptions);
-        makeMenuItemVisible(menu, R.id.menu_delete, !showSelectedContactOptions);
+        makeMenuItemVisible(menu, R.id.menu_delete, !isSearchOrSelectionMode);
         final boolean showLinkContactsOptions = mActionBarAdapter.isSelectionMode()
                 && getSelectedContactIds().size() > 1;
         makeMenuItemVisible(menu, R.id.menu_join, showLinkContactsOptions);

@@ -702,12 +702,6 @@ public class ContactSaveService extends IntentService {
             Integer result = RESULT_FAILURE;
             ContentValues values = entity.buildSimDiff();
             int capacity[] = ContactUtils.getAdnRecordsCapacity(this, slot);
-            String tag = null;
-            String number = null;
-            String anrs = null;
-            String emails = null;
-            Log.d(TAG, "tag:" + tag + ",number:" + number + ",anrs:" + anrs
-                    + ",emails:" + emails);
             if (isInsert) {
                 Uri resultUri = mSimContactsOperation.insert(values, slot);
                 if (resultUri != null)

@@ -131,9 +131,10 @@ public class SimImportFragment extends Fragment
             // after they are loaded.
             AccountWithDataSet account = mPreferences.getDefaultAccount();
             // filter sim account here, uses the default google account instead
-            if (account.type != null && account.type.equals(SimAccountType.ACCOUNT_TYPE)) {
+            if (account != null && account.type != null && account.type.equals(
+                    SimAccountType.ACCOUNT_TYPE)) {
                 List<AccountInfo> gAccount = mAccountTypeManager.getWritableGoogleAccounts();
-                if(gAccount.size() > 0) {
+                if (gAccount.size() > 0) {
                     account = gAccount.get(0).getAccount();
                 } else {
                     account = AccountWithDataSet.getNullAccount();

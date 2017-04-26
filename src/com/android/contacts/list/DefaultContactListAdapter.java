@@ -27,11 +27,13 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.Directory;
+import android.provider.ContactsContract.RawContacts;
 import android.provider.ContactsContract.SearchSnippets;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.android.contacts.compat.ContactsCompat;
+import com.android.contacts.SimContactsConstants;
 import com.android.contacts.model.account.AccountWithDataSet;
 import com.android.contacts.preference.ContactsPreferences;
 
@@ -253,6 +255,11 @@ public class DefaultContactListAdapter extends ContactListAdapter {
                 }
                 break;
             }
+            case ContactListFilter.FILTER_TYPE_ALL_WITHOUT_SIM:
+                selection.append(RawContacts.ACCOUNT_TYPE + "!= '"
+                        + SimContactsConstants.ACCOUNT_TYPE_SIM + "'" + " OR "
+                        + RawContacts.ACCOUNT_TYPE + " IS NULL");
+                break;
         }
         loader.setSelection(selection.toString());
         loader.setSelectionArgs(selectionArgs.toArray(new String[0]));
@@ -274,7 +281,8 @@ public class DefaultContactListAdapter extends ContactListAdapter {
         if (isQuickContactEnabled()) {
             bindQuickContact(view, partition, cursor, ContactQuery.CONTACT_PHOTO_ID,
                     ContactQuery.CONTACT_PHOTO_URI, ContactQuery.CONTACT_ID,
-                    ContactQuery.CONTACT_LOOKUP_KEY, ContactQuery.CONTACT_DISPLAY_NAME);
+                    ContactQuery.CONTACT_LOOKUP_KEY, ContactQuery.CONTACT_DISPLAY_NAME,
+                    ContactQuery.CONTACT_ACCOUNT_TYPE, ContactQuery.CONTACT_ACCOUNT_NAME);
         } else {
             if (getDisplayPhotos()) {
                 bindPhoto(view, partition, cursor);

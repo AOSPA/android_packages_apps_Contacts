@@ -46,16 +46,16 @@ public class UiccPhoneBookController_Wrapper {
             capacity[9]  is the max length of anr
     */
     public static int[] getAdnRecordsCapacityForSubscriber(int subId) {
-        int defaultCapacity[] = { 500, 0, 0, 0, 0, 0, 14, 40, 40, 40 };
+        int defaultCapacity[] = { 0, 0, 0, 0, 0, 0, 14, 40, 40, 40 };
         try {
             IIccPhoneBook iccIpb = IIccPhoneBook.Stub
                     .asInterface(ServiceManager.getService("simphonebook"));
-            /*if (iccIpb != null) {
+            if (iccIpb != null) {
                 int[] capacity = iccIpb
                         .getAdnRecordsCapacityForSubscriber(subId);
                 if (capacity != null)
                     return capacity;
-            }*/
+            }
         } catch (Exception ex) {
         }
         return defaultCapacity;

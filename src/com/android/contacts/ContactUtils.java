@@ -119,9 +119,8 @@ public class ContactUtils {
 
     public static int[] getAdnRecordsCapacity(Context c, int slot) {
         int subId = getActiveSubId(c, slot);
-        int adnCapacity[] = UiccPhoneBookController_Wrapper
+        return UiccPhoneBookController_Wrapper
                 .getAdnRecordsCapacityForSubscriber(subId);
-        return adnCapacity;
     }
 
     /**
@@ -129,7 +128,7 @@ public class ContactUtils {
      */
     public static boolean canSaveAnr(Context c, int slot) {
         int adnCapacity[] = getAdnRecordsCapacity(c, slot);
-        return adnCapacity[ANR_COUNT_POS] > 0 ? true : false;
+        return adnCapacity[ANR_COUNT_POS] > 0;
     }
 
     /**
@@ -137,7 +136,7 @@ public class ContactUtils {
      */
     public static boolean canSaveEmail(Context c, int slot) {
         int adnCapacity[] = getAdnRecordsCapacity(c, slot);
-        return adnCapacity[EMAIL_COUNT_POS] > 0 ? true : false;
+        return adnCapacity[EMAIL_COUNT_POS] > 0;
     }
 
     public static int getOneSimAnrCount(Context c, int slot) {

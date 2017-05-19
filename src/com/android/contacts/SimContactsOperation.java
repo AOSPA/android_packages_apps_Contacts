@@ -81,7 +81,7 @@ public class SimContactsOperation {
     private ContentValues mValues = new ContentValues();
 
     public SimContactsOperation(Context context) {
-        this.mContext = context;
+        mContext = context;
         this.mResolver = context.getContentResolver();
     }
 
@@ -199,7 +199,6 @@ public class SimContactsOperation {
             if (cursor != null) {
                 cursor.close();
             }
-            cursor = null;
             return null;
         }
     }

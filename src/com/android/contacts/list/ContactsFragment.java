@@ -73,6 +73,7 @@ import com.android.contacts.SimContactsConstants;
 import com.android.contacts.util.UriUtils;
 import com.android.contacts.list.ContactsPickMode;
 import com.android.contacts.list.OnCheckListActionListener;
+import com.android.contacts.model.account.AccountWithDataSet;
 import com.android.contacts.R;
 
 import java.util.ArrayList;
@@ -93,6 +94,7 @@ public class ContactsFragment extends ListFragment {
             RawContacts.ACCOUNT_NAME, // 7
     };
     static final String CONTACTS_SELECTION = Contacts.IN_VISIBLE_GROUP + "=1";
+    static final String LOCAL_SELECTION = RawContacts.ACCOUNT_TYPE + " IS NULL ";
 
     private static final String[] DATA_PROJECTION = new String[] {
             Data._ID, // 0
@@ -140,6 +142,7 @@ public class ContactsFragment extends ListFragment {
     private View mRootView;
     private SectionIndexer mIndexer;
     private View mHeaderView;
+    private ContactListFilter mFilter;
 
     /**
      * An item view is displayed differently depending on whether it is placed at the beginning,
@@ -181,6 +184,12 @@ public class ContactsFragment extends ListFragment {
         mPickMode = ContactsPickMode.getInstance();
         mMode = mPickMode.getMode();
         mContext = (MultiPickContactsActivity) activity;
+        mFilter = (ContactListFilter) mPickMode.getIntent().getParcelableExtra(
+                        AccountFilterActivity.EXTRA_CONTACT_LIST_FILTER);
+        if (mFilter == null)
+            mFilter = ContactListFilter
+                    .restoreDefaultPreferences(PreferenceManager
+                            .getDefaultSharedPreferences(mContext));
     }
 
     @Override
@@ -275,38 +284,10 @@ public class ContactsFragment extends ListFragment {
                 .build();
     }
 
-    /**
-     * Just get the uri we need to query contacts.
-     *
-     * @return uri with account info parameter if explicit request contacts fit current account,
-     *         else just search contacts fit specified keyword.
-     */
-    private Uri getContactsFilterUri() {
-        Uri filterUri = Contacts.CONTENT_FILTER_URI;
-
-        // To confirm if the search rule must contain account limitation.
-        Intent intent = mPickMode.getIntent();
-        ContactListFilter filter = ContactListFilter
-                .restoreDefaultPreferences(PreferenceManager
-                        .getDefaultSharedPreferences(mContext));
-        if (filter != null
-                && filter.filterType == ContactListFilter.FILTER_TYPE_ACCOUNT) {
-            // Need consider account info limitation, construct the uri with
-            // account info query parameter.
-            Builder builder = filterUri.buildUpon();
-            filter.addAccountQueryParameterToUrl(builder);
-            return builder.build();
-        }
-
-        // No need to consider account info limitation, just return a uri
-        // with "filter" path.
-        return filterUri;
-    }
-
     private Uri getFilterUri() {
         switch (mPickMode.getMode()) {
             case ContactsPickMode.MODE_SEARCH_CONTACT:
-                return getContactsFilterUri();
+                return Contacts.CONTENT_FILTER_URI;
             case ContactsPickMode.MODE_SEARCH_PHONE:
                 return Phone.CONTENT_FILTER_URI;
             case ContactsPickMode.MODE_SEARCH_EMAIL:
@@ -339,35 +320,37 @@ public class ContactsFragment extends ListFragment {
 
     private String getSelectionForAccount() {
         @SuppressWarnings("deprecation")
-        ContactListFilter filter = ContactListFilter
-                .restoreDefaultPreferences(PreferenceManager
-                        .getDefaultSharedPreferences(mContext));
-        if(filter == null)
+        StringBuilder selection = new StringBuilder();
+        if(mFilter == null)
             return null;
-        switch (filter.filterType) {
+        switch (mFilter.filterType) {
             case ContactListFilter.FILTER_TYPE_ALL_ACCOUNTS:
                 return null;
             case ContactListFilter.FILTER_TYPE_CUSTOM:
                 return CONTACTS_SELECTION;
             case ContactListFilter.FILTER_TYPE_ACCOUNT:
-                return null;
+                if (mPickMode.isSearchMode())
+                    selection.append(RawContacts.ACCOUNT_TYPE).append("='")
+                        .append(mFilter.accountType).append("' AND ")
+                        .append(RawContacts.ACCOUNT_NAME).append("='")
+                        .append(mFilter.accountName).append("'");
+                return selection.toString();
+            case ContactListFilter.FILTER_TYPE_DEVICE_CONTACTS:
+                return LOCAL_SELECTION;
         }
         return null;
     }
 
     public void startQuery() {
         Uri uri = getUriToQuery();
-        ContactListFilter filter = ContactListFilter
-                .restoreDefaultPreferences(PreferenceManager
-                        .getDefaultSharedPreferences(mContext));
-        if (filter != null
-                && filter.filterType == ContactListFilter.FILTER_TYPE_ACCOUNT) {
+        if (mFilter != null
+                && mFilter.filterType == ContactListFilter.FILTER_TYPE_ACCOUNT) {
             // We should exclude the invisiable contacts.
             uri = uri.buildUpon()
                     .appendQueryParameter(RawContacts.ACCOUNT_NAME,
-                            filter.accountName)
+                            mFilter.accountName)
                     .appendQueryParameter(RawContacts.ACCOUNT_TYPE,
-                            filter.accountType)
+                            mFilter.accountType)
                     .appendQueryParameter(ContactsContract.DIRECTORY_PARAM_KEY,
                             ContactsContract.Directory.DEFAULT + "").build();
         }

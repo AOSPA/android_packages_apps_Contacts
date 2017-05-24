@@ -1082,6 +1082,8 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
             final Intent intent = new Intent(
                     SimContactsConstants.ACTION_MULTI_PICK_CONTACT,
                     ContactsContract.Contacts.CONTENT_URI);
+            intent.putExtra(
+                    AccountFilterActivity.EXTRA_CONTACT_LIST_FILTER, getFilter());
             intent.putExtra("delete", true);
             startActivity(intent);
             return true;

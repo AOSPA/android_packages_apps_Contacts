@@ -111,6 +111,8 @@ public class ImportVCardActivity extends Activity implements ImportVCardDialogFr
 
     private Handler mHandler = new Handler();
 
+    private boolean mBind = false;
+
     // Runs on the UI thread.
     private class DialogDisplayer implements Runnable {
         private final int mResId;
@@ -154,14 +156,18 @@ public class ImportVCardActivity extends Activity implements ImportVCardDialogFr
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
             mService = ((VCardService.MyBinder) binder).getService();
-            Log.i(LOG_TAG,
+            mBind = true;
+            if (mVCardCacheThread != null) {
+                Log.i(LOG_TAG,
                     String.format("Connected to VCardService. Kick a vCard cache thread (uri: %s)",
                             Arrays.toString(mVCardCacheThread.getSourceUris())));
-            mVCardCacheThread.start();
+                mVCardCacheThread.start();
+            }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            mBind = false;
             Log.i(LOG_TAG, "Disconnected from VCardService");
         }
     }
@@ -290,14 +296,10 @@ public class ImportVCardActivity extends Activity implements ImportVCardDialogFr
             } finally {
                 Log.i(LOG_TAG, "Finished caching vCard.");
                 mWakeLock.release();
-                try {
-                    unbindService(mConnection);
-                } catch (IllegalArgumentException e) {
-                    FeedbackHelper.sendFeedback(ImportVCardActivity.this, LOG_TAG,
-                            "Cannot unbind service connection", e);
+                if (mProgressDialogForCachingVCard != null) {
+                    mProgressDialogForCachingVCard.dismiss();
+                    mProgressDialogForCachingVCard = null;
                 }
-                mProgressDialogForCachingVCard.dismiss();
-                mProgressDialogForCachingVCard = null;
                 finish();
             }
         }
@@ -807,5 +809,14 @@ public class ImportVCardActivity extends Activity implements ImportVCardDialogFr
                         getString(R.string.vcard_import_failed), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBind) {
+            unbindService(mConnection);
+            mBind = false;
+        }
     }
 }

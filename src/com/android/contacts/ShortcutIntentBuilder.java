@@ -218,9 +218,9 @@ public class ShortcutIntentBuilder {
                         mPhotoId = cursor.getLong(CONTACT_PHOTO_ID_COLUMN_INDEX);
                         mLookupKey = cursor.getString(CONTACT_LOOKUP_KEY_COLUMN_INDEX);
                         final String accountType = cursor
-                                .getString(PHONE_ACCOUNT_TYPE_COLUMN_INDEX);
+                                .getString(CONTACT_ACCOUNT_TYPE_COLUMN_INDEX);
                         final String accountName = cursor
-                                .getString(PHONE_ACCOUNT_NAME_COLUMN_INDEX);
+                                .getString(CONTACT_ACCOUNT_NAME_COLUMN_INDEX);
                         if (accountType != null)
                             mAccount = new Account(accountName, accountType);
                     }
@@ -301,7 +301,7 @@ public class ShortcutIntentBuilder {
                     mContext.getSystemService(Context.SHORTCUT_SERVICE);
             final DynamicShortcuts dynamicShortcuts = new DynamicShortcuts(mContext);
             final ShortcutInfo shortcutInfo = dynamicShortcuts.getQuickContactShortcutInfo(
-                    contactId, lookupKey, displayName);
+                    contactId, lookupKey, displayName, account);
             intent = sm.createShortcutResultIntent(shortcutInfo);
         }
 

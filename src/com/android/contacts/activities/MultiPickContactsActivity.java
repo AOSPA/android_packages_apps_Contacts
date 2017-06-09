@@ -140,15 +140,18 @@ public class MultiPickContactsActivity extends Activity implements
         if (RequestPermissionsActivity.startPermissionActivityIfNeeded(this)) {
             return;
         }
-
         setContentView(R.layout.multi_pick_activity);
         mChoiceSet = new Bundle();
         mContext = getApplicationContext();
-        mContactsFragment = new ContactsFragment();
-        mContactsFragment.setCheckListListener(this);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.pick_layout, mContactsFragment);
+        mContactsFragment = (ContactsFragment) fragmentManager
+                .findFragmentByTag("tab-contacts");
+        if (mContactsFragment == null) {
+            mContactsFragment = new ContactsFragment();
+            transaction.add(R.id.pick_layout, mContactsFragment, "tab-contacts");
+        }
+        mContactsFragment.setCheckListListener(this);
         transaction.commitAllowingStateLoss();
         mActionBar = getActionBar();
         mActionBar.setDisplayShowHomeEnabled(true);

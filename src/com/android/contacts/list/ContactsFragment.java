@@ -164,9 +164,18 @@ public class ContactsFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mPickMode = ContactsPickMode.getInstance();
+        mMode = mPickMode.getMode();
+        mFilter = (ContactListFilter) mPickMode.getIntent().getParcelableExtra(
+                AccountFilterActivity.EXTRA_CONTACT_LIST_FILTER);
+        if (mFilter == null)
+            mFilter = ContactListFilter
+            .restoreDefaultPreferences(PreferenceManager
+                    .getDefaultSharedPreferences(mContext));
         if (mContactListAdapter == null) {
             mContactListAdapter = new ContactItemListAdapter(mContext);
         }
+
         mHeaderView = new View(mContext);
         AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
                 AbsListView.LayoutParams.MATCH_PARENT,
@@ -181,15 +190,7 @@ public class ContactsFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mPickMode = ContactsPickMode.getInstance();
-        mMode = mPickMode.getMode();
         mContext = (MultiPickContactsActivity) activity;
-        mFilter = (ContactListFilter) mPickMode.getIntent().getParcelableExtra(
-                        AccountFilterActivity.EXTRA_CONTACT_LIST_FILTER);
-        if (mFilter == null)
-            mFilter = ContactListFilter
-                    .restoreDefaultPreferences(PreferenceManager
-                            .getDefaultSharedPreferences(mContext));
     }
 
     @Override

@@ -120,12 +120,7 @@ public class DefaultContactListAdapter extends ContactListAdapter {
         } else {
             final ContactListFilter filter = getFilter();
             configureUri(loader, directoryId, filter);
-            if (filter != null
-                    && filter.filterType == ContactListFilter.FILTER_TYPE_DEVICE_CONTACTS) {
-                loader.setProjection(getDataProjectionForContacts(false));
-            } else {
-                loader.setProjection(getProjection(false));
-            }
+            loader.setProjection(getProjection(false));
             configureSelection(loader, directoryId, filter);
         }
 
@@ -171,8 +166,6 @@ public class DefaultContactListAdapter extends ContactListAdapter {
                 } else {
                     uri = ContentUris.withAppendedId(Contacts.CONTENT_URI, getSelectedContactId());
                 }
-            } else if (filter.filterType == ContactListFilter.FILTER_TYPE_DEVICE_CONTACTS) {
-                uri = Data.CONTENT_URI;
             }
         }
 
@@ -251,7 +244,7 @@ public class DefaultContactListAdapter extends ContactListAdapter {
                         selectionArgs.add(filter.accountName);
                     }
                 } else {
-                    selection.append(AccountWithDataSet.LOCAL_ACCOUNT_SELECTION);
+                    selection.append(RawContacts.ACCOUNT_TYPE + " IS NULL");
                 }
                 break;
             }

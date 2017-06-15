@@ -105,7 +105,7 @@
             android:id="@+id/pick_contact_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dip"
+            android:layout_marginRight="38dip"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:clickable = "false">

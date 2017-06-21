@@ -614,6 +614,7 @@ public class ContactsFragment extends ListFragment {
             section.setVisibility(View.VISIBLE);
             Placement placement = getItemPlacementInSection(position);
             section.setText(placement.sectionHeader);
+            section.setTextAppearance(mContext, R.style.SectionHeaderStyle);
         }
 
         private void hideSectionHeader(View view) {

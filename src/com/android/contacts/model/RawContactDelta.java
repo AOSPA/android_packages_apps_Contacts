@@ -38,7 +38,7 @@ import com.android.contacts.model.ValuesDelta;
 import com.android.contacts.compat.CompatUtils;
 import com.android.contacts.model.account.AccountType;
 import com.android.contacts.model.account.AccountWithDataSet;
-
+import com.android.contacts.model.account.SimAccountType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -93,11 +93,14 @@ public class RawContactDelta implements Parcelable {
      * starting point; the "before" snapshot.
      */
     public static RawContactDelta fromBefore(RawContact before) {
+        String account = before.getAccountTypeString();
+        boolean isSimContact = (account != null && account
+                .equals(SimAccountType.ACCOUNT_TYPE)) ? true : false;
         final RawContactDelta rawContactDelta = new RawContactDelta();
         rawContactDelta.mValues = ValuesDelta.fromBefore(before.getValues());
         rawContactDelta.mValues.setIdColumn(RawContacts._ID);
         for (final ContentValues values : before.getContentValues()) {
-            rawContactDelta.addEntry(ValuesDelta.fromBefore(values));
+            rawContactDelta.addEntry(ValuesDelta.fromBefore(values, isSimContact));
         }
         return rawContactDelta;
     }
@@ -459,9 +462,9 @@ public class RawContactDelta implements Parcelable {
         ArrayList<ValuesDelta> emails = getMimeEntries(Email.CONTENT_ITEM_TYPE);
         ValuesDelta nameValuesDelta = null;
         ValuesDelta emailValuesDelta = null;
-        if (getMimeEntriesCount(StructuredName.CONTENT_ITEM_TYPE, true) > 0) {
+
+        if (names != null && names.size() > 0)
             nameValuesDelta = names.get(0);
-        }
         if (emails != null && emails.size() > 0) {
             emailValuesDelta = emails.get(0);
         }

@@ -3135,8 +3135,12 @@ public class QuickContactActivity extends ContactsActivity {
 
                     //empty number is equals to the sum of adn and anr
                     int emptyNumTotal = totalEmptyAdn + totalEmptyAnr;
-
-                    String strName = mContactData.getDisplayName();
+                    int nameSource = mContactData.getDisplayNameSource();
+                    String strName = "";
+                    if (nameSource == DisplayNameSources.STRUCTURED_NAME
+                            || nameSource == DisplayNameSources.NICKNAME
+                            || nameSource == DisplayNameSources.STRUCTURED_PHONETIC_NAME)
+                    strName = mContactData.getDisplayName();
 
                     ArrayList<String> arrayNumber = new ArrayList<String>();
                     ArrayList<String> arrayEmail = new ArrayList<String>();

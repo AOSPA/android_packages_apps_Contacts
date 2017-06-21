@@ -729,12 +729,14 @@ public class ContactEditorFragment extends Fragment implements
         final MenuItem splitMenu = menu.findItem(R.id.menu_split);
         final MenuItem joinMenu = menu.findItem(R.id.menu_join);
         final MenuItem deleteMenu = menu.findItem(R.id.menu_delete);
+        final MenuItem helpMenu = menu.findItem(R.id.menu_help);
 
         // TODO: b/30771904, b/31827701, temporarily disable these items until we get them to work
         // on a raw contact level.
         joinMenu.setVisible(false);
         splitMenu.setVisible(false);
         deleteMenu.setVisible(false);
+        helpMenu.setVisible(HelpUtils.isHelpAndFeedbackAvailable());
         // Save menu is invisible when there's only one read only contact in the editor.
         saveMenu.setVisible(!isEditingReadOnlyRawContact());
         if (saveMenu.isVisible()) {
@@ -751,6 +753,7 @@ public class ContactEditorFragment extends Fragment implements
         for (int i = 0; i < size; i++) {
             menu.getItem(i).setEnabled(mEnabled);
         }
+        helpMenu.setEnabled(mEnabled && HelpUtils.isHelpAndFeedbackAvailable());
     }
 
     @Override

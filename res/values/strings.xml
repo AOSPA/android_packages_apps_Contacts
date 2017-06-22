@@ -1591,7 +1591,7 @@
     <string name="btn_cancel">Cancel</string>
     <string name="deleteConfirmation_title">Delete contact?</string>
     <string name="ContactMultiDeleteConfirmation">These contacts will be deleted.</string>
-    <string name="delete_termination">"Delete is termination"</string>
+    <string name="delete_termination">"Finished deleting"</string>
     <string name="delete_contacts_title">Delete Contacts</string>
     <string name="delete_contacts_message">Deleting Contacts ...</string>
     <string name="contacts_selected">%d selected</string>

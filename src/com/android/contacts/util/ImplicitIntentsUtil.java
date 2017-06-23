@@ -170,8 +170,10 @@ public class ImplicitIntentsUtil {
     public static Intent getIntentForAddingGoogleAccount() {
         final Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        intent.putExtra(Settings.EXTRA_ACCOUNT_TYPES,
-                new String[]{GoogleAccountType.ACCOUNT_TYPE});
+        //intent.putExtra(Settings.EXTRA_ACCOUNT_TYPES,
+        //        new String[]{GoogleAccountType.ACCOUNT_TYPE});
+        intent.putExtra(Settings.EXTRA_AUTHORITIES,
+                new String[]{ContactsContract.AUTHORITY});
         return intent;
     }
 

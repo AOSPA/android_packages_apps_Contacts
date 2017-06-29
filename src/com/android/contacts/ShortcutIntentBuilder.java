@@ -221,7 +221,7 @@ public class ShortcutIntentBuilder {
                                 .getString(CONTACT_ACCOUNT_TYPE_COLUMN_INDEX);
                         final String accountName = cursor
                                 .getString(CONTACT_ACCOUNT_NAME_COLUMN_INDEX);
-                        if (accountType != null)
+                        if (accountType != null && accountName != null)
                             mAccount = new Account(accountName, accountType);
                     }
                 } finally {

@@ -517,7 +517,9 @@ public class ContactSaveService extends IntentService {
         long insertedRawContactId = -1;
 
         // Attempt to persist changes
-        Integer result = RESULT_SUCCESS;
+        // flag indicate whether contact need saved to local database, only set false when
+        // sim contacts saved failure,otherwise it always true
+        boolean needSaveToLocal = true;
 
         ArrayList<Long> rawContactsList = new ArrayList<Long>();
         for (int i=0; i < state.size(); i++) {
@@ -530,133 +532,157 @@ public class ContactSaveService extends IntentService {
             boolean isCardOperation = (subscription != SubscriptionManager.INVALID_SUBSCRIPTION_ID)
                     ? true : false;
             if (isCardOperation) {
-                result = doSaveToSimCard(entity, resolver, subscription);
-                Log.d(TAG, "doSaveToSimCard result is  " + result);
+                needSaveToLocal = doSaveToSimCard(entity, resolver, subscription);
+                Log.d(TAG, "doSaveToSimCard result is  " + needSaveToLocal);
             }
         }
         int tries = 0;
         while (tries++ < PERSIST_TRIES) {
-            if (result == RESULT_SUCCESS) {
-            try {
-                // Build operations and try applying
-                final ArrayList<CPOWrapper> diffWrapper = state.buildDiffWrapper();
+            if (needSaveToLocal) {
+                try {
+                    // Build operations and try applying
+                    final ArrayList<CPOWrapper> diffWrapper = state
+                            .buildDiffWrapper();
 
-                final ArrayList<ContentProviderOperation> diff = Lists.newArrayList();
+                    final ArrayList<ContentProviderOperation> diff = Lists
+                            .newArrayList();
 
-                for (CPOWrapper cpoWrapper : diffWrapper) {
-                    diff.add(cpoWrapper.getOperation());
-                }
-
-                if (DEBUG) {
-                    Log.v(TAG, "Content Provider Operations:");
-                    for (ContentProviderOperation operation : diff) {
-                        Log.v(TAG, operation.toString());
+                    for (CPOWrapper cpoWrapper : diffWrapper) {
+                        diff.add(cpoWrapper.getOperation());
                     }
-                }
 
-                int numberProcessed = 0;
-                boolean batchFailed = false;
-                final ContentProviderResult[] results = new ContentProviderResult[diff.size()];
-                while (numberProcessed < diff.size()) {
-                    final int subsetCount = applyDiffSubset(diff, numberProcessed, results, resolver);
-                    if (subsetCount == -1) {
-                        Log.w(TAG, "Resolver.applyBatch failed in saveContacts");
-                        batchFailed = true;
-                        break;
-                    } else {
-                        numberProcessed += subsetCount;
+                    if (DEBUG) {
+                        Log.v(TAG, "Content Provider Operations:");
+                        for (ContentProviderOperation operation : diff) {
+                            Log.v(TAG, operation.toString());
+                        }
                     }
-                }
 
-                if (batchFailed) {
-                    // Retry save
-                    continue;
-                }
+                    int numberProcessed = 0;
+                    boolean batchFailed = false;
+                    final ContentProviderResult[] results = new ContentProviderResult[diff
+                            .size()];
+                    while (numberProcessed < diff.size()) {
+                        final int subsetCount = applyDiffSubset(diff,
+                                numberProcessed, results, resolver);
+                        if (subsetCount == -1) {
+                            Log.w(TAG,
+                                    "Resolver.applyBatch failed in saveContacts");
+                            batchFailed = true;
+                            break;
+                        } else {
+                            numberProcessed += subsetCount;
+                        }
+                    }
 
-                final long rawContactId = getRawContactId(state, diffWrapper, results);
-                if (rawContactId == -1) {
-                    throw new IllegalStateException("Could not determine RawContact ID after save");
-                }
-                // We don't have to check to see if the value is still -1.  If we reach here,
-                // the previous loop iteration didn't succeed, so any ID that we obtained is bogus.
-                insertedRawContactId = getInsertedRawContactId(diffWrapper, results);
-                if (isProfile) {
-                    // Since the profile supports local raw contacts, which may have been completely
-                    // removed if all information was removed, we need to do a special query to
-                    // get the lookup URI for the profile contact (if it still exists).
-                    Cursor c = resolver.query(Profile.CONTENT_URI,
-                            new String[] {Contacts._ID, Contacts.LOOKUP_KEY},
-                            null, null, null);
-                    if (c == null) {
+                    if (batchFailed) {
+                        // Retry save
                         continue;
                     }
-                    try {
-                        if (c.moveToFirst()) {
-                            final long contactId = c.getLong(0);
-                            final String lookupKey = c.getString(1);
-                            lookupUri = Contacts.getLookupUri(contactId, lookupKey);
-                        }
-                    } finally {
-                        c.close();
+
+                    final long rawContactId = getRawContactId(state,
+                            diffWrapper, results);
+                    if (rawContactId == -1) {
+                        throw new IllegalStateException(
+                                "Could not determine RawContact ID after save");
                     }
-                } else {
-                    final Uri rawContactUri = ContentUris.withAppendedId(RawContacts.CONTENT_URI,
-                                    rawContactId);
-                    lookupUri = RawContacts.getContactLookupUri(resolver, rawContactUri);
-                }
-                if (lookupUri != null && Log.isLoggable(TAG, Log.VERBOSE)) {
-                    Log.v(TAG, "Saved contact. New URI: " + lookupUri);
-                }
-
-                // We can change this back to false later, if we fail to save the contact photo.
-                succeeded = true;
-                break;
-
-            } catch (RemoteException e) {
-                // Something went wrong, bail without success
-                FeedbackHelper.sendFeedback(this, TAG, "Problem persisting user edits", e);
-                break;
-
-            } catch (IllegalArgumentException e) {
-                // This is thrown by applyBatch on malformed requests
-                FeedbackHelper.sendFeedback(this, TAG, "Problem persisting user edits", e);
-                showToast(R.string.contactSavedErrorToast);
-                break;
-
-            } catch (OperationApplicationException e) {
-                // Version consistency failed, re-parent change and try again
-                Log.w(TAG, "Version consistency failed, re-parenting: " + e.toString());
-                final StringBuilder sb = new StringBuilder(RawContacts._ID + " IN(");
-                boolean first = true;
-                final int count = state.size();
-                for (int i = 0; i < count; i++) {
-                    Long rawContactId = state.getRawContactId(i);
-                    if (rawContactId != null && rawContactId != -1) {
-                        if (!first) {
-                            sb.append(',');
+                    // We don't have to check to see if the value is still -1.
+                    // If we reach here,
+                    // the previous loop iteration didn't succeed, so any ID
+                    // that we obtained is bogus.
+                    insertedRawContactId = getInsertedRawContactId(diffWrapper,
+                            results);
+                    if (isProfile) {
+                        // Since the profile supports local raw contacts, which
+                        // may have been completely
+                        // removed if all information was removed, we need to do
+                        // a special query to
+                        // get the lookup URI for the profile contact (if it
+                        // still exists).
+                        Cursor c = resolver
+                                .query(Profile.CONTENT_URI, new String[] {
+                                        Contacts._ID, Contacts.LOOKUP_KEY },
+                                        null, null, null);
+                        if (c == null) {
+                            continue;
                         }
-                        sb.append(rawContactId);
-                        first = false;
+                        try {
+                            if (c.moveToFirst()) {
+                                final long contactId = c.getLong(0);
+                                final String lookupKey = c.getString(1);
+                                lookupUri = Contacts.getLookupUri(contactId,
+                                        lookupKey);
+                            }
+                        } finally {
+                            c.close();
+                        }
+                    } else {
+                        final Uri rawContactUri = ContentUris.withAppendedId(
+                                RawContacts.CONTENT_URI, rawContactId);
+                        lookupUri = RawContacts.getContactLookupUri(resolver,
+                                rawContactUri);
                     }
-                }
-                sb.append(")");
+                    if (lookupUri != null && Log.isLoggable(TAG, Log.VERBOSE)) {
+                        Log.v(TAG, "Saved contact. New URI: " + lookupUri);
+                    }
 
-                if (first) {
-                    throw new IllegalStateException(
-                            "Version consistency failed for a new contact", e);
-                }
+                    // We can change this back to false later, if we fail to
+                    // save the contact photo.
+                    succeeded = true;
+                    break;
 
-                final RawContactDeltaList newState = RawContactDeltaList.fromQuery(
-                        isProfile
-                                ? RawContactsEntity.PROFILE_CONTENT_URI
-                                : RawContactsEntity.CONTENT_URI,
-                        resolver, sb.toString(), null, null);
-                state = RawContactDeltaList.mergeAfter(newState, state);
+                } catch (RemoteException e) {
+                    // Something went wrong, bail without success
+                    FeedbackHelper.sendFeedback(this, TAG,
+                            "Problem persisting user edits", e);
+                    break;
 
-                // Update the new state to use profile URIs if appropriate.
-                if (isProfile) {
-                    for (RawContactDelta delta : state) {
-                        delta.setProfileQueryUri();
+                } catch (IllegalArgumentException e) {
+                    // This is thrown by applyBatch on malformed requests
+                    FeedbackHelper.sendFeedback(this, TAG,
+                            "Problem persisting user edits", e);
+                    showToast(R.string.contactSavedErrorToast);
+                    break;
+
+                } catch (OperationApplicationException e) {
+                    // Version consistency failed, re-parent change and try
+                    // again
+                    Log.w(TAG,
+                            "Version consistency failed, re-parenting: "
+                                    + e.toString());
+                    final StringBuilder sb = new StringBuilder(RawContacts._ID
+                            + " IN(");
+                    boolean first = true;
+                    final int count = state.size();
+                    for (int i = 0; i < count; i++) {
+                        Long rawContactId = state.getRawContactId(i);
+                        if (rawContactId != null && rawContactId != -1) {
+                            if (!first) {
+                                sb.append(',');
+                            }
+                            sb.append(rawContactId);
+                            first = false;
+                        }
+                    }
+                    sb.append(")");
+
+                    if (first) {
+                        throw new IllegalStateException(
+                                "Version consistency failed for a new contact",
+                                e);
+                    }
+
+                    final RawContactDeltaList newState = RawContactDeltaList
+                            .fromQuery(
+                                    isProfile ? RawContactsEntity.PROFILE_CONTENT_URI
+                                            : RawContactsEntity.CONTENT_URI,
+                                    resolver, sb.toString(), null, null);
+                    state = RawContactDeltaList.mergeAfter(newState, state);
+
+                    // Update the new state to use profile URIs if appropriate.
+                    if (isProfile) {
+                        for (RawContactDelta delta : state) {
+                            delta.setProfileQueryUri();
                         }
                     }
                 }
@@ -696,22 +722,21 @@ public class ContactSaveService extends IntentService {
         }
     }
 
-    private Integer doSaveToSimCard(RawContactDelta entity, ContentResolver resolver,
+    private boolean doSaveToSimCard(RawContactDelta entity, ContentResolver resolver,
             int slot) {
             boolean isInsert = entity.isContactInsert();
-            Integer result = RESULT_FAILURE;
             ContentValues values = entity.buildSimDiff();
             int capacity[] = ContactUtils.getAdnRecordsCapacity(this, slot);
             if (isInsert) {
                 Uri resultUri = mSimContactsOperation.insert(values, slot);
                 if (resultUri != null)
-                    result = RESULT_SUCCESS;
+                    return true;
             } else {
                 int resultInt = mSimContactsOperation.update(values, slot);
                 if (resultInt == 1)
-                    result = RESULT_SUCCESS;
+                    return true;
             }
-            return result;
+            return false;
         }
 
     /**

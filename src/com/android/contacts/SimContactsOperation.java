@@ -266,19 +266,26 @@ public class SimContactsOperation {
     public static int getSimSubscription(long contactId) {
         int subscription = SubscriptionManager.INVALID_SUBSCRIPTION_ID;
         Cursor cursor = setupContactCursor(contactId);
-        if (cursor == null || cursor.getCount() == 0) {
-            return subscription;
+        try {
+            if (cursor == null || cursor.getCount() == 0) {
+                return subscription;
+            }
+            String accountName = cursor.getString(cursor
+                    .getColumnIndex(RawContacts.ACCOUNT_NAME));
+            String accountType = cursor.getString(cursor
+                    .getColumnIndex(RawContacts.ACCOUNT_TYPE));
+            if (accountType == null || accountName == null) {
+                cursor.close();
+                return subscription;
+            }
+            if (SimContactsConstants.ACCOUNT_TYPE_SIM.equals(accountType)) {
+                subscription = ContactUtils.getSubscription(accountType,
+                        accountName);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
-        String accountName = cursor.getString(cursor.getColumnIndex(RawContacts.ACCOUNT_NAME));
-        String accountType = cursor.getString(cursor.getColumnIndex(RawContacts.ACCOUNT_TYPE));
-        if (accountType == null || accountName == null) {
-            cursor.close();
-            return subscription;
-        }
-        if (SimContactsConstants.ACCOUNT_TYPE_SIM.equals(accountType)) {
-            subscription = ContactUtils.getSubscription(accountType, accountName);
-        }
-        cursor.close();
         return subscription;
     }
 

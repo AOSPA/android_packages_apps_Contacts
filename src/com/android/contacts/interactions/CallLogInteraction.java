@@ -51,6 +51,9 @@ public class CallLogInteraction implements ContactInteraction {
     private static final String URI_TARGET_PREFIX = "tel:";
     private static final int CALL_LOG_ICON_RES = R.drawable.quantum_ic_phone_vd_theme_24;
     private static final int CALL_ARROW_ICON_RES = R.drawable.ic_call_arrow;
+    private static final int INCOMING_IMS_TYPE = 1000;
+    private static final int OUTGOING_IMS_TYPE = 1001;
+    private static final int MISSED_IMS_TYPE = 1002;
     private static BidiFormatter sBidiFormatter = BidiFormatter.getInstance();
 
     private ContentValues mValues;
@@ -130,16 +133,19 @@ public class CallLogInteraction implements ContactInteraction {
         }
         switch (type) {
             case Calls.INCOMING_TYPE:
+            case INCOMING_IMS_TYPE:
                 callArrow = res.getDrawable(CALL_ARROW_ICON_RES);
                 callArrow.mutate().setColorFilter(res.getColor(R.color.call_arrow_green),
                         PorterDuff.Mode.MULTIPLY);
                 break;
             case Calls.MISSED_TYPE:
+            case MISSED_IMS_TYPE:
                 callArrow = res.getDrawable(CALL_ARROW_ICON_RES);
                 callArrow.mutate().setColorFilter(res.getColor(R.color.call_arrow_red),
                         PorterDuff.Mode.MULTIPLY);
                 break;
             case Calls.OUTGOING_TYPE:
+            case OUTGOING_IMS_TYPE:
                 callArrow = BitmapUtil.getRotatedDrawable(res, CALL_ARROW_ICON_RES, 180f);
                 callArrow.setColorFilter(res.getColor(R.color.call_arrow_green),
                         PorterDuff.Mode.MULTIPLY);
@@ -216,12 +222,15 @@ public class CallLogInteraction implements ContactInteraction {
         }
         switch (type) {
             case Calls.INCOMING_TYPE:
+            case INCOMING_IMS_TYPE:
                 callType = res.getString(R.string.content_description_recent_call_type_incoming);
                 break;
             case Calls.MISSED_TYPE:
+            case MISSED_IMS_TYPE:
                 callType = res.getString(R.string.content_description_recent_call_type_missed);
                 break;
             case Calls.OUTGOING_TYPE:
+            case OUTGOING_IMS_TYPE:
                 callType = res.getString(R.string.content_description_recent_call_type_outgoing);
                 break;
         }

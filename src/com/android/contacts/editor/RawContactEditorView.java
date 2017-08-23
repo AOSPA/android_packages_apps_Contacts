@@ -820,7 +820,8 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
                         UiClosables.closeQuietly(popup);
                         final AccountWithDataSet newAccount = adapter.getItem(position);
                         if (mListener != null && !mPrimaryAccount.equals(newAccount)) {
-                            if (SimAccountType.ACCOUNT_TYPE.equals(newAccount))
+                            if (newAccount.type != null && SimAccountType.ACCOUNT_TYPE.equals(
+                                      newAccount.type))
                                 mListener.removePhoto();
                             mIsExpanded = false;
                             mListener.onRebindEditorsForNewContact(

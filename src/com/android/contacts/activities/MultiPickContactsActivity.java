@@ -229,7 +229,7 @@ public class MultiPickContactsActivity extends Activity implements
     private void setAllSelected() {
         boolean selectAll = false;
         int checkNum = mChoiceSet.size();
-        int num = mContactsFragment.getListView().getCount() - 1;
+        int num = mContactsFragment.getListAdapter().getCount();
         if (checkNum < num) {
             selectAll = true;
         }
@@ -240,7 +240,7 @@ public class MultiPickContactsActivity extends Activity implements
         mSelectionMenu.getPopupList().addItem(SelectionMenu.SELECTED, countTitle);
         boolean selectAll = true;
         int checkNum = mChoiceSet.size();
-        int num = mContactsFragment.getListView().getCount() - 1;
+        int num = mContactsFragment.getListAdapter().getCount();
         if (checkNum == num && num > 0) {
             selectAll = false;
         }

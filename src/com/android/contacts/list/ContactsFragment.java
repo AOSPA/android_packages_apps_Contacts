@@ -238,8 +238,8 @@ public class ContactsFragment extends ListFragment {
         } else {
             mCheckListListener.onRemove(key);
         }
-        mCheckListListener.onUpdateActionBar();
         mCheckListListener.exitSearch();
+        mCheckListListener.onUpdateActionBar();
         mContactListAdapter.notifyDataSetChanged();
     }
 

@@ -118,7 +118,7 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
          */
         public void onEditorsBound();
 
-        public void removePhoto();
+        public void onClearPhotoCache();
     }
     /**
      * Sorts kinds roughly the same as quick contacts; we diverge in the following ways:
@@ -820,9 +820,9 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
                         UiClosables.closeQuietly(popup);
                         final AccountWithDataSet newAccount = adapter.getItem(position);
                         if (mListener != null && !mPrimaryAccount.equals(newAccount)) {
-                            if (newAccount.type != null && SimAccountType.ACCOUNT_TYPE.equals(
-                                      newAccount.type))
-                                mListener.removePhoto();
+                            if (newAccount !=null && newAccount.type != null
+                                    && SimAccountType.ACCOUNT_TYPE.equals(newAccount.type))
+                                mListener.onClearPhotoCache();
                             mIsExpanded = false;
                             mListener.onRebindEditorsForNewContact(
                                     rawContactDelta,

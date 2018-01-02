@@ -117,6 +117,16 @@ public class SimContactsOperation {
         String newAnrs = values.getAsString(SimContactsConstants.STR_NEW_ANRS);
         values.put(SimContactsConstants.STR_NUMBER,PhoneNumberUtils.stripSeparators(oldNumber));
         values.put(SimContactsConstants.STR_NEW_NUMBER,PhoneNumberUtils.stripSeparators(newNumber));
+
+        String oldTag = values.getAsString(SimContactsConstants.STR_TAG);
+        String newTag = values.getAsString(SimContactsConstants.STR_NEW_TAG);
+        String oldEmails = values.getAsString(SimContactsConstants.STR_EMAILS);
+        String newEmails = values.getAsString(SimContactsConstants.STR_NEW_EMAILS);
+
+        if (TextUtils.isEmpty(newTag) && TextUtils.isEmpty(newNumber)
+                && TextUtils.isEmpty(newAnrs) && TextUtils.isEmpty(newEmails)){
+            return result;
+        }
         if (!TextUtils.isEmpty(oldAnrs)) {
             oldAnrs = oldAnrs.replaceAll("[^0123456789PWN\\,\\;\\*\\#\\+\\:]", "");
         }

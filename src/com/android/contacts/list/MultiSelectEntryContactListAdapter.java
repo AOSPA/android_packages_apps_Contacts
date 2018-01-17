@@ -16,6 +16,7 @@
 
 package com.android.contacts.list;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
@@ -38,6 +39,8 @@ public abstract class MultiSelectEntryContactListAdapter extends ContactEntryLis
     private TreeSet<Long> mSelectedContactIds = new TreeSet<>();
     private boolean mDisplayCheckBoxes;
     private final int mContactIdColumnIndex;
+    //indicate how many sim contact has been selected
+    private int mSimContactSelected = 0;
 
     public interface SelectedContactsListener {
         void onSelectedContactsChanged();
@@ -89,6 +92,14 @@ public abstract class MultiSelectEntryContactListAdapter extends ContactEntryLis
         return mSelectedContactIds.size() > 0;
     }
 
+    public int getSelectedSimContact() {
+        return mSimContactSelected;
+    }
+
+    public void setSelectedSimContact(int selectedCount) {
+        this.mSimContactSelected = selectedCount;
+    }
+
     /**
      * Returns the selected contacts as an array.
      */
@@ -130,10 +141,18 @@ public abstract class MultiSelectEntryContactListAdapter extends ContactEntryLis
      * Toggle the checkbox beside the contact for {@param contactId}.
      */
     public void toggleSelectionOfContactId(long contactId) {
+        toggleSelectionOfContactId(contactId, false);
+    }
+
+    public void toggleSelectionOfContactId(long contactId, boolean simContact) {
         if (mSelectedContactIds.contains(contactId)) {
             mSelectedContactIds.remove(contactId);
+            if(simContact)
+                mSimContactSelected --;
         } else {
             mSelectedContactIds.add(contactId);
+            if(simContact)
+                mSimContactSelected ++;
         }
         notifyDataSetChanged();
         if (mSelectedContactsListener != null) {
@@ -165,15 +184,28 @@ public abstract class MultiSelectEntryContactListAdapter extends ContactEntryLis
       * @param displayNameColumn Index of the display name column
       */
     protected void bindPhoto(final ContactListItemView view, final Cursor cursor,
-           final int photoIdColumn, final int lookUpKeyColumn, final int displayNameColumn) {
+            final int photoIdColumn, final int lookUpKeyColumn, final int displayNameColumn) {
+        bindPhoto(view, cursor, photoIdColumn, lookUpKeyColumn, displayNameColumn, -1, -1);
+    }
+
+    protected void bindPhoto(final ContactListItemView view, final Cursor cursor,
+           final int photoIdColumn, final int lookUpKeyColumn, final int displayNameColumn
+           , final int accountTypeColumn, final int accountNameColumn) {
         final long photoId = cursor.isNull(photoIdColumn)
             ? 0 : cursor.getLong(photoIdColumn);
+        Account account = null;
+        if (!cursor.isNull(accountTypeColumn)
+                && !cursor.isNull(accountNameColumn)) {
+            final String accountType = cursor.getString(accountTypeColumn);
+            final String accountName = cursor.getString(accountNameColumn);
+            account = new Account(accountName, accountType);
+        }
         final ContactPhotoManager.DefaultImageRequest imageRequest = photoId == 0
             ? getDefaultImageRequestFromCursor(cursor, displayNameColumn,
             lookUpKeyColumn)
             : null;
-        getPhotoLoader().loadThumbnail(view.getPhotoView(), photoId, false, getCircularPhotos(),
-                imageRequest);
+        getPhotoLoader().loadThumbnail(view.getPhotoView(), photoId, account, false,
+                getCircularPhotos(), imageRequest);
     }
 
     private void bindCheckBox(ContactListItemView view, Cursor cursor, boolean isLocalDirectory) {

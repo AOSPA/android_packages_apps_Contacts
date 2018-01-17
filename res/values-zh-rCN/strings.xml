@@ -531,4 +531,17 @@
     <string name="contacts_default_notification_channel" msgid="4754058700611188581">"通知"</string>
     <string name="yes_button" msgid="1268479086848288060">"是"</string>
     <string name="no_button" msgid="5742815694687835125">"否"</string>
+    <string name="export_to_sim">"导出到 SIM 卡"</string>
+    <string name="exporting">"正在导出"</string>
+    <string name="progressdialog_cancel">取消</string>
+    <string name="sim_contact_export_failed">导出失败, 名字: <xliff:g id="name">%1$s</xliff:g>, 号码: <xliff:g id="number">%2$s</xliff:g>, 邮箱: <xliff:g id="email">%3$s</xliff:g></string>
+    <string name="export_sim_card_full">"SIM卡已满，<xliff:g id="insertCount">%d</xliff:g>条成功导出"</string>
+    <string name="export_finished">"导出结束"</string>
+    <string name="export_cancelled">导出操作被取消，<xliff:g id="insertCount">%s</xliff:g>条成功导出</string>
+    <string name="export_no_phone_or_email">导出失败, <xliff:g id="name">%s</xliff:g>没有电话号码或者邮箱地址</string>
+    <string name="copy_done">复制成功！</string>
+    <string name="copy_failure">复制失败！</string>
+    <string name="card_no_space">卡记录已满，部分信息未复制</string>
+    <string name="menu_copyTo">"复制到"</string>
+    <string name="no_empty_email_in_usim">"卡上电子邮件空间已满，部分邮件信息将不会复制 "</string>
 </resources>

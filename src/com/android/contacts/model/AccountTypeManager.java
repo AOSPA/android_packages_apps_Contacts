@@ -197,6 +197,12 @@ public abstract class AccountTypeManager {
                 Futures.getUnchecked(filterAccountsAsync(AccountFilter.CONTACTS_WRITABLE)));
     }
 
+    public List<AccountWithDataSet> blockForWritableAccountsWithoutSim() {
+        return AccountInfo.extractAccounts(
+                Futures.getUnchecked(filterAccountsAsync(AccountFilter
+                        .CONTACTS_WRITABLE_WITHOUT_SIM)));
+    }
+
     /**
      * Loads accounts in background and returns future that will complete with list of all accounts
      */

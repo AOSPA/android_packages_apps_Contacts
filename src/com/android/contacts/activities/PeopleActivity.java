@@ -736,7 +736,7 @@ public class PeopleActivity extends AppCompatContactsActivity implements
             fragment.updateStatus(mProviderStatus);
         }
         if (!transaction.isEmpty()) {
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
             fragmentManager.executePendingTransactions();
         }
 

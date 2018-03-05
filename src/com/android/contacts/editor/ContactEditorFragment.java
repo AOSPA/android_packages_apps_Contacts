@@ -950,8 +950,13 @@ public class ContactEditorFragment extends Fragment implements
         if (isEditingReadOnlyRawContactWithNewContact()) {
             // We created a new raw contact delta with a default display name.
             // We must test for pending changes while ignoring the default display name.
-            final ValuesDelta beforeDelta = mState.getByRawContactId(mReadOnlyDisplayNameId)
-                    .getSuperPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE);
+            final RawContactDelta beforeRawContactDelta = mState
+                    .getByRawContactId(mReadOnlyDisplayNameId);
+            ValuesDelta beforeDelta = null;
+            if (beforeRawContactDelta != null){
+                beforeDelta = beforeRawContactDelta
+                        .getSuperPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE);
+            }
             final ValuesDelta pendingDelta = mState
                     .getSuperPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE);
             if (structuredNamesAreEqual(beforeDelta, pendingDelta)) {
@@ -1745,6 +1750,11 @@ public class ContactEditorFragment extends Fragment implements
         // For contacts composed of a single writable raw contact, or raw contacts have no more
         // than 1 photo, clicking the photo view simply opens the source photo dialog
         getEditorActivity().changePhoto(getPhotoMode());
+    }
+
+    @Override
+    public void onClearPhotoCache() {
+        mUpdatedPhotos.remove(String.valueOf(mPhotoRawContactId));
     }
 
     private int getPhotoMode() {

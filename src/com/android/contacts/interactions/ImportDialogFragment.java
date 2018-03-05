@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.contacts.R;
 import com.android.contacts.activities.SimImportActivity;
@@ -113,7 +114,7 @@ public class ImportDialogFragment extends DialogFragment {
 
         // Start loading the accounts. This is done in onResume in case they were refreshed.
         mAccountsFuture = AccountTypeManager.getInstance(getActivity()).filterAccountsAsync(
-                AccountTypeManager.writableFilter());
+                AccountTypeManager.AccountFilter.CONTACTS_WRITABLE_WITHOUT_SIM);
     }
 
     @Override
@@ -259,6 +260,11 @@ public class ImportDialogFragment extends DialogFragment {
      * Handle "import from SD".
      */
     private void handleImportRequest(int resId, int subscriptionId) {
+        //if the accounts is not initial complete, give a toast here.
+        if (mAccountsFuture == null) {
+            Toast.makeText(getActivity(), R.string.vcard_import_failed, Toast.LENGTH_SHORT).show();
+            return;
+        }
         // Get the accounts. Because this only happens after a user action this should pretty
         // much never block since it will usually be at least several seconds before the user
         // interacts with the view
@@ -277,7 +283,7 @@ public class ImportDialogFragment extends DialogFragment {
             args.putInt(KEY_SUBSCRIPTION_ID, subscriptionId);
             SelectAccountDialogFragment.show(
                     getFragmentManager(), R.string.dialog_new_contact_account,
-                    AccountTypeManager.AccountFilter.CONTACTS_WRITABLE, args);
+                    AccountTypeManager.AccountFilter.CONTACTS_WRITABLE_WITHOUT_SIM, args);
         } else {
             AccountSelectionUtil.doImport(getActivity(), resId,
                     (size == 1 ? accountList.get(0) : null),

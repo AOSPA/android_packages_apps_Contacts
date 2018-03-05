@@ -279,7 +279,6 @@ public class DrawerAdapter extends BaseAdapter {
         }
         final ContactListFilter account = item.account;
         final TextView textView = ((TextView) result.findViewById(R.id.title));
-        textView.setText(account.accountName);
         final boolean activated = account.equals(mSelectedAccount)
                 && mSelectedView == ContactsView.ACCOUNT_VIEW;
         textView.setTextAppearance(mActivity, activated
@@ -290,6 +289,11 @@ public class DrawerAdapter extends BaseAdapter {
                 mAccountDisplayFactory.getAccountDisplayInfoFor(item.account);
         icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
         icon.setImageDrawable(displayableAccount.getIcon());
+        if (account.accountName != null) {
+            textView.setText(account.accountName);
+        }else {
+            textView.setText(displayableAccount.getNameLabel());
+        }
 
         result.setTag(account);
         result.setActivated(activated);

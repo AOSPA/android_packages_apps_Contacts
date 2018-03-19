@@ -952,11 +952,8 @@ public class ContactEditorFragment extends Fragment implements
             // We must test for pending changes while ignoring the default display name.
             final RawContactDelta beforeRawContactDelta = mState
                     .getByRawContactId(mReadOnlyDisplayNameId);
-            ValuesDelta beforeDelta = null;
-            if (beforeRawContactDelta != null){
-                beforeDelta = beforeRawContactDelta
-                        .getSuperPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE);
-            }
+            final ValuesDelta beforeDelta = beforeRawContactDelta == null ? null :
+                  beforeRawContactDelta.getSuperPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE);
             final ValuesDelta pendingDelta = mState
                     .getSuperPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE);
             if (structuredNamesAreEqual(beforeDelta, pendingDelta)) {

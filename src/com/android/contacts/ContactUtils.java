@@ -53,7 +53,10 @@ import android.net.Uri;
 import com.android.contacts.model.account.SimAccountType;
 import com.android.contacts.SimContactsConstants;
 
-import org.codeaurora.wrapper.UiccPhoneBookController_Wrapper;
+import android.os.IBinder;
+import com.android.internal.telephony.IIccPhoneBook;
+
+import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 /**
@@ -119,8 +122,7 @@ public class ContactUtils {
 
     public static int[] getAdnRecordsCapacity(Context c, int slot) {
         int subId = getActiveSubId(c, slot);
-        return UiccPhoneBookController_Wrapper
-                .getAdnRecordsCapacityForSubscriber(subId);
+        return getAdnRecordsCapacityForSubscriber(subId);
     }
 
     /**
@@ -348,5 +350,39 @@ public class ContactUtils {
                 return true;
         }
         return false;
+    }
+
+    /*      capacity[0]  is the max count of ADN
+            capacity[1]  is the used count of ADN
+            capacity[2]  is the max count of EMAIL
+            capacity[3]  is the used count of EMAIL
+            capacity[4]  is the max count of ANR
+            capacity[5]  is the used count of ANR
+            capacity[6]  is the max length of name
+            capacity[7]  is the max length of number
+            capacity[8]  is the max length of email
+            capacity[9]  is the max length of anr
+    */
+    private static int[] getAdnRecordsCapacityForSubscriber(int subId) {
+        int defaultCapacity[] = { 0, 0, 0, 0, 0, 0, 14, 40, 40, 40 };
+        try {
+            Class serviceManager = Class.forName("android.os.ServiceManager");
+            Method getService = serviceManager.getMethod("getService",String.class);
+            Object binder = getService.invoke(serviceManager, "simphonebook");
+            if (binder != null && binder instanceof IBinder){
+                IIccPhoneBook iccIpb = IIccPhoneBook.Stub.asInterface((IBinder)binder);
+                if (iccIpb != null){
+                    Method getAdnRecordsCapacityForSubscriber = IIccPhoneBook.class.
+                            getMethod("getAdnRecordsCapacityForSubscriber",int.class);
+                    Object capacity = getAdnRecordsCapacityForSubscriber.invoke(iccIpb, subId);
+                    if (capacity != null && capacity instanceof int[]){
+                        return (int[])capacity;
+                    }
+                }
+            }
+        }catch (Exception e){
+            Log.e(TAG," getAdnRecordsCapacityForSubscriber error = "+e.toString());
+        }
+        return defaultCapacity;
     }
 }

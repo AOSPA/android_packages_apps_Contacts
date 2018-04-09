@@ -54,9 +54,9 @@ import com.android.contacts.model.account.SimAccountType;
 import com.android.contacts.SimContactsConstants;
 
 import android.os.IBinder;
-import com.android.internal.telephony.IIccPhoneBook;
 
-import java.lang.reflect.Method;
+import android.os.ServiceManager;
+import com.android.internal.telephony.IIccPhoneBook;
 
 import java.util.ArrayList;
 /**
@@ -366,19 +366,12 @@ public class ContactUtils {
     private static int[] getAdnRecordsCapacityForSubscriber(int subId) {
         int defaultCapacity[] = { 0, 0, 0, 0, 0, 0, 14, 40, 40, 40 };
         try {
-            Class serviceManager = Class.forName("android.os.ServiceManager");
-            Method getService = serviceManager.getMethod("getService",String.class);
-            Object binder = getService.invoke(serviceManager, "simphonebook");
-            if (binder != null && binder instanceof IBinder){
-                IIccPhoneBook iccIpb = IIccPhoneBook.Stub.asInterface((IBinder)binder);
-                if (iccIpb != null){
-                    Method getAdnRecordsCapacityForSubscriber = IIccPhoneBook.class.
-                            getMethod("getAdnRecordsCapacityForSubscriber",int.class);
-                    Object capacity = getAdnRecordsCapacityForSubscriber.invoke(iccIpb, subId);
-                    if (capacity != null && capacity instanceof int[]){
-                        return (int[])capacity;
-                    }
-                }
+            IIccPhoneBook iccIpb = IIccPhoneBook.Stub
+                    .asInterface(ServiceManager.getService("simphonebook"));
+            if (iccIpb != null) {
+                int[] capacity = iccIpb.getAdnRecordsCapacityForSubscriber(subId);
+                if (capacity != null)
+                    return capacity;
             }
         }catch (Exception e){
             Log.e(TAG," getAdnRecordsCapacityForSubscriber error = "+e.toString());

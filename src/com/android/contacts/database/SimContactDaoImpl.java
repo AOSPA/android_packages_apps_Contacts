@@ -402,7 +402,7 @@ public class SimContactDaoImpl extends SimContactDao {
     }
 
     private String[] parseAnrs(String anrs) {
-        return !TextUtils.isEmpty(anrs) ? anrs.split(",") : null;
+        return !TextUtils.isEmpty(anrs) ? anrs.split(":") : null;
     }
 
     private boolean hasTelephony() {

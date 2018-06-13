@@ -93,14 +93,11 @@ public class RawContactDelta implements Parcelable {
      * starting point; the "before" snapshot.
      */
     public static RawContactDelta fromBefore(RawContact before) {
-        String account = before.getAccountTypeString();
-        boolean isSimContact = (account != null && account
-                .equals(SimAccountType.ACCOUNT_TYPE)) ? true : false;
         final RawContactDelta rawContactDelta = new RawContactDelta();
         rawContactDelta.mValues = ValuesDelta.fromBefore(before.getValues());
         rawContactDelta.mValues.setIdColumn(RawContacts._ID);
         for (final ContentValues values : before.getContentValues()) {
-            rawContactDelta.addEntry(ValuesDelta.fromBefore(values, isSimContact));
+            rawContactDelta.addEntry(ValuesDelta.fromBefore(values));
         }
         return rawContactDelta;
     }
@@ -486,9 +483,8 @@ public class RawContactDelta implements Parcelable {
                     name = nameValuesDelta.getBefore()
                         .getAsString(StructuredName.GIVEN_NAME);
                 }
-                if (nameValuesDelta.getAfter() != null) {
-                    newName = nameValuesDelta.getAfter()
-                        .getAsString(StructuredName.GIVEN_NAME);
+                if (!nameValuesDelta.isDelete()) {
+                    newName = nameValuesDelta.getAsString(StructuredName.GIVEN_NAME);
                 }
             }
         }
@@ -515,18 +511,20 @@ public class RawContactDelta implements Parcelable {
                         anr.append(SimContactsConstants.ANR_SEP);
                     }
                 }
-                if (valuesDelta.getAfter() != null
-                        && valuesDelta.getAfter().size() != 0) {
-                    if (Phone.TYPE_MOBILE == valuesDelta.getAsLong(Phone.TYPE)) {
-                        newNumber = valuesDelta.getAfter().getAsString(Phone.NUMBER);
+                if (!valuesDelta.isDelete()) {
+                    final Long phoneType = valuesDelta.getAsLong(Phone.TYPE);
+                    if (phoneType != null && Phone.TYPE_MOBILE == phoneType) {
+                        newNumber = valuesDelta.getAsString(Phone.NUMBER);
                     } else {
-                        newAnr.append(valuesDelta.getAfter().getAsString(Phone.NUMBER));
-                        newAnr.append(SimContactsConstants.ANR_SEP);
+                        String phoneNumber = valuesDelta.getAsString(Phone.NUMBER);
+                        if (!TextUtils.isEmpty(phoneNumber)) {
+                            newAnr.append(phoneNumber);
+                            newAnr.append(SimContactsConstants.ANR_SEP);
+                        }
                     }
                 }
             }
         }
-
         if (isContactInsert() && emails != null) {
             for (ValuesDelta valuesDelta : emails) {
                 if (valuesDelta.getAfter() != null
@@ -542,10 +540,12 @@ public class RawContactDelta implements Parcelable {
                     email.append(valuesDelta.getBefore().getAsString(Email.DATA));
                     email.append(SimContactsConstants.EMAIL_SEP);
                 }
-                if (valuesDelta.getAfter() != null
-                        && valuesDelta.getAfter().size() != 0) {
-                        newEmail.append(valuesDelta.getAfter().getAsString(Email.DATA));
+                if (!valuesDelta.isDelete()){
+                    final String emailData = valuesDelta.getAsString(Email.DATA);
+                    if (!TextUtils.isEmpty(emailData)){
+                        newEmail.append(emailData);
                         newEmail.append(SimContactsConstants.EMAIL_SEP);
+                    }
                 }
             }
         }

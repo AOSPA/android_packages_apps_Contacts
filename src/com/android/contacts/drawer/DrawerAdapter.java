@@ -33,6 +33,7 @@ import com.android.contacts.list.ContactListFilter;
 import com.android.contacts.model.account.AccountDisplayInfo;
 import com.android.contacts.model.account.AccountDisplayInfoFactory;
 import com.android.contacts.util.SharedPreferenceUtil;
+import com.android.contacts.util.ImplicitIntentsUtil;
 import com.android.contactsbind.HelpUtils;
 import com.android.contactsbind.ObjectFactory;
 
@@ -115,6 +116,11 @@ public class DrawerAdapter extends BaseAdapter {
         mMiscItems.add(new DividerItem());
         mMiscItems.add(new MiscItem(R.id.nav_settings, R.string.menu_settings,
                 R.drawable.quantum_ic_settings_vd_theme_24));
+        if (ImplicitIntentsUtil.checkIntentIfExists(mActivity,
+                ImplicitIntentsUtil.getIntentForSimContactsManagement())) {
+            mMiscItems.add(new MiscItem(R.id.nav_sim_contacts, R.string.menu_sim_contacts,
+                    R.drawable.quantum_ic_sim_card_vd_theme_24));
+        }
         if (HelpUtils.isHelpAndFeedbackAvailable()) {
             mMiscItems.add(new MiscItem(R.id.nav_help, R.string.menu_help,
                     R.drawable.quantum_ic_help_vd_theme_24));

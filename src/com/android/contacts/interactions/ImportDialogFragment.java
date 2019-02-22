@@ -49,6 +49,7 @@ import com.android.contacts.model.SimContact;
 import com.android.contacts.model.account.AccountInfo;
 import com.android.contacts.model.account.AccountWithDataSet;
 import com.android.contacts.util.AccountSelectionUtil;
+import com.android.contacts.util.ImplicitIntentsUtil;
 import com.google.common.util.concurrent.Futures;
 
 import java.util.List;
@@ -238,16 +239,20 @@ public class ImportDialogFragment extends DialogFragment {
             adapter.add(new AdapterEntry(getString(R.string.import_from_vcf_file),
                     R.string.import_from_vcf_file));
         }
-        final List<SimCard> sims = mSimDao.getSimCards();
+        if (!ImplicitIntentsUtil.checkIntentIfExists(getActivity(),
+                ImplicitIntentsUtil.getIntentForSimContactsManagement())) {
+            final List<SimCard> sims = mSimDao.getSimCards();
 
-        if (sims.size() == 1) {
-            adapter.add(new AdapterEntry(getString(R.string.import_from_sim),
-                    R.string.import_from_sim, sims.get(0)));
-            return;
-        }
-        for (int i = 0; i < sims.size(); i++) {
-            final SimCard sim = sims.get(i);
-            adapter.add(new AdapterEntry(getSimDescription(sim, i), R.string.import_from_sim, sim));
+            if (sims.size() == 1) {
+                adapter.add(new AdapterEntry(getString(R.string.import_from_sim),
+                        R.string.import_from_sim, sims.get(0)));
+                return;
+            }
+            for (int i = 0; i < sims.size(); i++) {
+                final SimCard sim = sims.get(i);
+                adapter.add(new AdapterEntry(getSimDescription(sim, i),
+                        R.string.import_from_sim, sim));
+            }
         }
     }
 

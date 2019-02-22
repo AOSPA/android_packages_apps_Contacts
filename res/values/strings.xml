@@ -449,6 +449,9 @@
     <!-- Menu item for the settings activity [CHAR LIMIT=64] -->
     <string name="menu_settings" msgid="377929915873428211">Settings</string>
 
+    <!-- Menu item for the sim contacts-->
+    <string name="menu_sim_contacts">SIM contacts</string>
+
     <!-- Menu item for invoking contextual Help & Feedback [CHAR LIMIT=64] -->
     <string name="menu_help">Help &amp; feedback</string>
 

@@ -71,6 +71,9 @@
     <!-- Menu ID for Settings menu -->
     <item type="id" name="nav_settings" />
 
+    <!-- Menu ID for SIM contacts menu -->
+    <item type="id" name="nav_sim_contacts" />
+
     <!-- Menu ID for help & feedback  menu -->
     <item type="id" name="nav_help" />
 

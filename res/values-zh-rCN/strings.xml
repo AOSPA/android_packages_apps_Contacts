@@ -92,6 +92,7 @@
     <string name="multipleContactDeleteConfirmation" msgid="5235324124905653550">"删除此联系人也将删除多个帐号中的相关详细信息。"</string>
     <string name="deleteConfirmation" msgid="3512271779086656043">"要删除此联系人吗？"</string>
     <string name="deleteConfirmation_positive_button" msgid="7857888845028586365">"删除"</string>
+    <string name="delete_contacts_title">删除联系人</string>
     <string name="invalidContactMessage" msgid="8215051456181842274">"该联系人不存在。"</string>
     <string name="createContactShortcutSuccessful_NoName" msgid="8831303345367275472">"已将该联系人添加到主屏幕。"</string>
     <string name="createContactShortcutSuccessful" msgid="953651153238790069">"已将<xliff:g id="NAME">%s</xliff:g>添加到主屏幕。"</string>
@@ -135,6 +136,7 @@
     <string name="missing_app" msgid="1466111003546611387">"未找到可处理此操作的应用。"</string>
     <string name="menu_share" msgid="943789700636542260">"分享"</string>
     <string name="menu_add_contact" msgid="3198704337220892684">"添加到通讯录"</string>
+    <string name="menu_select_all">全选</string>
     <string name="menu_add_contacts" msgid="4465646512002163011">"添加"</string>
     <plurals name="title_share_via" formatted="false" msgid="5886112726191455415">
       <item quantity="other">通过以下应用分享联系人</item>

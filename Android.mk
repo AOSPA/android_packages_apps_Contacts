@@ -29,7 +29,7 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     guava \
     libphonenumber
 
-LOCAL_JAVA_LIBRARIES := telephony-common voip-common
+LOCAL_JAVA_LIBRARIES := voip-common
 
 LOCAL_USE_AAPT2 := true
 

@@ -15,7 +15,6 @@
  */
 package com.android.contacts;
 
-import android.accounts.Account;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -41,7 +40,6 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
-import android.provider.ContactsContract.RawContacts;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -64,16 +62,12 @@ public class ShortcutIntentBuilder {
     private static final String[] CONTACT_COLUMNS = {
         Contacts.DISPLAY_NAME,
         Contacts.PHOTO_ID,
-        Contacts.LOOKUP_KEY,
-        RawContacts.ACCOUNT_TYPE,
-        RawContacts.ACCOUNT_NAME,
+        Contacts.LOOKUP_KEY
     };
 
     private static final int CONTACT_DISPLAY_NAME_COLUMN_INDEX = 0;
     private static final int CONTACT_PHOTO_ID_COLUMN_INDEX = 1;
     private static final int CONTACT_LOOKUP_KEY_COLUMN_INDEX = 2;
-    private static final int CONTACT_ACCOUNT_TYPE_COLUMN_INDEX = 3;
-    private static final int CONTACT_ACCOUNT_NAME_COLUMN_INDEX = 4;
 
     private static final String[] PHONE_COLUMNS = {
         Phone.DISPLAY_NAME,
@@ -81,9 +75,7 @@ public class ShortcutIntentBuilder {
         Phone.NUMBER,
         Phone.TYPE,
         Phone.LABEL,
-        Phone.LOOKUP_KEY,
-        RawContacts.ACCOUNT_TYPE,
-        RawContacts.ACCOUNT_NAME,
+        Phone.LOOKUP_KEY
     };
 
     private static final int PHONE_DISPLAY_NAME_COLUMN_INDEX = 0;
@@ -92,8 +84,6 @@ public class ShortcutIntentBuilder {
     private static final int PHONE_TYPE_COLUMN_INDEX = 3;
     private static final int PHONE_LABEL_COLUMN_INDEX = 4;
     private static final int PHONE_LOOKUP_KEY_COLUMN_INDEX = 5;
-    private static final int PHONE_ACCOUNT_TYPE_COLUMN_INDEX = 6;
-    private static final int PHONE_ACCOUNT_NAME_COLUMN_INDEX = 7;
 
     private static final String[] PHOTO_COLUMNS = {
         Photo.PHOTO,
@@ -167,7 +157,6 @@ public class ShortcutIntentBuilder {
         protected String mLookupKey;
         protected byte[] mBitmapData;
         protected long mPhotoId;
-        private Account mAccount;
         public LoadingAsyncTask(Uri uri) {
             mUri = uri;
         }
@@ -203,7 +192,6 @@ public class ShortcutIntentBuilder {
     }
 
     private final class ContactLoadingAsyncTask extends LoadingAsyncTask {
-        private Account mAccount;
 
         public ContactLoadingAsyncTask(Uri uri) {
             super(uri);
@@ -219,12 +207,6 @@ public class ShortcutIntentBuilder {
                         mDisplayName = cursor.getString(CONTACT_DISPLAY_NAME_COLUMN_INDEX);
                         mPhotoId = cursor.getLong(CONTACT_PHOTO_ID_COLUMN_INDEX);
                         mLookupKey = cursor.getString(CONTACT_LOOKUP_KEY_COLUMN_INDEX);
-                        final String accountType = cursor
-                                .getString(CONTACT_ACCOUNT_TYPE_COLUMN_INDEX);
-                        final String accountName = cursor
-                                .getString(CONTACT_ACCOUNT_NAME_COLUMN_INDEX);
-                        if (accountType != null && accountName != null)
-                            mAccount = new Account(accountName, accountType);
                     }
                 } finally {
                     cursor.close();
@@ -233,8 +215,7 @@ public class ShortcutIntentBuilder {
         }
         @Override
         protected void onPostExecute(Void result) {
-            createContactShortcutIntent(mUri, mContentType, mDisplayName,
-                    mAccount, mLookupKey, mBitmapData);
+            createContactShortcutIntent(mUri, mContentType, mDisplayName, mLookupKey, mBitmapData);
         }
     }
 
@@ -243,7 +224,6 @@ public class ShortcutIntentBuilder {
         private String mPhoneNumber;
         private int mPhoneType;
         private String mPhoneLabel;
-        private Account mAccount;
 
         public PhoneNumberLoadingAsyncTask(Uri uri, String shortcutAction) {
             super(uri);
@@ -263,12 +243,6 @@ public class ShortcutIntentBuilder {
                         mPhoneType = cursor.getInt(PHONE_TYPE_COLUMN_INDEX);
                         mPhoneLabel = cursor.getString(PHONE_LABEL_COLUMN_INDEX);
                         mLookupKey = cursor.getString(PHONE_LOOKUP_KEY_COLUMN_INDEX);
-                        final String accountType = cursor
-                                .getString(PHONE_ACCOUNT_TYPE_COLUMN_INDEX);
-                        final String accountName = cursor
-                                .getString(PHONE_ACCOUNT_NAME_COLUMN_INDEX);
-                        if (accountType != null)
-                            mAccount = new Account(accountName, accountType);
                     }
                 } finally {
                     cursor.close();
@@ -279,12 +253,11 @@ public class ShortcutIntentBuilder {
         @Override
         protected void onPostExecute(Void result) {
             createPhoneNumberShortcutIntent(mUri, mDisplayName, mLookupKey, mBitmapData,
-                    mPhoneNumber, mPhoneType, mPhoneLabel, mAccount, mShortcutAction);
+                    mPhoneNumber, mPhoneType, mPhoneLabel, mShortcutAction);
         }
     }
 
-    private Drawable getPhotoDrawable(byte[] bitmapData, String displayName, String lookupKey,
-            Account account) {
+    private Drawable getPhotoDrawable(byte[] bitmapData, String displayName, String lookupKey) {
         if (bitmapData != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.length, null);
             return new BitmapDrawable(mContext.getResources(), bitmap);
@@ -296,12 +269,12 @@ public class ShortcutIntentBuilder {
                 request.scale = LetterTileDrawable.getAdaptiveIconScale();
             }
             return ContactPhotoManager.getDefaultAvatarDrawableForContact(mContext.getResources(),
-                    false, request, account);
+                    false, request);
         }
     }
 
     private void createContactShortcutIntent(Uri contactUri, String contentType, String displayName,
-            Account account, String lookupKey, byte[] bitmapData) {
+            String lookupKey, byte[] bitmapData) {
         Intent intent = null;
         if (TextUtils.isEmpty(displayName)) {
             displayName = mContext.getResources().getString(R.string.missing_name);
@@ -312,12 +285,12 @@ public class ShortcutIntentBuilder {
                     mContext.getSystemService(Context.SHORTCUT_SERVICE);
             final DynamicShortcuts dynamicShortcuts = new DynamicShortcuts(mContext);
             final ShortcutInfo shortcutInfo = dynamicShortcuts.getQuickContactShortcutInfo(
-                    contactId, lookupKey, displayName, account);
+                    contactId, lookupKey, displayName);
             if (shortcutInfo != null) {
                 intent = sm.createShortcutResultIntent(shortcutInfo);
             }
         }
-        final Drawable drawable = getPhotoDrawable(bitmapData, displayName, lookupKey, account);
+        final Drawable drawable = getPhotoDrawable(bitmapData, displayName, lookupKey);
 
         final Intent shortcutIntent = ImplicitIntentsUtil.getIntentForQuickContactLauncherShortcut(
                 mContext, contactUri);
@@ -339,8 +312,8 @@ public class ShortcutIntentBuilder {
 
     private void createPhoneNumberShortcutIntent(Uri uri, String displayName, String lookupKey,
             byte[] bitmapData, String phoneNumber, int phoneType, String phoneLabel,
-            Account account, String shortcutAction) {
-        final Drawable drawable = getPhotoDrawable(bitmapData, displayName, lookupKey, account);
+            String shortcutAction) {
+        final Drawable drawable = getPhotoDrawable(bitmapData, displayName, lookupKey);
         final Bitmap icon;
         final Uri phoneUri;
         final String shortcutName;

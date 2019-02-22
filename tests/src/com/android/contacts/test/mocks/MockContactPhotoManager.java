@@ -16,7 +16,6 @@
 
 package com.android.contacts.test.mocks;
 
-import android.accounts.Account;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
@@ -30,15 +29,14 @@ import com.android.contacts.ContactPhotoManager;
  */
 public class MockContactPhotoManager extends ContactPhotoManager {
     @Override
-    public void loadThumbnail(ImageView view, long photoId, Account account, boolean darkTheme,
-            boolean isCircular, DefaultImageRequest defaultImageRequest,
-            DefaultImageProvider defaultProvider) {
+    public void loadThumbnail(ImageView view, long photoId, boolean darkTheme, boolean isCircular,
+            DefaultImageRequest defaultImageRequest, DefaultImageProvider defaultProvider) {
         defaultProvider.applyDefaultImage(view, -1, darkTheme, null);
     }
 
     @Override
-    public void loadPhoto(ImageView view, Uri photoUri, Account account, int requestedExtent,
-            boolean darkTheme, boolean isCircular, DefaultImageRequest defaultImageRequest,
+    public void loadPhoto(ImageView view, Uri photoUri, int requestedExtent, boolean darkTheme,
+            boolean isCircular, DefaultImageRequest defaultImageRequest,
             DefaultImageProvider defaultProvider) {
         defaultProvider.applyDefaultImage(view, requestedExtent, darkTheme, null);
     }

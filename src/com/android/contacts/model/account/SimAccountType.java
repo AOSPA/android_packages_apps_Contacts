@@ -69,11 +69,6 @@ public class SimAccountType extends BaseAccountType {
     }
 
     @Override
-    public boolean isSimAccount() {
-        return true;
-    }
-
-    @Override
     public void initializeFieldsFromAuthenticator(AuthenticatorDescription authenticator) {
         // Do nothing. We want to use our local icon and title
         super.initializeFieldsFromAuthenticator(authenticator);

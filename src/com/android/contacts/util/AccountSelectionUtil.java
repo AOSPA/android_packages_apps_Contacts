@@ -93,7 +93,7 @@ public class AccountSelectionUtil {
             DialogInterface.OnCancelListener onCancelListener) {
         final AccountTypeManager accountTypes = AccountTypeManager.getInstance(activity);
         final List<AccountWithDataSet> writableAccountList =
-                accountTypes.blockForWritableAccountsWithoutSim();
+                accountTypes.blockForWritableAccounts();
 
         Log.i(LOG_TAG, "The number of available accounts: " + writableAccountList.size());
 
@@ -183,8 +183,6 @@ public class AccountSelectionUtil {
             importIntent.putExtra("account_name", account.name);
             importIntent.putExtra("account_type", account.type);
             importIntent.putExtra("data_set", account.dataSet);
-            if (account.name == null && account.type == null)
-                importIntent.putExtra("local_account", true);
         }
 
         if (mVCardShare) {

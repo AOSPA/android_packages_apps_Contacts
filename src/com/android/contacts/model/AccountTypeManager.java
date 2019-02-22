@@ -100,13 +100,6 @@ public abstract class AccountTypeManager {
                 return input != null && input.getType().isGroupMembershipEditable();
             }
         },
-        CONTACTS_WRITABLE_WITHOUT_SIM {
-            @Override
-            public boolean apply(@Nullable AccountInfo input) {
-                return input != null && !input.getType().isSimAccount()
-                        && input.getType().areContactsWritable();
-            }
-        };
     }
 
     /**
@@ -195,12 +188,6 @@ public abstract class AccountTypeManager {
     public List<AccountWithDataSet> blockForWritableAccounts() {
         return AccountInfo.extractAccounts(
                 Futures.getUnchecked(filterAccountsAsync(AccountFilter.CONTACTS_WRITABLE)));
-    }
-
-    public List<AccountWithDataSet> blockForWritableAccountsWithoutSim() {
-        return AccountInfo.extractAccounts(
-                Futures.getUnchecked(filterAccountsAsync(AccountFilter
-                        .CONTACTS_WRITABLE_WITHOUT_SIM)));
     }
 
     /**

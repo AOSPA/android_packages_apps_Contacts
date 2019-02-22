@@ -1783,11 +1783,6 @@ public class ContactEditorFragment extends Fragment implements
         getEditorActivity().changePhoto(getPhotoMode());
     }
 
-    @Override
-    public void onClearPhotoCache() {
-        mUpdatedPhotos.remove(String.valueOf(mPhotoRawContactId));
-    }
-
     private int getPhotoMode() {
         return getContent().isWritablePhotoSet() ? PhotoActionPopup.Modes.WRITE_ABLE_PHOTO
                 : PhotoActionPopup.Modes.NO_PHOTO;

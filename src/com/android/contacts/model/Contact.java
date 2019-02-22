@@ -81,9 +81,6 @@ public class Contact {
     private String mDirectoryAccountName;
     private int mDirectoryExportSupport;
 
-    private String mAccountType;
-    private String mAccountName;
-
     private ImmutableList<GroupMetaData> mGroups;
 
     private byte[] mPhotoBinaryData;
@@ -420,14 +417,6 @@ public class Contact {
         return mThumbnailPhotoBinaryData;
     }
 
-    public String getAccountType() {
-        return mAccountType;
-    }
-
-    public String getAccountName() {
-        return mAccountName;
-    }
-
     public ArrayList<ContentValues> getContentValues() {
         if (mRawContacts.size() != 1) {
             throw new IllegalStateException(
@@ -503,10 +492,5 @@ public class Contact {
 
     /* package */ void setGroupMetaData(ImmutableList<GroupMetaData> groups) {
         mGroups = groups;
-    }
-
-    public void setAccountInfo(String accountType, String accountName) {
-        mAccountType = accountType;
-        mAccountName = accountName;
     }
 }

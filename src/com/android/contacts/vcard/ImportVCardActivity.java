@@ -584,14 +584,11 @@ public class ImportVCardActivity extends Activity implements ImportVCardDialogFr
         String accountName = null;
         String accountType = null;
         String dataSet = null;
-        boolean localAccount = false;
         final Intent intent = getIntent();
         if (intent != null) {
             accountName = intent.getStringExtra(SelectAccountActivity.ACCOUNT_NAME);
             accountType = intent.getStringExtra(SelectAccountActivity.ACCOUNT_TYPE);
             dataSet = intent.getStringExtra(SelectAccountActivity.DATA_SET);
-            localAccount = intent.getBooleanExtra(
-                    SelectAccountActivity.LOCAL_ACCOUNT, false);
         } else {
             Log.e(LOG_TAG, "intent does not exist");
         }
@@ -599,22 +596,16 @@ public class ImportVCardActivity extends Activity implements ImportVCardDialogFr
         if (!TextUtils.isEmpty(accountName) && !TextUtils.isEmpty(accountType)) {
             mAccount = new AccountWithDataSet(accountName, accountType, dataSet);
         } else {
-            if (localAccount) {
-                mAccount = AccountWithDataSet.getNullAccount();
+            final AccountTypeManager accountTypes = AccountTypeManager.getInstance(this);
+            final List<AccountWithDataSet> accountList = accountTypes.blockForWritableAccounts();
+            if (accountList.size() == 0) {
+                mAccount = null;
+            } else if (accountList.size() == 1) {
+                mAccount = accountList.get(0);
             } else {
-                final AccountTypeManager accountTypes = AccountTypeManager
-                        .getInstance(this);
-                final List<AccountWithDataSet> accountList = accountTypes
-                        .blockForWritableAccounts();
-                if (accountList.size() == 0) {
-                    mAccount = null;
-                } else if (accountList.size() == 1) {
-                    mAccount = accountList.get(0);
-                } else {
-                    startActivityForResult(new Intent(this,
-                            SelectAccountActivity.class), SELECT_ACCOUNT);
-                    return;
-                }
+                startActivityForResult(new Intent(this, SelectAccountActivity.class),
+                        SELECT_ACCOUNT);
+                return;
             }
         }
 

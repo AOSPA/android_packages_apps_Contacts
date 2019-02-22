@@ -39,17 +39,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.contacts.R;
-import com.android.contacts.SimContactsConstants;
-import com.android.contacts.list.AccountFilterActivity;
-import com.android.contacts.list.ContactListFilter;
 import com.android.contacts.util.ImplicitIntentsUtil;
 import com.android.contacts.vcard.ExportVCardActivity;
-import com.android.contacts.database.SimContactDao;
 import com.android.contacts.model.SimCard;
 import com.android.contacts.vcard.ShareVCardActivity;
 import com.android.contacts.vcard.VCardCommonArguments;
 
-import java.util.List;
 /**
  * An dialog invoked to import/export contacts.
  */
@@ -67,7 +62,6 @@ public class ExportDialogFragment extends DialogFragment {
     };
 
     private SubscriptionManager mSubscriptionManager;
-    private SimContactDao mSimDao;
     /** Preferred way to show this dialog */
     public static void show(FragmentManager fragmentManager, Class callingActivity,
             int exportMode) {
@@ -97,7 +91,6 @@ public class ExportDialogFragment extends DialogFragment {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final String callingActivity = getArguments().getString(
                 VCardCommonArguments.ARG_CALLING_ACTIVITY);
-        mSimDao = SimContactDao.create(getContext());
         // Adapter that shows a list of string resources
         final ArrayAdapter<AdapterEntry> adapter = new ArrayAdapter<AdapterEntry>(getActivity(),
                 R.layout.select_dialog_item) {
@@ -132,8 +125,6 @@ public class ExportDialogFragment extends DialogFragment {
             }
         }
 
-        addItems(adapter);
-
         final DialogInterface.OnClickListener clickListener =
                 new DialogInterface.OnClickListener() {
             @Override
@@ -158,14 +149,6 @@ public class ExportDialogFragment extends DialogFragment {
                                 callingActivity);
                         getActivity().startActivity(exportIntent);
                     }
-                } else if (resId == R.string.export_to_sim) {
-                    dismissDialog = true;
-                    int sub = adapter.getItem(which).mSim.getSubscriptionId();
-                    Intent pickContactIntent = new Intent(
-                            SimContactsConstants.ACTION_MULTI_PICK_CONTACT,
-                            Contacts.CONTENT_URI);
-                    pickContactIntent.putExtra("exportSub", sub);
-                    getActivity().startActivity(pickContactIntent);
                 } else {
                     dismissDialog = true;
                     Log.e(TAG, "Unexpected resource: "
@@ -227,31 +210,6 @@ public class ExportDialogFragment extends DialogFragment {
                             Toast.LENGTH_SHORT).show();
                 }
             });
-        }
-    }
-
-    private void addItems(ArrayAdapter<AdapterEntry> adapter) {
-        final List<SimCard> sims = mSimDao.getSimCards();
-
-        if (sims.size() == 1) {
-            adapter.add(new AdapterEntry(getString(R.string.import_from_sim),
-                    R.string.export_to_sim, sims.get(0)));
-        } else {
-            for (int i = 0; i < sims.size(); i++) {
-                final SimCard sim = sims.get(i);
-                adapter.add(new AdapterEntry(getSimDescription(sim, i),
-                        R.string.export_to_sim, sim));
-            }
-        }
-    }
-
-    // use same display res as import from sim
-    private CharSequence getSimDescription(SimCard sim, int index) {
-        final CharSequence name = sim.getDisplayName();
-        if (name != null) {
-            return getString(R.string.import_from_sim_summary_fmt, name);
-        } else {
-            return getString(R.string.import_from_sim_summary_fmt, String.valueOf(index));
         }
     }
 

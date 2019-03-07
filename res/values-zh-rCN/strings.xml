@@ -92,6 +92,7 @@
     <string name="multipleContactDeleteConfirmation" msgid="5235324124905653550">"删除此联系人也将删除多个帐号中的相关详细信息。"</string>
     <string name="deleteConfirmation" msgid="3512271779086656043">"要删除此联系人吗？"</string>
     <string name="deleteConfirmation_positive_button" msgid="7857888845028586365">"删除"</string>
+    <string name="delete_contacts_title">删除联系人</string>
     <string name="invalidContactMessage" msgid="8215051456181842274">"该联系人不存在。"</string>
     <string name="createContactShortcutSuccessful_NoName" msgid="8831303345367275472">"已将该联系人添加到主屏幕。"</string>
     <string name="createContactShortcutSuccessful" msgid="953651153238790069">"已将<xliff:g id="NAME">%s</xliff:g>添加到主屏幕。"</string>
@@ -135,6 +136,7 @@
     <string name="missing_app" msgid="1466111003546611387">"未找到可处理此操作的应用。"</string>
     <string name="menu_share" msgid="943789700636542260">"分享"</string>
     <string name="menu_add_contact" msgid="3198704337220892684">"添加到通讯录"</string>
+    <string name="menu_select_all">全选</string>
     <string name="menu_add_contacts" msgid="4465646512002163011">"添加"</string>
     <plurals name="title_share_via" formatted="false" msgid="5886112726191455415">
       <item quantity="other">通过以下应用分享联系人</item>
@@ -163,6 +165,7 @@
     <string name="contact_directory_description" msgid="683398073603909119">"目录类型：<xliff:g id="TYPE">%1$s</xliff:g>"</string>
     <string name="activity_title_settings" msgid="5464130076132770781">"设置"</string>
     <string name="menu_settings" msgid="377929915873428211">"设置"</string>
+    <string name="menu_sim_contacts">"SIM卡联系人"</string>
     <string name="menu_help" msgid="1680178646764069976">"帮助和反馈"</string>
     <string name="organization_company_and_title" msgid="6718207751363732025">"<xliff:g id="COMPANY_0">%2$s</xliff:g>，<xliff:g id="COMPANY_1">%1$s</xliff:g>"</string>
     <string name="non_phone_caption" msgid="1541655052330027380">"电话号码"</string>
@@ -511,36 +514,4 @@
     <string name="contacts_default_notification_channel" msgid="4754058700611188581">"通知"</string>
     <string name="yes_button" msgid="1268479086848288060">"是"</string>
     <string name="no_button" msgid="5742815694687835125">"否"</string>
-    <!-- no translation found for contacts_default_notification_channel (4754058700611188581) -->
-    <skip />
-    <string name="select_all">"全选"</string>
-    <string name="btn_ok">"确定"</string>
-    <string name="btn_cancel">"取消"</string>
-    <string name="deleteConfirmation_title">"要删除联系人吗？"</string>
-    <string name="ContactMultiDeleteConfirmation">"将会删除这些联系人。"</string>
-    <string name="delete_contacts_title">"删除联系人"</string>
-    <string name="delete_contacts_message">"正在删除..."</string>
-    <string name="delete_termination">"删除结束"</string>
-    <string name="too_many_contacts_add_to_group">联系人过多，应该少于<xliff:g id="count">%d</xliff:g>个</string>
-    <string name="contacts_selected">已选中%d个</string>
-
-    <string name="summary_count_numbers">%s 个人</string>
-    <!-- The hint text in search-view.-->
-    <string name="search_menu_search">搜索</string>
-    <string name="too_many_contacts_add">联系人太多，应该少于 <xliff:g id="count">%d</xliff:g>个</string>
-    <string name="menu_select_all" msgid="621719255150713545">"全选"</string>
-    <string name="menu_select_none" msgid="7093222469852132345">"取消全选"</string>
-    <string name="export_to_sim">"导出到 SIM 卡"</string>
-    <string name="exporting">"正在导出"</string>
-    <string name="progressdialog_cancel">取消</string>
-    <string name="sim_contact_export_failed">导出失败, 名字: <xliff:g id="name">%1$s</xliff:g>, 号码: <xliff:g id="number">%2$s</xliff:g>, 邮箱: <xliff:g id="email">%3$s</xliff:g></string>
-    <string name="export_sim_card_full">"SIM卡已满，<xliff:g id="insertCount">%d</xliff:g>条成功导出"</string>
-    <string name="export_finished">"导出结束"</string>
-    <string name="export_cancelled">导出操作被取消，<xliff:g id="insertCount">%s</xliff:g>条成功导出</string>
-    <string name="export_no_phone_or_email">导出失败, <xliff:g id="name">%s</xliff:g>没有电话号码或者邮箱地址</string>
-    <string name="copy_done">复制成功！</string>
-    <string name="copy_failure">复制失败！</string>
-    <string name="card_no_space">卡记录已满，部分信息未复制</string>
-    <string name="menu_copyTo">"复制到"</string>
-    <string name="no_empty_email_in_usim">"卡上电子邮件空间已满，部分邮件信息将不会复制 "</string>
 </resources>

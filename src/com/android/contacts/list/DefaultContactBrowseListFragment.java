@@ -62,6 +62,7 @@ import com.android.contacts.R;
 import com.android.contacts.activities.ActionBarAdapter;
 import com.android.contacts.activities.PeopleActivity;
 import com.android.contacts.compat.CompatUtils;
+import com.android.contacts.interactions.ContactMultiShareInteraction;
 import com.android.contacts.interactions.ContactDeletionInteraction;
 import com.android.contacts.interactions.ContactMultiDeletionInteraction;
 import com.android.contacts.interactions.ContactMultiDeletionInteraction.MultiContactDeleteListener;
@@ -76,7 +77,6 @@ import com.android.contacts.util.AccountFilterUtil;
 import com.android.contacts.util.ImplicitIntentsUtil;
 import com.android.contacts.util.SharedPreferenceUtil;
 import com.android.contacts.util.SyncUtil;
-import com.android.contacts.SimContactsConstants;
 import com.android.contactsbind.FeatureHighlightHelper;
 import com.android.contactsbind.experiments.Flags;
 import com.google.common.util.concurrent.Futures;
@@ -1015,10 +1015,11 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
         final boolean showSelectedContactOptions = mActionBarAdapter.isSelectionMode()
                 && getSelectedContactIds().size() != 0;
         makeMenuItemVisible(menu, R.id.menu_share, showSelectedContactOptions);
-        makeMenuItemVisible(menu, R.id.menu_delete, !isSearchOrSelectionMode);
+        makeMenuItemVisible(menu, R.id.menu_delete, showSelectedContactOptions);
+        makeMenuItemVisible(menu, R.id.menu_select_all, !isSearchOrSelectionMode);
         final boolean showLinkContactsOptions = mActionBarAdapter.isSelectionMode()
                 && getSelectedContactIds().size() > 1
-                && getSelectedSimContact() <1;
+                && getSelectedContactIds().size() <= 9;
         makeMenuItemVisible(menu, R.id.menu_join, showLinkContactsOptions);
 
         // Debug options need to be visible even in search mode.
@@ -1080,17 +1081,17 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
             joinSelectedContacts();
             return true;
         } else if (id == R.id.menu_delete) {
-            final Intent intent = new Intent(SimContactsConstants.ACTION_MULTI_PICK_CONTACT,
-                    ContactsContract.Contacts.CONTENT_URI);
-            intent.putExtra(AccountFilterActivity.EXTRA_CONTACT_LIST_FILTER, getFilter());
-            intent.putExtra("delete", true);
-            startActivity(intent);
+            deleteSelectedContacts();
             return true;
         } else if (id == R.id.export_database) {
             final Intent intent = new Intent("com.android.providers.contacts.DUMP_DATABASE");
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             ImplicitIntentsUtil.startActivityOutsideApp(getContext(), intent);
             return true;
+        } else if (id == R.id.menu_select_all){
+            mActionBarAdapter.setSelectionMode(true);
+            mActivity.invalidateOptionsMenu();
+            setSelectedAll();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -1100,41 +1101,9 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
      * handling large numbers of contacts. I don't expect this to be a problem.
      */
     private void shareSelectedContacts() {
-        final StringBuilder uriListBuilder = new StringBuilder();
-        for (Long contactId : getSelectedContactIds()) {
-            final Uri contactUri = ContentUris.withAppendedId(
-                    ContactsContract.Contacts.CONTENT_URI, contactId);
-            final Uri lookupUri = ContactsContract.Contacts.getLookupUri(
-                    getContext().getContentResolver(), contactUri);
-            if (lookupUri == null) {
-                continue;
-            }
-            final List<String> pathSegments = lookupUri.getPathSegments();
-            if (pathSegments.size() < 2) {
-                continue;
-            }
-            final String lookupKey = pathSegments.get(pathSegments.size() - 2);
-            if (uriListBuilder.length() > 0) {
-                uriListBuilder.append(':');
-            }
-            uriListBuilder.append(Uri.encode(lookupKey));
-        }
-        if (uriListBuilder.length() == 0) {
-            return;
-        }
-        final Uri uri = Uri.withAppendedPath(
-                ContactsContract.Contacts.CONTENT_MULTI_VCARD_URI,
-                Uri.encode(uriListBuilder.toString()));
-        final Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType(ContactsContract.Contacts.CONTENT_VCARD_TYPE);
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        try {
-            startActivityForResult(Intent.createChooser(intent, getResources().getQuantityString(
-                    R.plurals.title_share_via,/* quantity */ getSelectedContactIds().size()))
-                    , ACTIVITY_REQUEST_CODE_SHARE);
-        } catch (final ActivityNotFoundException ex) {
-            Toast.makeText(getContext(), R.string.share_error, Toast.LENGTH_SHORT).show();
-        }
+        final ContactMultiShareInteraction multiShareInteraction =
+                ContactMultiShareInteraction.start(this, getSelectedContactIds());
+        mActionBarAdapter.setSelectionMode(false);
     }
 
     private void joinSelectedContacts() {

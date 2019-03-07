@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.ComponentName;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
@@ -175,6 +176,18 @@ public class ImplicitIntentsUtil {
         return intent;
     }
 
+    /**
+     * Returns an Intent to manage SIM contacts.
+     */
+    public static Intent getIntentForSimContactsManagement() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        ComponentName cn = new ComponentName("com.qualcomm.qti.simcontacts",
+                "com.qualcomm.qti.simcontacts.activities.SimCardsSelectionActivity");
+        intent.setComponent(cn);
+        return intent;
+    }
+
     public static Intent getIntentForQuickContactLauncherShortcut(Context context, Uri contactUri) {
         final Intent intent = composeQuickContactIntent(context, contactUri,
                 QuickContact.MODE_LARGE, ScreenType.UNKNOWN);
@@ -195,6 +208,12 @@ public class ImplicitIntentsUtil {
         intent.putExtra(QuickContact.EXTRA_EXCLUDE_MIMES, (String[])null);
 
         return intent;
+    }
+
+    public static boolean checkIntentIfExists(Context context, Intent intent){
+        List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent,
+                PackageManager.GET_ACTIVITIES);
+        return list != null && list.size() > 0;
     }
 
     /**

@@ -232,6 +232,9 @@
     <!-- Positive button text of confirmation dialog contents after users selects to delete a Writable contact. [CHAR LIMIT=30] -->
     <string name="deleteConfirmation_positive_button">Delete</string>
 
+    <!-- Deleting dialog, shown after users selects to delete multiple contacts writable contacts. [CHAR LIMIT=NONE]  -->
+    <string name="delete_contacts_title">Deleting contacts</string>
+
     <!-- Message displayed in a toast when you try to view the details of a contact that
          for some reason doesn't exist anymore. [CHAR LIMIT=NONE]-->
     <string name="invalidContactMessage">The contact doesn\'t exist.</string>
@@ -366,6 +369,9 @@
     <!-- The menu item to share the currently viewed contact [CHAR LIMIT=30] -->
     <string name="menu_share">Share</string>
 
+    <!-- The menu item to select all contacts -->
+    <string name="menu_select_all">Select all</string>
+
     <!-- The menu item to add the the currently viewed contact to your contacts [CHAR LIMIT=30] -->
     <string name="menu_add_contact">Add to contacts</string>
 
@@ -448,6 +454,9 @@
 
     <!-- Menu item for the settings activity [CHAR LIMIT=64] -->
     <string name="menu_settings" msgid="377929915873428211">Settings</string>
+
+    <!-- Menu item for the sim contacts-->
+    <string name="menu_sim_contacts">SIM contacts</string>
 
     <!-- Menu item for invoking contextual Help & Feedback [CHAR LIMIT=64] -->
     <string name="menu_help">Help &amp; feedback</string>
@@ -1533,36 +1542,4 @@
     <!-- Text of Negative Button in dialog -->
     <string name="no_button">No</string>
 
-    <string name="select_all">All</string>
-    <string name="btn_ok">Ok</string>
-    <string name="btn_cancel">Cancel</string>
-    <string name="deleteConfirmation_title">Delete contact?</string>
-    <string name="ContactMultiDeleteConfirmation">These contacts will be deleted.</string>
-    <string name="delete_termination">"Finished deleting"</string>
-    <string name="delete_contacts_title">Delete Contacts</string>
-    <string name="delete_contacts_message">Deleting Contacts ...</string>
-    <string name="contacts_selected">%d selected</string>
-    <string name="summary_count_numbers">%s numbers</string>
-    <string name="search_menu_search">Search</string>
-    <string name="too_many_contacts_add">Too many contacts, that should be less than <xliff:g id="count">%d</xliff:g></string>
-    <!-- Label to select all contacts in multiple picker -->
-    <string name="menu_select_all">"Select all"</string>
-
-    <!-- Label to clear all selection in multiple picker -->
-    <string name="menu_select_none">"Unselect all"</string>
-    <!-- Action that exports all contacts to SIM -->
-    <string name="export_to_sim">Export to SIM card</string>
-    <string name="progressdialog_cancel">Cancel</string>
-    <string name="sim_contact_export_failed">Export failed, Contact name: <xliff:g id="name">%1$s</xliff:g>, number: <xliff:g id="number">%2$s</xliff:g>, email: <xliff:g id="email">%3$s</xliff:g></string>
-    <string name="export_sim_card_full">Sim Card is full, <xliff:g id="insertCount">%d</xliff:g> items are exported</string>
-    <string name="sim_card_full">Error, Sim Card is full.</string>
-    <string name="export_finished">Export finished</string>
-    <string name="export_cancelled">Export is canceled, <xliff:g id="insertCount">%s</xliff:g>items are exported</string>
-    <string name="export_no_phone_or_email">Export failed, <xliff:g id="name">%s</xliff:g>has not phone number or email address</string>
-    <string name="exporting">Exporting</string>
-    <string name="copy_done">Copy done！</string>
-    <string name="copy_failure">Copy Failed！</string>
-    <string name="card_no_space">Card has no space ,some record copy failed</string>
-    <string name="menu_copyTo">"Copy to "</string>
-    <string name="no_empty_email_in_usim">"Email is full, some record copy failed "</string>
 </resources>

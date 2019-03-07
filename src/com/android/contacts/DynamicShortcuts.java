@@ -15,7 +15,6 @@
  */
 package com.android.contacts;
 
-import android.accounts.Account;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.job.JobInfo;
@@ -306,16 +305,11 @@ public class DynamicShortcuts {
     }
 
     public ShortcutInfo getQuickContactShortcutInfo(long id, String lookupKey, String displayName) {
-        return getQuickContactShortcutInfo(id, lookupKey, displayName, null);
-    }
-
-    public ShortcutInfo getQuickContactShortcutInfo(long id, String lookupKey, String displayName,
-            Account account) {
         final ShortcutInfo.Builder builder = builderForContactShortcut(id, lookupKey, displayName);
         if (builder == null) {
             return null;
         }
-        addIconForContact(id, lookupKey, displayName, builder, account);
+        addIconForContact(id, lookupKey, displayName, builder);
         return builder.build();
     }
 
@@ -342,14 +336,9 @@ public class DynamicShortcuts {
 
     private void addIconForContact(long id, String lookupKey, String displayName,
             ShortcutInfo.Builder builder) {
-        addIconForContact(id, lookupKey, displayName, builder, null);
-    }
-
-    private void addIconForContact(long id, String lookupKey, String displayName,
-            ShortcutInfo.Builder builder, Account account) {
         Bitmap bitmap = getContactPhoto(id);
         if (bitmap == null) {
-            bitmap = getFallbackAvatar(displayName, lookupKey, account);
+            bitmap = getFallbackAvatar(displayName, lookupKey);
         }
         final Icon icon;
         if (BuildCompat.isAtLeastO()) {
@@ -425,7 +414,7 @@ public class DynamicShortcuts {
         return bitmap;
     }
 
-    private Bitmap getFallbackAvatar(String displayName, String lookupKey, Account account) {
+    private Bitmap getFallbackAvatar(String displayName, String lookupKey) {
         // Use a circular icon if we're not on O or higher.
         final boolean circularIcon = !BuildCompat.isAtLeastO();
 
@@ -436,7 +425,7 @@ public class DynamicShortcuts {
             request.scale = LetterTileDrawable.getAdaptiveIconScale();
         }
         final Drawable avatar = ContactPhotoManager.getDefaultAvatarDrawableForContact(
-                mContext.getResources(), true, request, account);
+                mContext.getResources(), true, request);
         final Bitmap result = Bitmap.createBitmap(mIconSize, mIconSize, Bitmap.Config.ARGB_8888);
         // The avatar won't draw unless it thinks it is visible
         avatar.setVisible(true, true);

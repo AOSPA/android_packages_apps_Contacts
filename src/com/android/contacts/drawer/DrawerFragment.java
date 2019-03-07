@@ -256,6 +256,8 @@ public class DrawerFragment extends Fragment implements AccountsListener {
                 mListener.onCreateLabelButtonClicked();
             } else if (viewId == R.id.nav_settings) {
                 mListener.onOpenSettings();
+            } else if (viewId ==  R.id.nav_sim_contacts) {
+                mListener.onLaunchSimContactsManagement();
             } else if (viewId == R.id.nav_help) {
                 mListener.onLaunchHelpFeedback();
             } else {
@@ -313,6 +315,7 @@ public class DrawerFragment extends Fragment implements AccountsListener {
         void onCreateLabelButtonClicked();
         void onOpenSettings();
         void onLaunchHelpFeedback();
+        void onLaunchSimContactsManagement();
     }
 
     private class WindowInsetsListener implements View.OnApplyWindowInsetsListener {

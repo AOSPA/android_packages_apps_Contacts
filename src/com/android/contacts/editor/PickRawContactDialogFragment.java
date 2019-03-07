@@ -3,7 +3,6 @@ package com.android.contacts.editor;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.accounts.Account;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -130,15 +129,12 @@ public class PickRawContactDialogFragment extends DialogFragment {
 
             holder.accountName.setText(accountDisplayLabel);
             holder.accountIcon.setImageDrawable(account.getDisplayIcon(mContext));
-            Account accounts = null;
-            if(rawContact.accountType != null)
-                accounts = new Account(rawContact.accountName, rawContact.accountType);
             final ContactPhotoManager.DefaultImageRequest
                     request = new ContactPhotoManager.DefaultImageRequest(
                     displayName, String.valueOf(rawContact.id), /* isCircular = */ true);
 
             ContactPhotoManager.getInstance(mContext).loadThumbnail(holder.photo,
-                    rawContact.photoId, accounts,
+                    rawContact.photoId,
                     /* darkTheme = */ false,
                     /* isCircular = */ true,
                     request);

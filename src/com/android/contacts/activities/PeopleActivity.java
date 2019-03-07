@@ -1195,6 +1195,16 @@ public class PeopleActivity extends AppCompatContactsActivity implements
     }
 
     @Override
+    public void onLaunchSimContactsManagement() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(ImplicitIntentsUtil.getIntentForSimContactsManagement());
+            }
+        }, DRAWER_CLOSE_DELAY);
+    }
+
+    @Override
     public void onGroupViewSelected(GroupListItem groupListItem) {
         onGroupMenuItemClicked(groupListItem.getGroupId());
     }

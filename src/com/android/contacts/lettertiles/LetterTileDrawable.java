@@ -16,8 +16,6 @@
 
 package com.android.contacts.lettertiles;
 
-import android.accounts.Account;
-import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;

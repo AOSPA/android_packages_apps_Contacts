@@ -97,6 +97,7 @@ public class JoinContactListAdapter extends ContactListAdapter {
                 .build();
         }
         loader.setUri(allContactsUri);
+        loader.setSelection(Contacts._ID + "!=?");
         loader.setSelectionArgs(new String[]{ String.valueOf(mTargetContactId) });
         if (getSortOrder() == ContactsPreferences.SORT_ORDER_PRIMARY) {
             loader.setSortOrder(Contacts.SORT_KEY_PRIMARY);

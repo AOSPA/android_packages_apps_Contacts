@@ -27,12 +27,12 @@ import android.provider.BaseColumns;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.Profile;
 import android.provider.ContactsContract.RawContacts;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.contacts.compat.CompatUtils;
 import com.android.contacts.model.account.AccountType;
 import com.android.contacts.model.account.AccountWithDataSet;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

@@ -161,14 +161,6 @@ public class ContactMultiShareInteraction extends Fragment
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        if (mProgressDialog != null){
-            mProgressDialog.dismiss();
-        }
-    }
-
-    @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
         final TreeSet<Long> contactIds = (TreeSet<Long>) args.getSerializable(ARG_CONTACT_IDS);
         return new ShareContactsLoader(mContext, contactIds);
@@ -230,9 +222,12 @@ public class ContactMultiShareInteraction extends Fragment
     }
 
     private void cancelLoad(){
-        Loader loader = getLoaderManager().getLoader(R.id.dialog_share_multiple_contact_loader_id);
-        if (loader != null){
-            loader.cancelLoad();
+        if(isStarted()){
+            Loader loader = getLoaderManager()
+                    .getLoader(R.id.dialog_share_multiple_contact_loader_id);
+            if (loader != null){
+                loader.cancelLoad();
+            }
         }
     }
 
@@ -244,6 +239,7 @@ public class ContactMultiShareInteraction extends Fragment
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
                 getString(android.R.string.cancel), (OnClickListener)null);
+        mProgressDialog.setCancelable(false);
         mProgressDialog.setProgress(0);
         mProgressDialog.setMax(mContactIds.size());
         mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -260,6 +256,7 @@ public class ContactMultiShareInteraction extends Fragment
 
     private static class ShareContactsLoader extends AsyncTaskLoader<String>{
         private TreeSet<Long> mSelectedContactIds;
+        private int mProgress;
 
         public ShareContactsLoader(Context context, TreeSet<Long> contactIds){
             super(context);
@@ -276,6 +273,7 @@ public class ContactMultiShareInteraction extends Fragment
             final StringBuilder uriListBuilder = new StringBuilder();
             for (Long contactId : mSelectedContactIds) {
                 if (!isLoadInBackgroundCanceled()) {
+                    updateProgress();
                     final Uri contactUri = ContentUris.withAppendedId(
                             ContactsContract.Contacts.CONTENT_URI, contactId);
                     final Uri lookupUri = ContactsContract.Contacts.getLookupUri(
@@ -292,13 +290,17 @@ public class ContactMultiShareInteraction extends Fragment
                         uriListBuilder.append(':');
                     }
                     uriListBuilder.append(Uri.encode(lookupKey));
-                    if (mProgressDialog != null) {
-                        mProgressDialog.incrementProgressBy(1);
-                    }
                 }
 
             }
             return uriListBuilder.toString();
+        }
+
+        private void updateProgress(){
+            mProgress++;
+            if (mProgressDialog != null) {
+                mProgressDialog.setProgress(mProgress);
+            }
         }
     }
 }

@@ -29,6 +29,8 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Loader;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract.RawContacts;
@@ -128,6 +130,12 @@ public class ContactMultiDeletionInteraction extends Fragment
             mDialog.setOnDismissListener(null);
             mDialog.dismiss();
             mDialog = null;
+        }
+
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.setOnDismissListener(null);
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
         }
     }
 
@@ -321,7 +329,15 @@ public class ContactMultiDeletionInteraction extends Fragment
         mProgressDialog.setProgress(0);
         mProgressDialog.setMax(mContactIds.size());
         mProgressDialog.setCancelable(false);
+        mProgressDialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                mProgressDialog = null;
+            }
+        });
         mProgressDialog.show();
+        lockScreen();
     }
 
     protected void doDeleteContact(long[] contactIds, final String[] names) {
@@ -355,5 +371,15 @@ public class ContactMultiDeletionInteraction extends Fragment
 
     public void setListener(MultiContactDeleteListener listener) {
         mListener = listener;
+    }
+
+    private void lockScreen(){
+        Configuration configuration = getActivity().getResources().getConfiguration();
+        int ori = configuration.orientation;
+        if (ori == configuration.ORIENTATION_LANDSCAPE) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else if (ori == configuration.ORIENTATION_PORTRAIT) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 }

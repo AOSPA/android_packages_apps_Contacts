@@ -595,6 +595,8 @@ public class ImportVCardActivity extends Activity implements ImportVCardDialogFr
 
         if (!TextUtils.isEmpty(accountName) && !TextUtils.isEmpty(accountType)) {
             mAccount = new AccountWithDataSet(accountName, accountType, dataSet);
+        } if (accountName == null && accountType == null && dataSet == null){
+            mAccount = AccountWithDataSet.getNullAccount();
         } else {
             final AccountTypeManager accountTypes = AccountTypeManager.getInstance(this);
             final List<AccountWithDataSet> accountList = accountTypes.blockForWritableAccounts();

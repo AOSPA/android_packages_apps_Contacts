@@ -29,8 +29,6 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     guava \
     libphonenumber
 
-LOCAL_JAVA_LIBRARIES := voip-common
-
 LOCAL_USE_AAPT2 := true
 
 LOCAL_AAPT_FLAGS := \
@@ -45,8 +43,7 @@ LOCAL_REQUIRED_MODULES := privapp_whitelist_com.android.contacts
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
-LOCAL_PRIVATE_PLATFORM_APIS := true
-#LOCAL_SDK_VERSION := current
+LOCAL_SDK_VERSION := current
 LOCAL_MIN_SDK_VERSION := 21
 
 include $(BUILD_PACKAGE)

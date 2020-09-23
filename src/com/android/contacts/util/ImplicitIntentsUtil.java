@@ -185,6 +185,7 @@ public class ImplicitIntentsUtil {
         ComponentName cn = new ComponentName("com.qualcomm.qti.simcontacts",
                 "com.qualcomm.qti.simcontacts.activities.SimCardsSelectionActivity");
         intent.setComponent(cn);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
 

@@ -59,12 +59,6 @@
         android:name="android.hardware.telephony"
         android:required="false"/>
 
-    <queries>
-        <intent>
-            <action android:name="android.media.action.IMAGE_CAPTURE" />
-        </intent>
-    </queries>
-
     <application
         android:name="com.android.contacts.ContactsApplication"
         android:hardwareAccelerated="true"
